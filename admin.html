@@ -57,10 +57,6 @@
       transition: all 0.4s ease;
     }
 
-    .submenu-active .menu-items {
-      transform: translateX(-56%);
-    }
-
     .menu-title {
       color: whitesmoke;
       font-size: 18px;
@@ -103,19 +99,15 @@
     }
 
     .submenu {
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      top: 0;
-      right: calc(-100% - 26px);
-      background: #002966;
-      display: none;
-    }
-
-    .item.show-submenu .submenu {
-  display: block;
+  display: none;
+  background: #002966;
+  margin-left: 20px;
+  flex-direction: column;
 }
 
+.item.show-submenu .submenu {
+  display: flex;
+}
     .submenu .menu-title {
       border-radius: 12px;
       cursor: pointer;
