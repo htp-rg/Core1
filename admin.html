@@ -73,7 +73,8 @@
 
     .item {
       display: flex;
-      align-items: center;
+      flex-direction: column; /* Ensures submenu goes below */
+      align-items: flex-start;
     }
 
     .icon {
@@ -99,15 +100,18 @@
     }
 
     .submenu {
-  display: none;
-  background: #002966;
-  margin-left: 20px;
-  flex-direction: column;
-}
+      display: none;
+      background: #002966;
+      margin-left: 20px;
+      margin-top: 5px; /* Adds space between the main item and submenu */
+      flex-direction: column;
+      padding-left: 20px;
+    }
 
-.item.show-submenu .submenu {
-  display: flex;
-}
+    .item.show-submenu .submenu {
+      display: block;
+    }
+
     .submenu .menu-title {
       border-radius: 12px;
       cursor: pointer;
@@ -265,13 +269,13 @@
   </div>
 
   <script>
-   function toggleSubmenu(el) {
-  document.querySelectorAll('.item').forEach(item => {
-    if (item !== el.closest('.item')) item.classList.remove('show-submenu');
-  });
-  const parent = el.closest('.item');
-  parent.classList.toggle('show-submenu');
-}
+    function toggleSubmenu(el) {
+      document.querySelectorAll('.item').forEach(item => {
+        if (item !== el.closest('.item')) item.classList.remove('show-submenu');
+      });
+      const parent = el.closest('.item');
+      parent.classList.toggle('show-submenu');
+    }
   </script>
 </body>
 </html>
