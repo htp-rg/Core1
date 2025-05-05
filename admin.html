@@ -63,60 +63,52 @@
       padding: 15px 20px;
     }
 
-    .item a,
-    .submenu-item {
-      padding: 20px;
-      display: inline-block;
-      width: 100%;
-      border-radius: 12px;
-    }
-
     .item {
       display: flex;
-      flex-direction: row;
-      align-items: center;
+      flex-direction: column;
       padding: 10px 0;
     }
 
-    .icon {
-      color: white;
-      font-size: 20px;
-      margin-right: 15px;
+    .submenu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      color: #fff;
+      border-radius: 12px;
+      cursor: pointer;
     }
 
-    .item a:hover,
-    .submenu-item:hover,
-    .submenu .menu-title:hover {
+    .submenu-header:hover {
       background: rgba(255, 255, 255, 0.1);
     }
 
-    .submenu-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #fff;
-      cursor: pointer;
+    .submenu-header .icon {
+      margin-right: 10px;
+      font-size: 20px;
     }
 
     .submenu {
       display: none;
+      flex-direction: column;
       background: #002966;
       margin-left: 20px;
-      flex-direction: column;
       padding-left: 20px;
     }
 
     .item.show-submenu .submenu {
-      display: block;
+      display: flex;
     }
 
-    .submenu .menu-title {
-      border-radius: 12px;
-      cursor: pointer;
+    .submenu .item a {
+      padding: 10px;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
     }
 
-    .submenu .menu-title i {
-      margin-right: 10px;
+    .submenu .item a:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .navbar,
@@ -160,6 +152,17 @@
     .dropdown-content {
       background-color: #002255;
     }
+
+    .dropdown-content a {
+      color: white;
+      padding: 5px 10px;
+      display: block;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
   </style>
 </head>
 
@@ -171,13 +174,18 @@
         <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
 
         <li class="item">
-          <span class="icon"><i class='bx bxs-dashboard'></i></span>
-          <a class="nav_link" href="dashboard.html">Dashboard</a>
+          <a class="submenu-header" href="dashboard.html">
+            <span class="icon"><i class='bx bxs-dashboard'></i></span>
+            <span>Dashboard</span>
+          </a>
         </li>
 
         <li class="item">
-          <span class="icon"><i class='bx bx-link'></i></span>
-          <div class="submenu-item" onclick="toggleSubmenu(this)">Placement Management <i class="fa-solid fa-chevron-right"></i></div>
+          <div class="submenu-header" onclick="toggleSubmenu(this)">
+            <span class="icon"><i class='bx bx-link'></i></span>
+            <span>Placement Management</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
           <ul class="submenu">
             <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
             <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
@@ -186,8 +194,11 @@
         </li>
 
         <li class="item">
-          <span class="icon"><i class='bx bx-folder'></i></span>
-          <div class="submenu-item" onclick="toggleSubmenu(this)">Position Job Management <i class="fa-solid fa-chevron-right"></i></div>
+          <div class="submenu-header" onclick="toggleSubmenu(this)">
+            <span class="icon"><i class='bx bx-folder'></i></span>
+            <span>Position Job Management</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
           <ul class="submenu">
             <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
             <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
@@ -197,8 +208,11 @@
         </li>
 
         <li class="item">
-          <span class="icon"><i class='bx bx-file'></i></span>
-          <div class="submenu-item" onclick="toggleSubmenu(this)">Client Management <i class="fa-solid fa-chevron-right"></i></div>
+          <div class="submenu-header" onclick="toggleSubmenu(this)">
+            <span class="icon"><i class='bx bx-file'></i></span>
+            <span>Client Management</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
           <ul class="submenu">
             <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
             <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
@@ -207,8 +221,11 @@
         </li>
 
         <li class="item">
-          <span class="icon"><i class='bx bx-user'></i></span>
-          <div class="submenu-item" onclick="toggleSubmenu(this)">Payroll Management <i class="fa-solid fa-chevron-right"></i></div>
+          <div class="submenu-header" onclick="toggleSubmenu(this)">
+            <span class="icon"><i class='bx bx-user'></i></span>
+            <span>Payroll Management</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
           <ul class="submenu">
             <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
             <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
@@ -219,8 +236,11 @@
         </li>
 
         <li class="item">
-          <span class="icon"><i class='bx bx-calendar'></i></span>
-          <div class="submenu-item" onclick="toggleSubmenu(this)">Contract Management <i class="fa-solid fa-chevron-right"></i></div>
+          <div class="submenu-header" onclick="toggleSubmenu(this)">
+            <span class="icon"><i class='bx bx-calendar'></i></span>
+            <span>Contract Management</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
           <ul class="submenu">
             <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
             <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
@@ -231,8 +251,11 @@
         </li>
 
         <li class="item">
-          <span class="icon"><i class='bx bx-group'></i></span>
-          <div class="submenu-item" onclick="toggleSubmenu(this)">User Management <i class="fa-solid fa-chevron-right"></i></div>
+          <div class="submenu-header" onclick="toggleSubmenu(this)">
+            <span class="icon"><i class='bx bx-group'></i></span>
+            <span>User Management</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
           <ul class="submenu">
             <li class="item">
               <a href="#">Contract Management</a>
@@ -246,13 +269,17 @@
         </li>
 
         <li class="item">
-          <span class="icon"><i class='bx bx-info-circle'></i></span>
-          <a href="aboutus.html" class="nav_link">About Us</a>
+          <a class="submenu-header" href="aboutus.html">
+            <span class="icon"><i class='bx bx-info-circle'></i></span>
+            <span>About Us</span>
+          </a>
         </li>
 
-        <li class="item" id="logout-link">
-          <span class="icon"><i class='bx bx-log-out'></i></span>
-          <a href="logout.html">Logout</a>
+        <li class="item">
+          <a class="submenu-header" href="logout.html">
+            <span class="icon"><i class='bx bx-log-out'></i></span>
+            <span>Logout</span>
+          </a>
         </li>
       </ul>
     </div>
@@ -268,19 +295,25 @@
 
   <script>
     function toggleSubmenu(el) {
-      
       document.querySelectorAll('.item').forEach(item => {
-        if (item !== el.closest('.item')) item.classList.remove('show-submenu');
+        if (item !== el.closest('.item')) {
+          item.classList.remove('show-submenu');
+          const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+          if (icon) {
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-right');
+          }
+        }
       });
-      
-      
+
       const parent = el.closest('.item');
       const icon = el.querySelector('i');
-      const isSubmenuVisible = parent.classList.toggle('show-submenu');
-      
-      
-      icon.classList.toggle('fa-chevron-right', !isSubmenuVisible);
-      icon.classList.toggle('fa-chevron-down', isSubmenuVisible);
+      const isOpen = parent.classList.toggle('show-submenu');
+
+      if (icon) {
+        icon.classList.toggle('fa-chevron-right', !isOpen);
+        icon.classList.toggle('fa-chevron-down', isOpen);
+      }
     }
   </script>
 </body>
