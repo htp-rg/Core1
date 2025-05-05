@@ -73,14 +73,15 @@
 
     .item {
       display: flex;
-      flex-direction: column; 
-      align-items: flex-start;
+      flex-direction: row; 
+      align-items: center; 
+      padding: 10px 0;
     }
 
     .icon {
       color: white;
       font-size: 20px;
-      margin-right: 10px;
+      margin-right: 15px;
     }
 
     .item a:hover,
@@ -273,7 +274,6 @@
       const parent = el.closest('.item');
       const icon = el.querySelector('i');
       const isSubmenuVisible = parent.classList.toggle('show-submenu');
-      
       
       icon.classList.toggle('fa-chevron-right', !isSubmenuVisible);
       icon.classList.toggle('fa-chevron-down', isSubmenuVisible);
