@@ -268,12 +268,12 @@
 
   <script>
     function toggleSubmenu(el) {
-     
+      
       document.querySelectorAll('.item').forEach(item => {
         if (item !== el.closest('.item')) item.classList.remove('show-submenu');
       });
       
-    
+      
       const parent = el.closest('.item');
       const icon = el.querySelector('i');
       const isSubmenuVisible = parent.classList.toggle('show-submenu');
