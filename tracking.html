@@ -9,202 +9,312 @@
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <style>
    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+     body {
+            display: flex;
+            position: relative;
+            min-height: 100vh;
+        }
 
-    .sidebar {
-      position: fixed;
-      height: 100%;
-      width: 260px;
-      background: #002966;
-      padding: 15px;
-      z-index: 99;
-    }
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+            overflow-y: auto;
+        }
 
-    #h2 {
-      color: white;
-      margin-top: 20px;
-      margin-left: 10px;
-      display: flex;
-      align-items: center;
-    }
+        #h2 {
+            color: white;
+            margin: 20px 0 0 10px;
+            display: flex;
+            align-items: center;
+        }
 
-    .sidebar a {
-      color: #fff;
-      text-decoration: none;
-    }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 12px;
+            margin: 5px 0;
+        }
 
-    .menu-content {
-      position: relative;
-      height: 80%;
-      width: 100%;
-      margin-top: 40px;
-      overflow-y: scroll;
-    }
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    .menu-content::-webkit-scrollbar {
-      display: none;
-    }
+        .menu-title {
+            color: whitesmoke;
+            font-size: 16px;
+            padding: 15px 20px;
+        }
 
-    .menu-items {
-      height: 100%;
-      width: 100%;
-      list-style: none;
-      transition: all 0.4s ease;
-    }
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 5px 0;
+        }
 
-    .menu-title {
-      color: whitesmoke;
-      font-size: 18px;
-      padding: 15px 20px;
-    }
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
 
-    .item {
-      display: flex;
-      flex-direction: column;
-      padding: 10px 0;
-    }
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
 
-    .submenu-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
-      color: #fff;
-      border-radius: 12px;
-      cursor: pointer;
-    }
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    a.submenu-header {
-      text-decoration: none;
-      justify-content: flex-start;
-    }
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
 
-    .submenu-header:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            padding-left: 40px;
+        }
 
-    .submenu-header .icon {
-      margin-right: 10px;
-      font-size: 20px;
-    }
+        .item.show-submenu .submenu {
+            display: flex;
+        }
 
-    .submenu {
-      display: none;
-      flex-direction: column;
-      background: #002966;
-      margin-left: 20px;
-      padding-left: 20px;
-    }
+        .submenu .item a {
+            padding: 8px 0;
+            color: #fff;
+            text-decoration: none;
+        }
 
-    .item.show-submenu .submenu {
-      display: flex;
-    }
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    .submenu .item a {
-      padding: 10px;
-      color: #fff;
-      border-radius: 8px;
-      text-decoration: none;
-    }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 260px;
+            width: calc(100% - 260px);
+            background: #4070f4;
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
 
-    .submenu .item a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+        .main {
+            padding-top: 60px;
+            padding-left: 280px;
+            padding-right: 20px;
+            background: #e7f2fd;
+            flex-grow: 1;
+        }
 
-    .navbar,
-    .main {
-      left: 260px;
-      width: calc(100% - 260px);
-      transition: all 0.5s ease;
-      z-index: 1000;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+        }
 
-    .sidebar.close ~ .navbar,
-    .sidebar.close ~ .main {
-      left: 0;
-      width: 100%;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    .navbar {
-      position: fixed;
-      color: #fff;
-      padding: 15px 20px;
-      font-size: 25px;
-      background: #4070f4;
-      cursor: pointer;
-    }
+        .header h1 {
+            color: #002966;
+            font-size: 32px;
+        }
 
-    .main {
-  position: relative;
-  display: flex;
-  flex-direction: column;    
-  align-items: stretch;     
-  background: #e7f2fd;
-  padding: 20px;             
-  min-height: calc(100vh - 60px); 
-}
-    .main h1 {
-      color: #11101d;
-      font-size: 40px;
-      text-align: center;
-    }
+        .back-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: red;
+            padding: 8px 12px;
+            color: #fff;
+            border-radius: 4px;
+            text-decoration: none;
+        }
 
-    .dropdown-content {
-      background-color: #002255;
-    }
+        .back-btn:hover {
+            background: darkred;
+        }
 
-    .dropdown-content a {
-      color: white;
-      padding: 5px 10px;
-      display: block;
-      text-decoration: none;
-    }
+        .header p {
+            margin-top: 12px;
+            color: #333;
+        }
 
-    .dropdown-content a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-   
-    .container { max-width: 1200px; margin: auto; }
-    .header { position: relative; text-align: center; margin-bottom: 20px; }
-    .header h1 { color: #002966; font-size: 36px; }
-    .back-btn { position: absolute; top: 0; right: 0; background: red; padding: 8px 12px; color: #fff; border-radius: 4px; text-decoration: none; }
-    .back-btn:hover { background: darkred; }
-    .header p { margin-top: 12px; color: #333; }
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
 
-    
-    .cards { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-    .card { background: #fff; width: 260px; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.1); display: flex; flex-direction: column; align-items: center; }
-    .card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; }
-    .card h3 { color: #002966; margin-bottom: 8px; }
-    .card p { font-size: 14px; line-height: 1.4; text-align: left; width: 100%; margin-bottom: 12px; }
-    .card-buttons { display: flex; gap: 10px; width: 100%; }
-    .card-buttons button { flex: 1; padding: 6px; border: none; border-radius: 6px; color: #fff; cursor: pointer; }
-    .edit-btn { background: #28a745; }
-    .edit-btn:hover { background: #218838; }
-    .delete-btn { background: #dc3545; }
-    .delete-btn:hover { background: #c82333; }
+        .card {
+            background: #fff;
+            width: 280px;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-  
-    table { width: 100%; border-collapse: collapse; margin: 30px 0; }
-    th, td { border: 1px solid #ddd; padding: 10px; }
-    thead { background: #002966; color: #fff; }
+        .card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
 
-   
-    ul.process { list-style: disc inside; max-width: 800px; margin: 40px auto; font-size: 16px; color: #333; }
+        .card h3 {
+            color: #002966;
+            margin-bottom: 8px;
+            text-align: center;
+        }
 
-   
-    .modal { display: none; position: fixed; top: 0; left: 0; width:100%; height:100%; background: rgba(0,0,0,.4); justify-content: center; align-items: center; }
-    .modal-content { background: #fff; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; position: relative; }
-    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; }
-    .modal-content form label { display: block; margin: 10px 0 4px; }
-    .modal-content form input, .modal-content form textarea { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
-    .modal-content form button { margin-top: 12px; padding: 8px 12px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-  </style>
+        .card p {
+            font-size: 14px;
+            line-height: 1.4;
+            text-align: left;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .card-buttons {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .card-buttons button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .edit-btn {
+            background: #28a745;
+        }
+
+        .edit-btn:hover {
+            background: #218838;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        thead {
+            background: #002966;
+            color: #fff;
+        }
+
+        ul.process {
+            list-style: disc inside;
+            max-width: 800px;
+            margin: 40px auto;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 400px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-content form label {
+            display: block;
+            margin: 10px 0 4px;
+        }
+
+        .modal-content form input[type="text"],
+        .modal-content form textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .modal-content form button {
+            margin-top: 12px;
+            padding: 8px 12px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
   <nav class="sidebar">
@@ -391,8 +501,8 @@
             <br> 
           </p>
           <div class="card-buttons">
-           <button type="button" onclick="openEditModal('Sofia Reyes')" class="edit-btn">Edit</button>
-<button type="button" onclick="openDeleteModal('Sofia Reyes')" class="delete-btn">Delete</button>
+           <button type="button"onclick="openEditModal('Sophia Reyes')" class="edit-btn">Edit</button>
+<button type="button" onclick="openDeleteModal('Sophia Reyes')" class="delete-btn">Delete</button>
           </div>
         </div>
 
