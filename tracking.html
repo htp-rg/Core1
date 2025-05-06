@@ -8,443 +8,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-            * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
+          @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
 
-        .sidebar {
-            position: fixed;
-            height: 100%;
-            width: 260px;
-            background: #002966;
-            padding: 15px;
-            z-index: 99;
-        }
+   
+    .sidebar{position:fixed;height:100%;width:260px;background:#002966;padding:15px;z-index:99;}
+    
+    .navbar,.main{left:260px;width:calc(100% - 260px);transition:all .5s ease;z-index:1000;}
+    .navbar{position:fixed;color:#fff;padding:15px 20px;font-size:25px;background:#4070f4;cursor:pointer;}
+    .main{position:relative;display:flex;justify-content:center;background:#e7f2fd;padding:80px 20px 40px;}
 
-        #h2 {
-            color: white;
-            margin-top: 20px;
-            margin-left: 10px;
-            display: flex;
-            align-items: center;
-        }
 
-        .sidebar a {
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            border-radius: 12px;
-            margin: 5px 0;
-        }
+    .container { max-width:1200px; width:100%; margin:auto; text-align:left; }
+    .header { text-align:center; position:relative; }
+    .header h1 { color:#002966; font-size:36px; margin-bottom:10px; }
+    .back-btn { position:absolute; top:0; right:0; background:red; padding:8px 12px; color:#fff; border-radius:4px; text-decoration:none; }
+    .back-btn:hover { background:darkred; }
 
-        .sidebar a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+    .cards { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin:30px 0; }
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.1); width:260px; padding:15px; display:flex; flex-direction:column; align-items:center; }
+    .card img { width:80px; height:80px; border-radius:50%; object-fit:cover; margin-bottom:10px; }
+    .card h3 { color:#002966; margin-bottom:8px; }
+    .card p { font-size:14px; line-height:1.4; margin-bottom:12px; }
+    .card-buttons { display:flex; gap:10px; }
+    .card-buttons button { flex:1; padding:6px; border:none; border-radius:6px; color:#fff; cursor:pointer; }
+    .edit-btn { background:#28a745; } .edit-btn:hover { background:#218838; }
+    .delete-btn { background:#dc3545; } .delete-btn:hover { background:#c82333; }
 
-        .menu-content {
-            position: relative;
-            height: 80%;
-            width: 100%;
-            margin-top: 40px;
-            overflow-y: auto;
-        }
+    table { width:100%; border-collapse:collapse; margin:30px 0; }
+    table th, table td { padding:10px; border:1px solid #ddd; }
+    table thead { background:#002966; color:#fff; }
+    ul.process { list-style:disc inside; max-width:800px; margin:auto 0 40px; font-size:16px; color:#333; }
 
-        .menu-content::-webkit-scrollbar {
-            display: none;
-        }
-
-        .menu-items {
-            height: 100%;
-            width: 100%;
-            list-style: none;
-            transition: all 0.4s ease;
-        }
-
-        .menu-title {
-            color: whitesmoke;
-            font-size: 16px;
-            padding: 15px 20px;
-        }
-
-        .item {
-            display: flex;
-            flex-direction: column;
-            padding: 5px 0;
-        }
-
-        .submenu-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            color: #fff;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-
-        a.submenu-header {
-            text-decoration: none;
-            justify-content: flex-start;
-        }
-
-        .submenu-header:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .submenu-header .icon {
-            margin-right: 10px;
-            font-size: 20px;
-            min-width: 24px;
-            text-align: center;
-        }
-
-        .submenu {
-            display: none;
-            flex-direction: column;
-            background: #002966;
-            margin-left: 0;
-            padding-left: 20px;
-        }
-
-        .item.show-submenu .submenu {
-            display: flex;
-        }
-
-        .submenu .item a {
-            padding: 8px 15px;
-            color: #fff;
-            border-radius: 8px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-
-        .submenu .item a .icon {
-            margin-right: 10px;
-        }
-
-        .submenu .item a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .navbar,
-        .main {
-            left: 260px;
-            width: calc(100% - 260px);
-            transition: all 0.5s ease;
-            z-index: 1000;
-        }
-
-        .navbar {
-            position: fixed;
-            color: #fff;
-            padding: 15px 20px;
-            font-size: 25px;
-            background: #4070f4;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .navbar #sidebar-close {
-            margin-right: 20px;
-        }
-
-        .main {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #e7f2fd;
-            padding-top: 80px;
-            padding-left: 20px;
-            padding-right: 20px;
-            overflow-y: auto;
-            min-height: 100vh;
-        }
-
-        .main h1 {
-            color: #11101d;
-            font-size: 32px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .employee-card-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .employee-card {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 280px; /* Slightly wider for more content */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .employee-card h3 {
-            color: #002966;
-            margin-bottom: 10px;
-            font-size: 18px;
-            text-align: center;
-        }
-
-        .employee-card p {
-            font-size: 14px;
-            flex-grow: 1;
-            line-height: 1.5;
-        }
-
-        .employee-card strong {
-            font-weight: bold;
-        }
-
-        .employee-card-buttons {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .employee-card-buttons button {
-            padding: 8px 12px;
-            font-size: 13px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            color: #fff;
-            flex-grow: 1;
-            text-align: center;
-        }
-
-        .dropdown-content {
-            background-color: #002255;
-        }
-
-        .dropdown-content a {
-            color: white;
-            padding: 8px 15px;
-            display: block;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .dropdown-content a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            overflow: auto;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 5px;
-            width: 80%;
-            max-width: 500px;
-            position: relative;
-        }
-
-        .close-btn {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            cursor: pointer;
-        }
-
-        .close-btn:hover,
-        .close-btn:focus {
-            color: black;
-            text-decoration: none;
-        }
-
-        #editForm label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        #editForm input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        #editForm button[type="submit"],
-        #deleteModal button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        #editForm button[type="submit"]:hover,
-        #deleteModal button:hover {
-            background-color: #0056b3;
-        }
-
-        #deleteModal button#confirmDelete {
-            background-color: #dc3545;
-        }
-
-        #deleteModal button#confirmDelete:hover {
-            background-color: #c82333;
-        }
-
-        #deleteModal button:last-child {
-            background-color: #6c757d;
-        }
-
-        #deleteModal button:last-child:hover {
-            background-color: #545b62;
-        }
-
-        h2 {
-            color: #002966;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: 24px;
-        }
-
-        p {
-            font-size: 16px;
-            color: #333;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .performance-table-container {
-            overflow-x: auto;
-            width: 100%;
-            margin-bottom: 40px;
-        }
-
-        .performance-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-        }
-
-        .performance-table thead {
-            background-color: #002966;
-            color: white;
-        }
-
-        .performance-table th,
-        .performance-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .performance-table tbody tr:nth-child(even) {
-            background: #f3f6fc;
-        }
-
-        .process-improvement-list {
-            text-align: left;
-            max-width: 800px;
-            margin: 0 auto 40px;
-            font-size: 16px;
-            color: #333;
-            padding-left: 20px;
-        }
-
-        .process-improvement-list li {
-            margin-bottom: 10px;
-        }
-
-        .process-improvement-list strong {
-            font-weight: bold;
-            color: #002966;
-        }
-
-        .back-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: red;
-            color: white;
-            padding: 10px 16px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            border: none;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
-        }
-
-        .back-button:hover {
-            background-color: darkred;
-        }
-
-        /* Responsive adjustments for smaller screens */
-        @media (max-width: 768px) {
-            .employee-card {
-                width: calc(50% - 20px); /* Two cards side by side on medium screens */
-            }
-        }
-
-        @media (max-width: 600px) {
-            .main h1 {
-                font-size: 28px;
-            }
-            h2 {
-                font-size: 20px;
-            }
-            p {
-                font-size: 15px;
-            }
-            .back-button {
-                top: 10px;
-                right: 10px;
-                padding: 8px 12px;
-                font-size: 14px;
-            }
-            .employee-card {
-                width: calc(100% - 20px); /* One card per row on small screens */
-            }
-        }
-    </style>
+    
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.4); justify-content:center; align-items:center; }
+    .modal-content { background:#fff; padding:20px; border-radius:8px; width:90%; max-width:400px; position:relative; }
+    .modal-content .close-btn { position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer; }
+    .modal-content form label { display:block; margin:10px 0 4px; }
+    .modal-content form input { width:100%; padding:6px; border:1px solid #ccc; border-radius:4px; }
+    .modal-content form button { margin-top:12px; padding:8px 12px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+  </style>
 </head>
 <body>
   <nav class="sidebar">
@@ -759,26 +362,37 @@
 
     if (!isActive) {
       parentItem.classList.add('show-submenu');
-    }
-    function openEditModal(staffName) {
-  document.getElementById('staffName').value = staffName; // Pre-fill the staff name in the modal
-  document.getElementById('editModal').style.display = 'block';
-}
+  
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.card').forEach(card => {
+      const editBtn = card.querySelector('.edit-btn');
+      const delBtn  = card.querySelector('.delete-btn');
+      const metrics = card.querySelector('p');
+      let editing = false;
 
-function openDeleteModal(staffName) {
-  document.getElementById('deleteModal').style.display = 'block';
-  // Store the staff name or ID to delete it upon confirmation
-}
+      editBtn.addEventListener('click', () => {
+        editing = !editing;
+        if (editing) {
+         
+          metrics.setAttribute('contenteditable', 'true');
+          metrics.classList.add('editing');
+          metrics.focus();
+          editBtn.innerHTML = '<i class="fa fa-save"></i> Save';
+        } else {
+          
+          metrics.removeAttribute('contenteditable');
+          metrics.classList.remove('editing');
+          editBtn.innerHTML = '<i class="fa fa-edit"></i> Edit';
+          
+        }
+      });
 
-function closeModal(modalId) {
-  document.getElementById(modalId).style.display = 'none';
-}
-
-function confirmDelete() {
-  // Handle the delete operation (e.g., sending an AJAX request to delete the staff)
-  alert('Staff deleted successfully!');
-  closeModal('deleteModal');
-}
+      delBtn.addEventListener('click', () => {
+        if (confirm(`Delete ${card.querySelector('h3').textContent}?`)) {
+          card.remove();
+          
+        }
+      });
+    });
+  });
 </script>
-</body>
-</html>
