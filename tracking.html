@@ -1,52 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tracking and Evaluating</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <style>
-          @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administrative</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
 
-   
-    .sidebar{position:fixed;height:100%;width:260px;background:#002966;padding:15px;z-index:99;}
-    
-    .navbar,.main{left:260px;width:calc(100% - 260px);transition:all .5s ease;z-index:1000;}
-    .navbar{position:fixed;color:#fff;padding:15px 20px;font-size:25px;background:#4070f4;cursor:pointer;}
-    .main{position:relative;display:flex;justify-content:center;background:#e7f2fd;padding:80px 20px 40px;}
+    .sidebar {
+      position: fixed; height: 100%; width: 260px;
+      background: #002966; padding: 15px; z-index: 99;
+    }
+    .submenu-header { display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px; color: #fff; border-radius: 12px; cursor: pointer;
+    }
+    .submenu { display: none; flex-direction: column; background: #002966;
+      margin-left: 20px; padding-left: 20px;
+    }
+    .item.show-submenu .submenu { display: flex; }
+    .navbar, .main {
+      left: 260px; width: calc(100% - 260px); transition: all .5s ease; z-index: 1000;
+    }
+    .navbar {
+      position: fixed; color: #fff; padding: 15px 20px; font-size: 25px; background: #4070f4; cursor: pointer;
+    }
+    .main {
+      position: relative; display: flex; justify-content: center;
+      background: #e7f2fd; padding: 80px 20px 40px;
+    }
 
+    /* new main content styles */
+    .container { max-width: 1200px; width: 100%; margin: auto; }
+    .header { text-align: center; position: relative; margin-bottom: 20px; }
+    .header h1 { color: #002966; font-size: 36px; }
+    .back-btn {
+      position: absolute; top: 0; right: 0; background: red; padding: 8px 12px;
+      color: #fff; border-radius: 4px; text-decoration: none;
+    }
+    .back-btn:hover { background: darkred; }
+    .header p { margin-top: 12px; color: #333; }
 
-    .container { max-width:1200px; width:100%; margin:auto; text-align:left; }
-    .header { text-align:center; position:relative; }
-    .header h1 { color:#002966; font-size:36px; margin-bottom:10px; }
-    .back-btn { position:absolute; top:0; right:0; background:red; padding:8px 12px; color:#fff; border-radius:4px; text-decoration:none; }
-    .back-btn:hover { background:darkred; }
+    .cards { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 30px 0; }
+    .card {
+      background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.1);
+      width: 260px; padding: 15px; display: flex; flex-direction: column; align-items: center;
+    }
+    .card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; }
+    .card h3 { color: #002966; margin-bottom: 8px; }
+    .card p { font-size: 14px; line-height: 1.4; margin-bottom: 12px; text-align: left; width: 100%; }
+    .card-buttons { display: flex; gap: 10px; width: 100%; }
+    .card-buttons button {
+      flex: 1; padding: 6px; border: none; border-radius: 6px; color: #fff; cursor: pointer;
+    }
+    .edit-btn { background: #28a745; }
+    .edit-btn:hover { background: #218838; }
+    .delete-btn { background: #dc3545; }
+    .delete-btn:hover { background: #c82333; }
 
-    .cards { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin:30px 0; }
-    .card { background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.1); width:260px; padding:15px; display:flex; flex-direction:column; align-items:center; }
-    .card img { width:80px; height:80px; border-radius:50%; object-fit:cover; margin-bottom:10px; }
-    .card h3 { color:#002966; margin-bottom:8px; }
-    .card p { font-size:14px; line-height:1.4; margin-bottom:12px; }
-    .card-buttons { display:flex; gap:10px; }
-    .card-buttons button { flex:1; padding:6px; border:none; border-radius:6px; color:#fff; cursor:pointer; }
-    .edit-btn { background:#28a745; } .edit-btn:hover { background:#218838; }
-    .delete-btn { background:#dc3545; } .delete-btn:hover { background:#c82333; }
+    table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+    table th, table td { padding: 10px; border: 1px solid #ddd; }
+    table thead { background: #002966; color: #fff; }
+    ul.process { list-style: disc inside; max-width: 800px; margin: 40px auto; font-size: 16px; color: #333; }
 
-    table { width:100%; border-collapse:collapse; margin:30px 0; }
-    table th, table td { padding:10px; border:1px solid #ddd; }
-    table thead { background:#002966; color:#fff; }
-    ul.process { list-style:disc inside; max-width:800px; margin:auto 0 40px; font-size:16px; color:#333; }
-
-    
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.4); justify-content:center; align-items:center; }
-    .modal-content { background:#fff; padding:20px; border-radius:8px; width:90%; max-width:400px; position:relative; }
-    .modal-content .close-btn { position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer; }
-    .modal-content form label { display:block; margin:10px 0 4px; }
-    .modal-content form input { width:100%; padding:6px; border:1px solid #ccc; border-radius:4px; }
-    .modal-content form button { margin-top:12px; padding:8px 12px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width:100%; height:100%;
+      background: rgba(0,0,0,.4); justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: #fff; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; position: relative;
+    }
+    .modal-content .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; }
+    .modal-content form label { display: block; margin: 10px 0 4px; }
+    .modal-content form input,
+    .modal-content form textarea { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
+    .modal-content form button { margin-top: 12px; padding: 8px 12px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -55,109 +86,13 @@
     <div class="menu-content">
       <ul class="menu-items">
         <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
-
         <li class="item">
           <a class="submenu-header" href="dashboard.html">
             <span class="icon"><i class='bx bxs-dashboard'></i></span>
             <span>Dashboard</span>
           </a>
         </li>
-
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-link'></i></span>
-            <span>Placement Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
-            <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
-            <li class="item"><a href="reporting.html">REPORTING</a></li>
-          </ul>
-        </li>
-
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-folder'></i></span>
-            <span>Position Job Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
-            <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
-            <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
-            <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
-          </ul>
-        </li>
-
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-file'></i></span>
-            <span>Client Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
-            <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
-            <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
-          </ul>
-        </li>
-
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-user'></i></span>
-            <span>Payroll Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
-            <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
-            <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
-            <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
-            <li class="item"><a href="taxation.html">TAXATION</a></li>
-          </ul>
-        </li>
-
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-calendar'></i></span>
-            <span>Contract Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
-            <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
-            <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
-            <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
-            <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
-          </ul>
-        </li>
-
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-group'></i></span>
-            <span>User Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item">
-              <a href="#">Contract Management</a>
-              <div class="dropdown-content">
-                <a href="dash.html"><small>1</small></a>
-                <a href="user2.html"><small>2</small></a>
-                <a href="logging.html"><small>3</small></a>
-              </div>
-            </li>
-          </ul>
-        </li>
-
-        <li class="item">
-          <a class="submenu-header" href="aboutus.html">
-            <span class="icon"><i class='bx bx-info-circle'></i></span>
-            <span>About Us</span>
-          </a>
-        </li>
-
+       
         <li class="item">
           <a class="submenu-header" href="logout.html">
             <span class="icon"><i class='bx bx-log-out'></i></span>
@@ -166,233 +101,243 @@
         </li>
       </ul>
     </div>
-    </nav>
-  
+  </nav>
+
   <nav class="navbar">
     <i class="fa-solid fa-bars" id="sidebar-close"></i>
   </nav>
 
- <div class="main">
-  <div style="max-width: 1200px; width: 100%; text-align: center;">
-    <h1>HR Data Management</h1>
-    <a href="admin.html" 
-      style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
-      onmouseover="this.style.backgroundColor='darkred'" 
-      onmouseout="this.style.backgroundColor='red'">Back</a>
-    <p style="font-size: 18px; color: #333; margin: 20px 0;">
-      Centralized dashboard for managing data collection, analyzing employee performance, and streamlining HR processes.
-    </p>
+  <div class="main">
+    <div class="container">
+      <div class="header">
+        <h1>HR Data Management</h1>
+        <a href="admin.html" class="back-btn">Back</a>
+        <p>Centralized dashboard for managing data collection, analyzing employee performance, and streamlining HR processes.</p>
+      </div>
 
-    
-    <h2 style="color: #002966; margin-top: 30px;">HR Staff Information</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
-     
-      <div class="card">
-        <h3>Alex Johnson</h3>
-        <p>
-          <strong>Time-to-Fill:</strong> 28 days<br>
-          <strong>Cost-per-Hire:</strong> $3,200<br>
-          <strong>Turnover Rate:</strong> 12%<br>
-          <strong>Training Hours:</strong> 35 hrs<br>
-          <strong>Complaints Handled:</strong> 5<br>
-          <strong>HRIS Data Accuracy:</strong> 98%<br>
-          <strong>Deadlines Met:</strong> 95%<br>
-          <strong>Satisfaction Score:</strong> 8.2/10<br>
-          <strong>Internal Stakeholder Feedback:</strong> Positive<br>
-          <strong>Manager Feedback:</strong> Excellent<br>
-          <strong>Employee Feedback:</strong> Good<br>
-          <strong>Self-Assessment:</strong> 4/5<br>
-          <strong>Observation:</strong> Detail-oriented
-        </p>
-        <div class="card-buttons">
-          <button class="edit-btn"><i class="fa fa-edit"></i> Edit</button>
-          <button class="delete-btn"><i class="fa fa-trash"></i> Delete</button>
+      <h2 style="color:#002966;">HR Staff Information</h2>
+      <form id="staffForm" class="cards">
+        <div class="card" data-name="Alex Johnson">
+          <img src="https://via.placeholder.com/80" alt="Alex Johnson">
+          <h3>Alex Johnson</h3>
+          <p>
+            <strong>Time-to-Fill:</strong> 28 days<br>
+            <strong>Cost-per-Hire:</strong> $3,200<br>
+            <strong>Turnover Rate:</strong> 12%<br>
+            <strong>Training Hours:</strong> 35 hrs<br>
+            <strong>Complaints Handled:</strong> 5<br>
+            <strong>HRIS Data Accuracy:</strong> 98%<br>
+            <strong>Deadlines Met:</strong> 95%<br>
+            <strong>Satisfaction Score:</strong> 8.2/10<br>
+            <strong>Internal Stakeholder Feedback:</strong> Positive<br>
+            <strong>Manager Feedback:</strong> Excellent<br>
+            <strong>Employee Feedback:</strong> Good<br>
+            <strong>Self-Assessment:</strong> 4/5<br>
+            <strong>Observation:</strong> Detail-oriented
+          </p>
+          <div class="card-buttons">
+            <button type="button" class="edit-btn">Edit</button>
+            <button type="button" class="delete-btn">Delete</button>
+          </div>
         </div>
-      </div>
-     
-      <div class="card">
-        <h3>Sophia Reyes</h3>
-        <p>
-          <strong>Time-to-Fill:</strong> 24 days<br>
-          <strong>Cost-per-Hire:</strong> $2,950<br>
-          <strong>Turnover Rate:</strong> 10%<br>
-          <strong>Training Hours:</strong> 40 hrs<br>
-          <strong>Complaints Handled:</strong> 3<br>
-          <strong>HRIS Data Accuracy:</strong> 99%<br>
-          <strong>Deadlines Met:</strong> 98%<br>
-          <strong>Satisfaction Score:</strong> 8.9/10<br>
-          <strong>Internal Stakeholder Feedback:</strong> Very Positive<br>
-          <strong>Manager Feedback:</strong> Good<br>
-          <strong>Employee Feedback:</strong> Excellent<br>
-          <strong>Self-Assessment:</strong> 4.5/5<br>
-          <strong>Observation:</strong> Proactive
-        </p>
-        <div class="card-buttons">
-          <button class="edit-btn"><i class="fa fa-edit"></i> Edit</button>
-          <button class="delete-btn"><i class="fa fa-trash"></i> Delete</button>
+
+        <div class="card" data-name="Sophia Reyes">
+          <img src="https://via.placeholder.com/80" alt="Sophia Reyes">
+          <h3>Sophia Reyes</h3>
+          <p>
+            <strong>Time-to-Fill:</strong> 24 days<br>
+            <strong>Cost-per-Hire:</strong> $2,950<br>
+            <strong>Turnover Rate:</strong> 10%<br>
+            <strong>Training Hours:</strong> 40 hrs<br>
+            <strong>Complaints Handled:</strong> 3<br>
+            <strong>HRIS Data Accuracy:</strong> 99%<br>
+            <strong>Deadlines Met:</strong> 98%<br>
+            <strong>Satisfaction Score:</strong> 8.9/10<br>
+            <strong>Internal Stakeholder Feedback:</strong> Very Positive<br>
+            <strong>Manager Feedback:</strong> Good<br>
+            <strong>Employee Feedback:</strong> Excellent<br>
+            <strong>Self-Assessment:</strong> 4.5/5<br>
+            <strong>Observation:</strong> Proactive
+          </p>
+          <div class="card-buttons">
+            <button type="button" class="edit-btn">Edit</button>
+            <button type="button" class="delete-btn">Delete</button>
+          </div>
         </div>
-      </div>
 
-      <div class="card">
-      <h3>David Brown</h3>
-      <p>
-        <strong>Time-to-Fill:</strong> 30 days<br>
-        <strong>Cost-per-Hire:</strong> $3,400<br>
-        <strong>Turnover Rate:</strong> 15%<br>
-        <strong>Training Hours:</strong> 45 hrs<br>
-        <strong>Complaints Handled:</strong> 7<br>
-        <strong>HRIS Data Accuracy:</strong> 97%<br>
-        <strong>Deadlines Met:</strong> 92%<br>
-        <strong>Satisfaction Score:</strong> 8.0/10<br>
-        <strong>Internal Stakeholder Feedback:</strong> Good<br>
-        <strong>Manager Feedback:</strong> Satisfactory<br>
-        <strong>Employee Feedback:</strong> Average<br>
-        <strong>Self-Assessment:</strong> 3/5<br>
-        <strong>Observation:</strong> Needs improvement
-      </p>
-      <div class="card-buttons">
-        <button class="edit-btn" onclick="openEditModal('David Brown')"><i class="fa fa-edit"></i> Edit</button>
-        <button class="delete-btn" onclick="openDeleteModal('David Brown')"><i class="fa fa-trash"></i> Delete</button>
-      </div>
-    </div>
+        <div class="card" data-name="David Brown">
+          <img src="https://via.placeholder.com/80" alt="David Brown">
+          <h3>David Brown</h3>
+          <p>
+            <strong>Time-to-Fill:</strong> 30 days<br>
+            <strong>Cost-per-Hire:</strong> $3,400<br>
+            <strong>Turnover Rate:</strong> 15%<br>
+            <strong>Training Hours:</strong> 45 hrs<br>
+            <strong>Complaints Handled:</strong> 7<br>
+            <strong>HRIS Data Accuracy:</strong> 97%<br>
+            <strong>Deadlines Met:</strong> 92%<br>
+            <strong>Satisfaction Score:</strong> 8.0/10<br>
+            <strong>Internal Stakeholder Feedback:</strong> Good<br>
+            <strong>Manager Feedback:</strong> Satisfactory<br>
+            <strong>Employee Feedback:</strong> Average<br>
+            <strong>Self-Assessment:</strong> 3/5<br>
+            <strong>Observation:</strong> Needs improvement
+          </p>
+          <div class="card-buttons">
+            <button type="button" class="edit-btn">Edit</button>
+            <button type="button" class="delete-btn">Delete</button>
+          </div>
+        </div>
 
-    <div class="card">
-      <h3>Emma White</h3>
-      <p>
-        <strong>Time-to-Fill:</strong> 26 days<br>
-        <strong>Cost-per-Hire:</strong> $3,100<br>
-        <strong>Turnover Rate:</strong> 11%<br>
-        <strong>Training Hours:</strong> 32 hrs<br>
-        <strong>Complaints Handled:</strong> 4<br>
-        <strong>HRIS Data Accuracy:</strong> 99%<br>
-        <strong>Deadlines Met:</strong> 96%<br>
-        <strong>Satisfaction Score:</strong> 8.5/10<br>
-        <strong>Internal Stakeholder Feedback:</strong> Excellent<br>
-        <strong>Manager Feedback:</strong> Very Good<br>
-        <strong>Employee Feedback:</strong> Positive<br>
-        <strong>Self-Assessment:</strong> 4/5<br>
-        <strong>Observation:</strong> Highly organized
-      </p>
-      <div class="card-buttons">
-        <button class="edit-btn" onclick="openEditModal('Emma White')"><i class="fa fa-edit"></i> Edit</button>
-        <button class="delete-btn" onclick="openDeleteModal('Emma White')"><i class="fa fa-trash"></i> Delete</button>
-      </div>
-    </div>
+        <div class="card" data-name="Emma White">
+          <img src="https://via.placeholder.com/80" alt="Emma White">
+          <h3>Emma White</h3>
+          <p>
+            <strong>Time-to-Fill:</strong> 26 days<br>
+            <strong>Cost-per-Hire:</strong> $3,100<br>
+            <strong>Turnover Rate:</strong> 11%<br>
+            <strong>Training Hours:</strong> 32 hrs<br>
+            <strong>Complaints Handled:</strong> 4<br>
+            <strong>HRIS Data Accuracy:</strong> 99%<br>
+            <strong>Deadlines Met:</strong> 96%<br>
+            <strong>Satisfaction Score:</strong> 8.5/10<br>
+            <strong>Internal Stakeholder Feedback:</strong> Excellent<br>
+            <strong>Manager Feedback:</strong> Very Good<br>
+            <strong>Employee Feedback:</strong> Positive<br>
+            <strong>Self-Assessment:</strong> 4/5<br>
+            <strong>Observation:</strong> Highly organized
+          </p>
+          <div class="card-buttons">
+            <button type="button" class="edit-btn">Edit</button>
+            <button type="button" class="delete-btn">Delete</button>
+          </div>
+        </div>
 
-    <div class="card">
-      <h3>James Lee</h3>
-      <p>
-        <strong>Time-to-Fill:</strong> 29 days<br>
-        <strong>Cost-per-Hire:</strong> $3,250<br>
-        <strong>Turnover Rate:</strong> 14%<br>
-        <strong>Training Hours:</strong> 38 hrs<br>
-        <strong>Complaints Handled:</strong> 6<br>
-        <strong>HRIS Data Accuracy:</strong> 96%<br>
-        <strong>Deadlines Met:</strong> 93%<br>
-        <strong>Satisfaction Score:</strong> 7.8/10<br>
-        <strong>Internal Stakeholder Feedback:</strong> Neutral<br>
-        <strong>Manager Feedback:</strong> Good<br>
-        <strong>Employee Feedback:</strong> Average<br>
-        <strong>Self-Assessment:</strong> 3.5/5<br>
-        <strong>Observation:</strong> Needs additional training
-      </p>
-      <div class="card-buttons">
-        <button class="edit-btn" onclick="openEditModal('James Lee')"><i class="fa fa-edit"></i> Edit</button>
-        <button class="delete-btn" onclick="openDeleteModal('James Lee')"><i class="fa fa-trash"></i> Delete</button>
-      </div>
-    </div>
-  </div>
-    </div>
-    
-    <h2 style="color: #002966; margin: 40px 0 20px;">Performance Analysis</h2>
-    <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
-        <thead style="background-color: #002966; color: white;">
+        <div class="card" data-name="James Lee">
+          <img src="https://via.placeholder.com/80" alt="James Lee">
+          <h3>James Lee</h3>
+          <p>
+            <strong>Time-to-Fill:</strong> 29 days<br>
+            <strong>Cost-per-Hire:</strong> $3,250<br>
+            <strong>Turnover Rate:</strong> 14%<br>
+            <strong>Training Hours:</strong> 38 hrs<br>
+            <strong>Complaints Handled:</strong> 6<br>
+            <strong>HRIS Data Accuracy:</strong> 96%<br>
+            <strong>Deadlines Met:</strong> 93%<br>
+            <strong>Satisfaction Score:</strong> 7.8/10<br>
+            <strong>Internal Stakeholder Feedback:</strong> Neutral<br>
+            <strong>Manager Feedback:</strong> Good<br>
+            <strong>Employee Feedback:</strong> Average<br>
+            <strong>Self-Assessment:</strong> 3.5/5<br>
+            <strong>Observation:</strong> Needs additional training
+          </p>
+          <div class="card-buttons">
+            <button type="button" class="edit-btn">Edit</button>
+            <button type="button" class="delete-btn">Delete</button>
+          </div>
+        </div>
+      </form>
+
+      <h2 style="color:#002966; margin-top:40px;">Performance Analysis</h2>
+      <table>
+        <thead>
           <tr>
-            <th style="padding: 10px;">Category</th>
-            <th style="padding: 10px;">Details</th>
+            <th>Category</th><th>Details</th>
           </tr>
         </thead>
-        <tbody style="background: #fff;">
-          <tr>
-            <td style="padding: 10px;">Establishing Key Performance Indicators</td>
-            <td style="padding: 10px;">Defining measurable goals aligned with strategic HR outcomes</td>
-          </tr>
-          <tr style="background: #f3f6fc;">
-            <td style="padding: 10px;">Benchmarking</td>
-            <td style="padding: 10px;">Comparing internal performance with industry standards</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px;">Identifying Trends and Patterns</td>
-            <td style="padding: 10px;">Analyzing historical data for workforce trends</td>
-          </tr>
-          <tr style="background: #f3f6fc;">
-            <td style="padding: 10px;">Evaluating Individual Contributions</td>
-            <td style="padding: 10px;">Reviewing employee metrics and goal achievement</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px;">Analyzing Impact of Initiatives</td>
-            <td style="padding: 10px;">Assessing the success of HR campaigns and programs</td>
-          </tr>
+        <tbody>
+          <tr><td>Establishing Key Performance Indicators</td><td>Defining measurable goals aligned with strategic HR outcomes</td></tr>
+          <tr><td>Benchmarking</td><td>Comparing internal performance with industry standards</td></tr>
+          <tr><td>Identifying Trends and Patterns</td><td>Analyzing historical data for workforce trends</td></tr>
+          <tr><td>Evaluating Individual Contributions</td><td>Reviewing employee metrics and goal achievement</td></tr>
+          <tr><td>Analyzing Impact of Initiatives</td><td>Assessing the success of HR campaigns and programs</td></tr>
         </tbody>
       </table>
+
+      <h2 style="color:#002966; margin-top:40px;">Process Improvement</h2>
+      <ul class="process">
+        <li><strong>Identifying Areas for Enhancement:</strong> Spotting inefficiencies or bottlenecks in HR workflows.</li>
+        <li><strong>Developing Action Plan:</strong> Outlining step-by-step strategies for improvements.</li>
+        <li><strong>Implementing Changes:</strong> Rolling out updates and revised practices.</li>
+        <li><strong>Monitoring and Evaluating Impact:</strong> Measuring success through KPIs and feedback.</li>
+        <li><strong>Providing Feedback and Coaching:</strong> Supporting employees in adapting to improvements.</li>
+      </ul>
     </div>
-
-    <h2 style="color: #002966; margin-bottom: 20px;">Process Improvement</h2>
-    <ul style="text-align: left; max-width: 800px; margin: auto; font-size: 16px; color: #333;">
-      <li><strong>Identifying Areas for Enhancement:</strong> Spotting inefficiencies or bottlenecks in HR workflows.</li>
-      <li><strong>Developing Action Plan:</strong> Outlining step-by-step strategies for improvements.</li>
-      <li><strong>Implementing Changes:</strong> Rolling out updates and revised practices.</li>
-      <li><strong>Monitoring and Evaluating Impact:</strong> Measuring success through KPIs and feedback.</li>
-      <li><strong>Providing Feedback and Coaching:</strong> Supporting employees in adapting to improvements.</li>
-
-      
-    </ul>
   </div>
-</div>
 
-<script>
-  function toggleSubmenu(el) {
-    const parentItem = el.parentElement;
-    const isActive = parentItem.classList.contains('show-submenu');
+ 
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('editModal')">&times;</span>
+      <h2>Edit Staff</h2>
+      <form id="editForm">
+        <label>Name</label>
+        <input type="text" id="editName" readonly>
+        <label>Metrics (HTML)</label>
+        <textarea id="editMetrics" rows="8"></textarea>
+        <button type="button" onclick="saveEdit()">Save</button>
+      </form>
+    </div>
+  </div>
 
-    document.querySelectorAll('.item').forEach(item => {
-      item.classList.remove('show-submenu');
-    });
+ >
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('deleteModal')">&times;</span>
+      <h2>Confirm Delete</h2>
+      <p id="deleteText"></p>
+      <button onclick="confirmDelete()">Yes, Delete</button>
+      <button onclick="closeModal('deleteModal')">Cancel</button>
+    </div>
+  </div>
 
-    if (!isActive) {
-      parentItem.classList.add('show-submenu');
-  
-  window.addEventListener('DOMContentLoaded', () => {
+  <script>
+    let currentCard;
+
     document.querySelectorAll('.card').forEach(card => {
-      const editBtn = card.querySelector('.edit-btn');
-      const delBtn  = card.querySelector('.delete-btn');
-      const metrics = card.querySelector('p');
-      let editing = false;
-
-      editBtn.addEventListener('click', () => {
-        editing = !editing;
-        if (editing) {
-         
-          metrics.setAttribute('contenteditable', 'true');
-          metrics.classList.add('editing');
-          metrics.focus();
-          editBtn.innerHTML = '<i class="fa fa-save"></i> Save';
-        } else {
-          
-          metrics.removeAttribute('contenteditable');
-          metrics.classList.remove('editing');
-          editBtn.innerHTML = '<i class="fa fa-edit"></i> Edit';
-          
-        }
-      });
-
-      delBtn.addEventListener('click', () => {
-        if (confirm(`Delete ${card.querySelector('h3').textContent}?`)) {
-          card.remove();
-          
-        }
-      });
+      card.querySelector('.edit-btn').onclick = () => {
+        currentCard = card;
+        document.getElementById('editName').value = card.dataset.name;
+        document.getElementById('editMetrics').value = card.querySelector('p').innerHTML;
+        document.getElementById('editModal').style.display = 'flex';
+      };
+      card.querySelector('.delete-btn').onclick = () => {
+        currentCard = card;
+        document.getElementById('deleteText').textContent =
+          `Delete ${card.dataset.name}? This cannot be undone.`;
+        document.getElementById('deleteModal').style.display = 'flex';
+      };
     });
-  });
-</script>
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    function saveEdit() {
+      currentCard.querySelector('p').innerHTML =
+        document.getElementById('editMetrics').value;
+      closeModal('editModal');
+     
+    }
+
+    function confirmDelete() {
+      currentCard.remove();
+      closeModal('deleteModal');
+     
+    }
+
+   
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.onclick = e => { if (e.target === modal) closeModal(modal.id); };
+    });
+
+    
+    function toggleSubmenu(el) {
+      document.querySelectorAll('.item').forEach(item => {
+        if (item !== el.closest('.item')) item.classList.remove('show-submenu');
+      });
+      el.closest('.item').classList.toggle('show-submenu');
+    }
+  </script>
+</body>
+</html>
