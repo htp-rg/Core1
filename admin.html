@@ -10,34 +10,55 @@
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
-    .sidebar {
-      position: fixed;
-      height: 100%;
-      width: 260px;
-      background: #002966;
-      padding: 15px;
-      z-index: 99;
-    }
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+            transition: all 0.5s ease; 
+        }
 
-    #h2 {
-      color: white;
-      margin-top: 20px;
-      margin-left: 10px;
-      display: flex;
-      align-items: center;
-    }
+        .sidebar.close {
+            width: 60px; 
+        }
 
-    .sidebar a {
-      color: #fff;
-      text-decoration: none;
-    }
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
 
+        .sidebar.close #h2 span {
+            display: none;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 12px;
+            margin: 5px 0;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.close a span:last-child {
+            display: none;
+        }
     .menu-content {
       position: relative;
       height: 80%;
