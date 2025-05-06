@@ -527,36 +527,45 @@
   </div>
 
   <script>
-    let currentCard;
-    document.querySelectorAll('.card').forEach(card => {
-      card.querySelector('.edit-btn').onclick = () => {
-        currentCard = card;
-        document.getElementById('editName').value = card.dataset.name;
-        document.getElementById('editMetrics').value = card.querySelector('p').innerHTML;
-        document.getElementById('editModal').style.display = 'flex';
-      };
-      card.querySelector('.delete-btn').onclick = () => {
-        currentCard = card;
-        document.getElementById('deleteText').textContent =
-          `Delete ${card.dataset.name}? This cannot be undone.`;
-        document.getElementById('deleteModal').style.display = 'flex';
-      };
-    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      let currentCard;
 
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
-    function saveEdit() {
-      currentCard.querySelector('p').innerHTML =
-        document.getElementById('editMetrics').value;
-      closeModal('editModal');
-    }
-    function confirmDelete() {
-      currentCard.remove();
-      closeModal('deleteModal');
-    }
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.onclick = e => { if (e.target === modal) closeModal(modal.id); };
+      document.querySelectorAll('.card').forEach(card => {
+        card.querySelector('.edit-btn').addEventListener('click', () => {
+          currentCard = card;
+          document.getElementById('editName').value = card.dataset.name;
+          document.getElementById('editMetrics').value =
+            card.querySelector('p').innerHTML;
+          document.getElementById('editModal').style.display = 'flex';
+        });
+
+        card.querySelector('.delete-btn').addEventListener('click', () => {
+          currentCard = card;
+          document.getElementById('deleteText').textContent =
+            `Delete ${card.dataset.name}? This cannot be undone.`;
+          document.getElementById('deleteModal').style.display = 'flex';
+        });
+      });
+
+      window.closeModal = id => {
+        document.getElementById(id).style.display = 'none';
+      };
+      window.saveEdit = () => {
+        currentCard.querySelector('p').innerHTML =
+          document.getElementById('editMetrics').value;
+        closeModal('editModal');
+      };
+      window.confirmDelete = () => {
+        currentCard.remove();
+        closeModal('deleteModal');
+      };
+
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', e => {
+          if (e.target === modal) closeModal(modal.id);
+        });
+      });
     });
 
     function toggleSubmenu(el) {
