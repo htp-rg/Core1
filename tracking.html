@@ -447,28 +447,19 @@
   </div>
 </div>
 
-  <script>
-    function toggleSubmenu(el) {
-      document.querySelectorAll('.item').forEach(item => {
-        if (item !== el.closest('.item')) {
-          item.classList.remove('show-submenu');
-          const icon = item.querySelector('.submenu-header i.fa-chevron-down');
-          if (icon) {
-            icon.classList.remove('fa-chevron-down');
-            icon.classList.add('fa-chevron-right');
-          }
-        }
-      });
+<script>
+  function toggleSubmenu(el) {
+    const parentItem = el.parentElement;
+    const isActive = parentItem.classList.contains('show-submenu');
 
-      const parent = el.closest('.item');
-      const icon = el.querySelector('i');
-      const isOpen = parent.classList.toggle('show-submenu');
+    document.querySelectorAll('.item').forEach(item => {
+      item.classList.remove('show-submenu');
+    });
 
-      if (icon) {
-        icon.classList.toggle('fa-chevron-right', !isOpen);
-        icon.classList.toggle('fa-chevron-down', isOpen);
-      }
+    if (!isActive) {
+      parentItem.classList.add('show-submenu');
     }
-  </script>
+  }
+</script>
 </body>
 </html>
