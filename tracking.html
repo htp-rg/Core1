@@ -1,311 +1,484 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tracking and Evaluating</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tracking and Evaluating</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
-    .sidebar {
-      position: fixed;
-      height: 100%;
-      width: 260px;
-      background: #002966;
-      padding: 15px;
-      z-index: 99;
-    }
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+            transition: all 0.5s ease; 
+        }
 
-    #h2 {
-      color: white;
-      margin-top: 20px;
-      margin-left: 10px;
-      display: flex;
-      align-items: center;
-    }
+        .sidebar.close {
+            width: 60px; 
+        }
 
-    .sidebar a {
-      color: #fff;
-      text-decoration: none;
-    }
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
 
-    .menu-content {
-      position: relative;
-      height: 80%;
-      width: 100%;
-      margin-top: 40px;
-      overflow-y: scroll;
-    }
+        .sidebar.close #h2 span {
+            display: none;
+        }
 
-    .menu-content::-webkit-scrollbar {
-      display: none;
-    }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 12px;
+            margin: 5px 0;
+        }
 
-    .menu-items {
-      height: 100%;
-      width: 100%;
-      list-style: none;
-      transition: all 0.4s ease;
-    }
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    .menu-title {
-      color: whitesmoke;
-      font-size: 18px;
-      padding: 15px 20px;
-    }
+        .sidebar.close a span:last-child {
+            display: none;
+        }
 
-    .item {
-      display: flex;
-      flex-direction: column;
-      padding: 10px 0;
-    }
+        .menu-content {
+            position: relative;
+            height: 80%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: auto;
+        }
 
-    .submenu-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
-      color: #fff;
-      border-radius: 12px;
-      cursor: pointer;
-    }
+        .menu-content::-webkit-scrollbar {
+            display: none;
+        }
 
-    a.submenu-header {
-      text-decoration: none;
-      justify-content: flex-start;
-    }
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
 
-    .submenu-header:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+        .menu-title {
+            color: whitesmoke;
+            font-size: 16px; 
+            padding: 15px 20px;
+        }
 
-    .submenu-header .icon {
-      margin-right: 10px;
-      font-size: 20px;
-    }
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 5px 0;
+        }
 
-    .submenu {
-      display: none;
-      flex-direction: column;
-      background: #002966;
-      margin-left: 20px;
-      padding-left: 20px;
-    }
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
 
-    .item.show-submenu .submenu {
-      display: flex;
-    }
+        .sidebar.close .submenu-header span:last-child {
+            display: none;
+        }
 
-    .submenu .item a {
-      padding: 10px;
-      color: #fff;
-      border-radius: 8px;
-      text-decoration: none;
-    }
+        .sidebar.close .submenu-header i:last-child {
+            display: none;
+        }
 
-    .submenu .item a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
 
-    .navbar,
-    .main {
-      left: 260px;
-      width: calc(100% - 260px);
-      transition: all 0.5s ease;
-      z-index: 1000;
-    }
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    .sidebar.close ~ .navbar,
-    .sidebar.close ~ .main {
-      left: 0;
-      width: 100%;
-    }
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+            min-width: 24px; 
+            text-align: center;
+        }
 
-    .navbar {
-      position: fixed;
-      color: #fff;
-      padding: 15px 20px;
-      font-size: 25px;
-      background: #4070f4;
-      cursor: pointer;
-    }
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            margin-left: 0; 
+            padding-left: 20px;
+        }
 
-    .main {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      height: 100vh;
-      background: #e7f2fd;
-      padding-top: 80px;
-      overflow-y: auto;
-    }
+        .sidebar.close .submenu {
+            padding-left: 5px; 
+        }
 
-    .main h1 {
-      color: #11101d;
-      font-size: 40px;
-      text-align: center;
-    }
+        .item.show-submenu .submenu {
+            display: flex;
+        }
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 260px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+        .submenu .item a {
+            padding: 8px 15px; /
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
 
-    .card h3 {
-      color: #002966;
-      margin-bottom: 10px;
-    }
+        .sidebar.close .submenu .item a span:last-child {
+            display: none;
+        }
 
-    .card p {
-      font-size: 14px;
-      flex-grow: 1;
-    }
+        .submenu .item a .icon {
+            margin-right: 10px;
+        }
 
-    .card-buttons {
-      margin-top: 15px;
-      display: flex;
-      justify-content: space-between;
-    }
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    .card-buttons button {
-      padding: 6px 12px;
-      font-size: 13px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      color: #fff;
-    }
+        .navbar,
+        .main {
+            left: 260px;
+            width: calc(100% - 260px);
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
 
-    .dropdown-content {
-      background-color: #002255;
-    }
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 60px;
+            width: calc(100% - 60px);
+        }
 
-    .dropdown-content a {
-      color: white;
-      padding: 5px 10px;
-      display: block;
-      text-decoration: none;
-    }
+        .navbar {
+            position: fixed;
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 25px;
+            background: #4070f4;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; 
+        }
 
-    .dropdown-content a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+        .navbar #sidebar-close {
+            margin-right: 20px; 
+        }
 
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
+        .sidebar.close ~ .navbar #sidebar-close {
+            margin-right: 0;
+        }
 
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 260px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-right: 20px;
-}
+        .main {
+            position: relative;
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+            background: #e7f2fd;
+            padding-top: 80px;
+            padding-left: 20px; 
+            padding-right: 20px;
+            overflow-y: auto;
+            min-height: 100vh; 
+        }
 
-.card-buttons {
-  display: flex;
-  justify-content: space-between;
-}
+        .sidebar.close ~ .main {
+            padding-left: 80px; 
 
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-}
+        .main h1 {
+            color: #11101d;
+            font-size: 32px; 
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-button:hover {
-  background-color: #0056b3;
-}
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: calc(50% - 20px); 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
 
-.edit-btn {
-  background-color: #28a745;
-}
+        .card h3 {
+            color: #002966;
+            margin-bottom: 10px;
+            font-size: 18px; 
+        }
 
-.edit-btn:hover {
-  background-color: #218838;
-}
+        .card p {
+            font-size: 14px;
+            flex-grow: 1;
+            line-height: 1.5; 
+        }
 
-.delete-btn {
-  background-color: #dc3545;
-}
+        .card-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px; 
+        }
 
-.delete-btn:hover {
-  background-color: #c82333;
-}
+        .card-buttons button {
+            padding: 8px 12px;
+            font-size: 13px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #fff;
+            flex-grow: 1;
+            text-align: center;
+        }
 
-@media (max-width: 768px) {
-  .card {
-    width: 90%;
-  }
-}
+        .dropdown-content {
+            background-color: #002255;
+        }
 
-@media (max-width: 480px) {
-  .card {
-    width: 100%;
-  }
-}
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-}
+        .dropdown-content a {
+            color: white;
+            padding: 8px 15px;
+            display: block;
+            text-decoration: none;
+            font-size: 14px;
+        }
 
-.modal-content {
-  background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border-radius: 5px;
-  width: 80%;
-  max-width: 500px;
-}
+        .dropdown-content a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-.close-btn {
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 0;
-  right: 15px;
-}
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            gap: 20px;
+            width: 100%; 
+            margin-bottom: 20px;
+        }
 
-.close-btn:hover,
-.close-btn:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-  </style>
+        @media (max-width: 768px) {
+            .card {
+                width: calc(100% - 20px);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            overflow: auto; 
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        #editForm label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        #editForm input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #editForm button[type="submit"],
+        #deleteModal button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #editForm button[type="submit"]:hover,
+        #deleteModal button:hover {
+            background-color: #0056b3;
+        }
+
+        #deleteModal button#confirmDelete {
+            background-color: #dc3545;
+        }
+
+        #deleteModal button#confirmDelete:hover {
+            background-color: #c82333;
+        }
+
+        #deleteModal button:last-child {
+            background-color: #6c757d;
+        }
+
+        #deleteModal button:last-child:hover {
+            background-color: #545b62;
+        }
+
+        h2 {
+            color: #002966;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 24px; 
+        }
+
+        p {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .performance-table-container {
+            overflow-x: auto;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        .performance-table thead {
+            background-color: #002966;
+            color: white;
+        }
+
+        .performance-table th,
+        .performance-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 14px;
+            white-space: nowrap; 
+        }
+
+        .performance-table tbody tr:nth-child(even) {
+            background: #f3f6fc;
+        }
+
+        .process-improvement-list {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 16px;
+            color: #333;
+            padding-left: 20px;
+        }
+
+        .process-improvement-list li {
+            margin-bottom: 10px;
+        }
+
+        .process-improvement-list strong {
+            font-weight: bold;
+            color: #002966;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: red;
+            color: white;
+            padding: 10px 16px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: darkred;
+        }
+
+       
+        @media (max-width: 600px) {
+            .main h1 {
+                font-size: 28px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+            p {
+                font-size: 15px;
+            }
+            .back-button {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
   <nav class="sidebar">
