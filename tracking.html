@@ -8,22 +8,166 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-    
-    .sidebar { position: fixed; height: 100%; width: 260px; background: #002966; padding: 15px; z-index: 99; }
-    #h2 { color: white; margin-top: 20px; margin-left: 10px; display: flex; align-items: center; }
-    .menu-content { margin-top: 40px; height: 80%; overflow-y: auto; }
-    .menu-items { list-style: none; }
-    .submenu-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; color: #fff; border-radius: 12px; cursor: pointer; }
-    .submenu-header .icon { margin-right: 10px; font-size: 20px; }
-    .submenu-header:hover { background: rgba(255,255,255,0.1); }
-    .submenu { display: none; flex-direction: column; background: #002966; margin-left: 20px; padding-left: 20px; }
-    .item.show-submenu .submenu { display: flex; }
-    .submenu a { padding: 10px; color: #fff; text-decoration: none; border-radius: 8px; }
-    .submenu a:hover { background: rgba(255,255,255,0.1); }
+    .sidebar {
+      position: fixed;
+      height: 100%;
+      width: 260px;
+      background: #002966;
+      padding: 15px;
+      z-index: 99;
+    }
 
+    #h2 {
+      color: white;
+      margin-top: 20px;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .menu-content {
+      position: relative;
+      height: 80%;
+      width: 100%;
+      margin-top: 40px;
+      overflow-y: scroll;
+    }
+
+    .menu-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    .menu-items {
+      height: 100%;
+      width: 100%;
+      list-style: none;
+      transition: all 0.4s ease;
+    }
+
+    .menu-title {
+      color: whitesmoke;
+      font-size: 18px;
+      padding: 15px 20px;
+    }
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 0;
+    }
+
+    .submenu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      color: #fff;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    a.submenu-header {
+      text-decoration: none;
+      justify-content: flex-start;
+    }
+
+    .submenu-header:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .submenu-header .icon {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+
+    .submenu {
+      display: none;
+      flex-direction: column;
+      background: #002966;
+      margin-left: 20px;
+      padding-left: 20px;
+    }
+
+    .item.show-submenu .submenu {
+      display: flex;
+    }
+
+    .submenu .item a {
+      padding: 10px;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    .submenu .item a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar,
+    .main {
+      left: 260px;
+      width: calc(100% - 260px);
+      transition: all 0.5s ease;
+      z-index: 1000;
+    }
+
+    .sidebar.close ~ .navbar,
+    .sidebar.close ~ .main {
+      left: 0;
+      width: 100%;
+    }
+
+    .navbar {
+      position: fixed;
+      color: #fff;
+      padding: 15px 20px;
+      font-size: 25px;
+      background: #4070f4;
+      cursor: pointer;
+    }
+
+    .main {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+      background: #e7f2fd;
+      padding-top: 50px;
+    }
+
+    .main h1 {
+      color: #11101d;
+      font-size: 40px;
+      text-align: center;
+    }
+
+    .dropdown-content {
+      background-color: #002255;
+    }
+
+    .dropdown-content a {
+      color: white;
+      padding: 5px 10px;
+      display: block;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
    
     .navbar, .main { transition: all .5s ease; z-index: 1000; left: 260px; width: calc(100% - 260px); }
     .navbar { position: fixed; background: #4070f4; color: #fff; padding: 15px 20px; font-size: 25px; cursor: pointer; }
