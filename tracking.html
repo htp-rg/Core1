@@ -501,96 +501,93 @@
   </div>
 
 
- <div id="editModal" class="modal">
+  <div id="editModal" class="modal">
     <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('editModal')">&times;</span>
+      <span class="close-btn">&times;</span>
       <h2>Edit Staff</h2>
       <form id="editForm">
         <label>Name</label>
         <input type="text" id="editName" readonly>
         <label>Metrics (HTML)</label>
         <textarea id="editMetrics" rows="8"></textarea>
-        <button type="button" onclick="saveEdit()">Save</button>
+        
+        <button type="submit">Save</button>
       </form>
     </div>
   </div>
 
-  
+ 
   <div id="deleteModal" class="modal">
     <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('deleteModal')">&times;</span>
+      <span class="close-btn">&times;</span>
       <h2>Confirm Delete</h2>
       <p id="deleteText"></p>
-      <button onclick="confirmDelete()">Yes, Delete</button>
-      <button onclick="closeModal('deleteModal')">Cancel</button>
+     
+      <button id="confirmDelete">Yes, Delete</button>
+      <button class="close-btn">Cancel</button>
     </div>
   </div>
 
   <script>
-    
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    let currentCard = null;
+    document.addEventListener('DOMContentLoaded', () => {
+      let currentCard = null;
 
-    
-    document.querySelectorAll('.card').forEach(card => {
-      const name = card.dataset.name;
-
-      card.querySelector('.edit-btn').addEventListener('click', () => {
-        currentCard = card;
-        document.getElementById('editName').value = name;
-        document.getElementById('editMetrics').value = card.querySelector('p').innerHTML.trim();
-        document.getElementById('editModal').style.display = 'flex';
+      
+      document.querySelectorAll('.card').forEach(card => {
+        const name = card.dataset.name;
+        card.querySelector('.edit-btn').addEventListener('click', () => {
+          currentCard = card;
+          document.getElementById('editName').value = name;
+          document.getElementById('editMetrics').value = card.querySelector('p').innerHTML.trim();
+          document.getElementById('editModal').style.display = 'flex';
+        });
+        card.querySelector('.delete-btn').addEventListener('click', () => {
+          currentCard = card;
+          document.getElementById('deleteText').textContent = `Delete ${name}? This cannot be undone.`;
+          document.getElementById('deleteModal').style.display = 'flex';
+        });
       });
 
-      card.querySelector('.delete-btn').addEventListener('click', () => {
-        currentCard = card;
-        document.getElementById('deleteText').textContent = `Delete ${name}? This cannot be undone.`;
-        document.getElementById('deleteModal').style.display = 'flex';
+     
+      function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+      }
+     
+      document.querySelectorAll('.close-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const modal = e.target.closest('.modal');
+          closeModal(modal.id);
+        });
       });
-    });
+     
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', e => {
+          if (e.target === modal) closeModal(modal.id);
+        });
+      });
 
-    
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
-    
-    document.querySelectorAll('.close-btn').forEach(btn =>
-      btn.addEventListener('click', e => {
-        const modal = e.target.closest('.modal');
-        closeModal(modal.id);
-      })
-    );
-   
-    document.querySelectorAll('.modal').forEach(modal =>
-      modal.addEventListener('click', e => {
-        if (e.target === modal) closeModal(modal.id);
-      })
-    );
+      
+      document.getElementById('editForm').addEventListener('submit', e => {
+        e.preventDefault();
+        currentCard.querySelector('p').innerHTML = document.getElementById('editMetrics').value;
+        closeModal('editModal');
+      });
 
-    
-    document.getElementById('editForm').addEventListener('submit', e => {
-      e.preventDefault();
-      currentCard.querySelector('p').innerHTML = document.getElementById('editMetrics').value;
-      closeModal('editModal');
-    });
-
-    
-    document.getElementById('deleteModal')
-      .querySelector('button')  
-      .addEventListener('click', () => {
+      
+      document.getElementById('confirmDelete').addEventListener('click', () => {
         currentCard.remove();
         closeModal('deleteModal');
       });
-  });
-
-  
-  function toggleSubmenu(el) {
-    document.querySelectorAll('.item').forEach(item => {
-      if (item !== el.closest('.item')) item.classList.remove('show-submenu');
     });
-    el.closest('.item').classList.toggle('show-submenu');
-  }
-</script>
+
+   
+    function toggleSubmenu(el) {
+      document.querySelectorAll('.item').forEach(item => {
+        if (item !== el.closest('.item')) item.classList.remove('show-submenu');
+      });
+      el.closest('.item').classList.toggle('show-submenu');
+    }
+  </script>
 </body>
 </html>
+
