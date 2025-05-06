@@ -365,8 +365,8 @@
             <br> 
           </p>
           <div class="card-buttons">
-            <button type="button" class="edit-btn">Edit</button>
-            <button type="button" class="delete-btn">Delete</button>
+           <button type="button" onclick="openEditModal('Alex Johnson')" class="edit-btn">Edit</button>
+<button type="button" onclick="openDeleteModal('Alex Johnson')" class="delete-btn">Delete</button>
           </div>
         </div>
 
@@ -391,8 +391,8 @@
             <br> 
           </p>
           <div class="card-buttons">
-            <button type="button" class="edit-btn">Edit</button>
-            <button type="button" class="delete-btn">Delete</button>
+           <button type="button" onclick="openEditModal('Sofia Reyes')" class="edit-btn">Edit</button>
+<button type="button" onclick="openDeleteModal('Sofia Reyes')" class="delete-btn">Delete</button>
           </div>
         </div>
 
@@ -416,8 +416,8 @@
             <strong>Observation:</strong> Needs improvement
           </p>
           <div class="card-buttons">
-            <button type="button" class="edit-btn">Edit</button>
-            <button type="button" class="delete-btn">Delete</button>
+            <button type="button" onclick="openEditModal('David Brown')" class="edit-btn">Edit</button>
+<button type="button" onclick="openDeleteModal('David Brown')" class="delete-btn">Delete</button>
           </div>
         </div>
 
@@ -442,8 +442,8 @@
             <br> 
           </p>
           <div class="card-buttons">
-            <button type="button" class="edit-btn">Edit</button>
-            <button type="button" class="delete-btn">Delete</button>
+            <button type="button" onclick="openEditModal('Emma White')" class="edit-btn">Edit</button>
+<button type="button" onclick="openDeleteModal('Emma White')" class="delete-btn">Delete</button>
           </div>
         </div>
 
@@ -467,8 +467,8 @@
             <strong>Observation:</strong> Needs additional training
           </p>
           <div class="card-buttons">
-            <button type="button" class="edit-btn">Edit</button>
-            <button type="button" class="delete-btn">Delete</button>
+           <button type="button" onclick="openEditModal('James Lee')" class="edit-btn">Edit</button>
+<button type="button" onclick="openDeleteModal('James Lee')" class="delete-btn">Delete</button>
           </div>
         </div>
       </form>
@@ -528,52 +528,69 @@
 
   <script>
     
-    document.addEventListener('DOMContentLoaded', () => {
-      let currentCard;
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let currentCard = null;
 
-      document.querySelectorAll('.card').forEach(card => {
-        card.querySelector('.edit-btn').addEventListener('click', () => {
-          currentCard = card;
-          document.getElementById('editName').value = card.dataset.name;
-          document.getElementById('editMetrics').value =
-            card.querySelector('p').innerHTML;
-          document.getElementById('editModal').style.display = 'flex';
-        });
+    
+    document.querySelectorAll('.card').forEach(card => {
+      const name = card.dataset.name;
 
-        card.querySelector('.delete-btn').addEventListener('click', () => {
-          currentCard = card;
-          document.getElementById('deleteText').textContent =
-            `Delete ${card.dataset.name}? This cannot be undone.`;
-          document.getElementById('deleteModal').style.display = 'flex';
-        });
+      card.querySelector('.edit-btn').addEventListener('click', () => {
+        currentCard = card;
+        document.getElementById('editName').value = name;
+        document.getElementById('editMetrics').value = card.querySelector('p').innerHTML.trim();
+        document.getElementById('editModal').style.display = 'flex';
       });
 
-      window.closeModal = id => {
-        document.getElementById(id).style.display = 'none';
-      };
-      window.saveEdit = () => {
-        currentCard.querySelector('p').innerHTML =
-          document.getElementById('editMetrics').value;
-        closeModal('editModal');
-      };
-      window.confirmDelete = () => {
-        currentCard.remove();
-        closeModal('deleteModal');
-      };
-
-      document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', e => {
-          if (e.target === modal) closeModal(modal.id);
-        });
+      card.querySelector('.delete-btn').addEventListener('click', () => {
+        currentCard = card;
+        document.getElementById('deleteText').textContent = `Delete ${name}? This cannot be undone.`;
+        document.getElementById('deleteModal').style.display = 'flex';
       });
     });
 
-    function toggleSubmenu(el) {
-      document.querySelectorAll('.item').forEach(item => {
-        if (item !== el.closest('.item')) item.classList.remove('show-submenu');
-      });
-      el.closest('.item').classList.toggle('show-submenu');
+    
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
     }
-  </script>
+    
+    document.querySelectorAll('.close-btn').forEach(btn =>
+      btn.addEventListener('click', e => {
+        const modal = e.target.closest('.modal');
+        closeModal(modal.id);
+      })
+    );
+   
+    document.querySelectorAll('.modal').forEach(modal =>
+      modal.addEventListener('click', e => {
+        if (e.target === modal) closeModal(modal.id);
+      })
+    );
+
+    
+    document.getElementById('editForm').addEventListener('submit', e => {
+      e.preventDefault();
+      currentCard.querySelector('p').innerHTML = document.getElementById('editMetrics').value;
+      closeModal('editModal');
+    });
+
+    
+    document.getElementById('deleteModal')
+      .querySelector('button')  // first button = “Yes, Delete”
+      .addEventListener('click', () => {
+        currentCard.remove();
+        closeModal('deleteModal');
+      });
+  });
+
+  
+  function toggleSubmenu(el) {
+    document.querySelectorAll('.item').forEach(item => {
+      if (item !== el.closest('.item')) item.classList.remove('show-submenu');
+    });
+    el.closest('.item').classList.toggle('show-submenu');
+  }
+</script>
 </body>
 </html>
