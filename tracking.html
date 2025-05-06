@@ -9,7 +9,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-        * {
+            * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -23,11 +23,6 @@
             background: #002966;
             padding: 15px;
             z-index: 99;
-            transition: all 0.5s ease; 
-        }
-
-        .sidebar.close {
-            width: 60px; 
         }
 
         #h2 {
@@ -36,10 +31,6 @@
             margin-left: 10px;
             display: flex;
             align-items: center;
-        }
-
-        .sidebar.close #h2 span {
-            display: none;
         }
 
         .sidebar a {
@@ -54,10 +45,6 @@
 
         .sidebar a:hover {
             background: rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar.close a span:last-child {
-            display: none;
         }
 
         .menu-content {
@@ -81,7 +68,7 @@
 
         .menu-title {
             color: whitesmoke;
-            font-size: 16px; 
+            font-size: 16px;
             padding: 15px 20px;
         }
 
@@ -101,14 +88,6 @@
             cursor: pointer;
         }
 
-        .sidebar.close .submenu-header span:last-child {
-            display: none;
-        }
-
-        .sidebar.close .submenu-header i:last-child {
-            display: none;
-        }
-
         a.submenu-header {
             text-decoration: none;
             justify-content: flex-start;
@@ -121,7 +100,7 @@
         .submenu-header .icon {
             margin-right: 10px;
             font-size: 20px;
-            min-width: 24px; 
+            min-width: 24px;
             text-align: center;
         }
 
@@ -129,12 +108,8 @@
             display: none;
             flex-direction: column;
             background: #002966;
-            margin-left: 0; 
+            margin-left: 0;
             padding-left: 20px;
-        }
-
-        .sidebar.close .submenu {
-            padding-left: 5px; 
         }
 
         .item.show-submenu .submenu {
@@ -142,16 +117,12 @@
         }
 
         .submenu .item a {
-            padding: 8px 15px; /
+            padding: 8px 15px;
             color: #fff;
             border-radius: 8px;
             text-decoration: none;
             display: flex;
             align-items: center;
-        }
-
-        .sidebar.close .submenu .item a span:last-child {
-            display: none;
         }
 
         .submenu .item a .icon {
@@ -170,12 +141,6 @@
             z-index: 1000;
         }
 
-        .sidebar.close ~ .navbar,
-        .sidebar.close ~ .main {
-            left: 60px;
-            width: calc(100% - 60px);
-        }
-
         .navbar {
             position: fixed;
             color: #fff;
@@ -185,71 +150,78 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: flex-start; 
+            justify-content: flex-start;
         }
 
         .navbar #sidebar-close {
-            margin-right: 20px; 
-        }
-
-        .sidebar.close ~ .navbar #sidebar-close {
-            margin-right: 0;
+            margin-right: 20px;
         }
 
         .main {
             position: relative;
             display: flex;
-            flex-direction: column; 
-            align-items: center; 
+            flex-direction: column;
+            align-items: center;
             background: #e7f2fd;
             padding-top: 80px;
-            padding-left: 20px; 
+            padding-left: 20px;
             padding-right: 20px;
             overflow-y: auto;
-            min-height: 100vh; 
+            min-height: 100vh;
         }
-
-        .sidebar.close ~ .main {
-            padding-left: 80px; 
 
         .main h1 {
             color: #11101d;
-            font-size: 32px; 
+            font-size: 32px;
             text-align: center;
             margin-bottom: 20px;
         }
 
-        .card {
+        .employee-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .employee-card {
             background: white;
             padding: 20px;
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: calc(50% - 20px); 
+            width: 280px; /* Slightly wider for more content */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             margin-bottom: 20px;
         }
 
-        .card h3 {
+        .employee-card h3 {
             color: #002966;
             margin-bottom: 10px;
-            font-size: 18px; 
+            font-size: 18px;
+            text-align: center;
         }
 
-        .card p {
+        .employee-card p {
             font-size: 14px;
             flex-grow: 1;
-            line-height: 1.5; 
+            line-height: 1.5;
         }
 
-        .card-buttons {
+        .employee-card strong {
+            font-weight: bold;
+        }
+
+        .employee-card-buttons {
             margin-top: 15px;
             display: flex;
-            gap: 10px; 
+            gap: 10px;
         }
 
-        .card-buttons button {
+        .employee-card-buttons button {
             padding: 8px 12px;
             font-size: 13px;
             border: none;
@@ -276,21 +248,6 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center; 
-            gap: 20px;
-            width: 100%; 
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .card {
-                width: calc(100% - 20px);
-            }
-        }
-
         .modal {
             display: none;
             position: fixed;
@@ -300,7 +257,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.4);
-            overflow: auto; 
+            overflow: auto;
         }
 
         .modal-content {
@@ -382,7 +339,7 @@
             margin-top: 30px;
             margin-bottom: 15px;
             text-align: center;
-            font-size: 24px; 
+            font-size: 24px;
         }
 
         p {
@@ -416,7 +373,7 @@
             border: 1px solid #ddd;
             text-align: left;
             font-size: 14px;
-            white-space: nowrap; 
+            white-space: nowrap;
         }
 
         .performance-table tbody tr:nth-child(even) {
@@ -460,7 +417,13 @@
             background-color: darkred;
         }
 
-       
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .employee-card {
+                width: calc(50% - 20px); /* Two cards side by side on medium screens */
+            }
+        }
+
         @media (max-width: 600px) {
             .main h1 {
                 font-size: 28px;
@@ -476,6 +439,9 @@
                 right: 10px;
                 padding: 8px 12px;
                 font-size: 14px;
+            }
+            .employee-card {
+                width: calc(100% - 20px); /* One card per row on small screens */
             }
         }
     </style>
@@ -733,34 +699,7 @@
       </div>
     </div>
   </div>
-
     </div>
-<div id="editModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('editModal')">&times;</span>
-      <h2>Edit HR Staff Details</h2>
-      <form id="editForm">
-        <label for="staffName">Staff Name:</label>
-        <input type="text" id="staffName" name="staffName" readonly><br><br>
-        <label for="timeToFill">Time-to-Fill:</label>
-        <input type="text" id="timeToFill" name="timeToFill"><br><br>
-        <label for="costPerHire">Cost-per-Hire:</label>
-        <input type="text" id="costPerHire" name="costPerHire"><br><br>
-        <!-- Add other fields as necessary -->
-        <button type="submit">Save Changes</button>
-      </form>
-    </div>
-  </div>
-
- 
-  <div id="deleteModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('deleteModal')">&times;</span>
-      <h2>Are you sure you want to delete this staff?</h2>
-      <button id="confirmDelete" onclick="confirmDelete()">Yes, Delete</button>
-      <button onclick="closeModal('deleteModal')">Cancel</button>
-    </div>
-  </div>
     
     <h2 style="color: #002966; margin: 40px 0 20px;">Performance Analysis</h2>
     <div style="overflow-x: auto;">
