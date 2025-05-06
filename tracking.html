@@ -140,14 +140,14 @@
     }
 
     .main {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      height: 100vh;
-      background: #e7f2fd;
-      padding-top: 20px;
-    }
-
+  position: relative;
+  display: flex;
+  flex-direction: column;    
+  align-items: stretch;     
+  background: #e7f2fd;
+  padding: 20px;             
+  min-height: calc(100vh - 60px); 
+}
     .main h1 {
       color: #11101d;
       font-size: 40px;
