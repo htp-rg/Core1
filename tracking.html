@@ -338,57 +338,114 @@
     <i class="fa-solid fa-bars" id="sidebar-close"></i>
   </nav>
 
-  <div class="main">
-    <div style="max-width: 1000px; width: 100%; text-align: center;">
-      <h1>HR Data Management</h1>
-      <a href="admin.html" 
-   style="position: absolute; 
-          top: 20px; 
-          right: 20px; 
-          background-color: red; 
-          color: white; 
-          padding: 10px 16px; 
-          text-decoration: none; 
-          font-weight: bold; 
-          border-radius: 5px; 
-          border: none; 
-          box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
-          transition: background-color 0.3s ease;"
-   onmouseover="this.style.backgroundColor='darkred'" 
-   onmouseout="this.style.backgroundColor='red'">
-   Back
-</a>
-      <p style="font-size: 18px; color: #333; margin: 20px 0;">
-        Centralized dashboard for managing data collection, analyzing employee performance, and streamlining HR processes.
-      </p>
-      <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
-        <div class="card">
-          <h3>Data Collection</h3>
-          <p>Automate and monitor HR-related data intake such as employee records, time logs, and forms.</p>
-          <div class="card-buttons">
-            <button class="edit-btn"><i class="fa fa-edit"></i> Edit</button>
-            <button class="delete-btn"><i class="fa fa-trash"></i> Delete</button>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Performance Analysis</h3>
-          <p>Track KPIs, performance reviews, and generate insights for better talent management.</p>
-          <div class="card-buttons">
-            <button class="edit-btn"><i class="fa fa-edit"></i> Edit</button>
-            <button class="delete-btn"><i class="fa fa-trash"></i> Delete</button>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Process Management</h3>
-          <p>Streamline HR workflows like onboarding, payroll processing, and compliance tracking.</p>
-          <div class="card-buttons">
-            <button class="edit-btn"><i class="fa fa-edit"></i> Edit</button>
-            <button class="delete-btn"><i class="fa fa-trash"></i> Delete</button>
-          </div>
+ <div class="main">
+  <div style="max-width: 1200px; width: 100%; text-align: center;">
+    <h1>HR Data Management</h1>
+    <a href="admin.html" 
+      style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+      onmouseover="this.style.backgroundColor='darkred'" 
+      onmouseout="this.style.backgroundColor='red'">Back</a>
+    <p style="font-size: 18px; color: #333; margin: 20px 0;">
+      Centralized dashboard for managing data collection, analyzing employee performance, and streamlining HR processes.
+    </p>
+
+    
+    <h2 style="color: #002966; margin-top: 30px;">HR Staff Information</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+     
+      <div class="card">
+        <h3>Alex Johnson</h3>
+        <p>
+          <strong>Time-to-Fill:</strong> 28 days<br>
+          <strong>Cost-per-Hire:</strong> $3,200<br>
+          <strong>Turnover Rate:</strong> 12%<br>
+          <strong>Training Hours:</strong> 35 hrs<br>
+          <strong>Complaints Handled:</strong> 5<br>
+          <strong>HRIS Data Accuracy:</strong> 98%<br>
+          <strong>Deadlines Met:</strong> 95%<br>
+          <strong>Satisfaction Score:</strong> 8.2/10<br>
+          <strong>Internal Stakeholder Feedback:</strong> Positive<br>
+          <strong>Manager Feedback:</strong> Excellent<br>
+          <strong>Employee Feedback:</strong> Good<br>
+          <strong>Self-Assessment:</strong> 4/5<br>
+          <strong>Observation:</strong> Detail-oriented
+        </p>
+        <div class="card-buttons">
+          <button class="edit-btn"><i class="fa fa-edit"></i> Edit</button>
+          <button class="delete-btn"><i class="fa fa-trash"></i> Delete</button>
         </div>
       </div>
+     
+      <div class="card">
+        <h3>Sophia Reyes</h3>
+        <p>
+          <strong>Time-to-Fill:</strong> 24 days<br>
+          <strong>Cost-per-Hire:</strong> $2,950<br>
+          <strong>Turnover Rate:</strong> 10%<br>
+          <strong>Training Hours:</strong> 40 hrs<br>
+          <strong>Complaints Handled:</strong> 3<br>
+          <strong>HRIS Data Accuracy:</strong> 99%<br>
+          <strong>Deadlines Met:</strong> 98%<br>
+          <strong>Satisfaction Score:</strong> 8.9/10<br>
+          <strong>Internal Stakeholder Feedback:</strong> Very Positive<br>
+          <strong>Manager Feedback:</strong> Good<br>
+          <strong>Employee Feedback:</strong> Excellent<br>
+          <strong>Self-Assessment:</strong> 4.5/5<br>
+          <strong>Observation:</strong> Proactive
+        </p>
+        <div class="card-buttons">
+          <button class="edit-btn"><i class="fa fa-edit"></i> Edit</button>
+          <button class="delete-btn"><i class="fa fa-trash"></i> Delete</button>
+        </div>
+      </div>
+     
     </div>
+
+    
+    <h2 style="color: #002966; margin: 40px 0 20px;">Performance Analysis</h2>
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
+        <thead style="background-color: #002966; color: white;">
+          <tr>
+            <th style="padding: 10px;">Category</th>
+            <th style="padding: 10px;">Details</th>
+          </tr>
+        </thead>
+        <tbody style="background: #fff;">
+          <tr>
+            <td style="padding: 10px;">Establishing Key Performance Indicators</td>
+            <td style="padding: 10px;">Defining measurable goals aligned with strategic HR outcomes</td>
+          </tr>
+          <tr style="background: #f3f6fc;">
+            <td style="padding: 10px;">Benchmarking</td>
+            <td style="padding: 10px;">Comparing internal performance with industry standards</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px;">Identifying Trends and Patterns</td>
+            <td style="padding: 10px;">Analyzing historical data for workforce trends</td>
+          </tr>
+          <tr style="background: #f3f6fc;">
+            <td style="padding: 10px;">Evaluating Individual Contributions</td>
+            <td style="padding: 10px;">Reviewing employee metrics and goal achievement</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px;">Analyzing Impact of Initiatives</td>
+            <td style="padding: 10px;">Assessing the success of HR campaigns and programs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 style="color: #002966; margin-bottom: 20px;">Process Improvement</h2>
+    <ul style="text-align: left; max-width: 800px; margin: auto; font-size: 16px; color: #333;">
+      <li><strong>Identifying Areas for Enhancement:</strong> Spotting inefficiencies or bottlenecks in HR workflows.</li>
+      <li><strong>Developing Action Plan:</strong> Outlining step-by-step strategies for improvements.</li>
+      <li><strong>Implementing Changes:</strong> Rolling out updates and revised practices.</li>
+      <li><strong>Monitoring and Evaluating Impact:</strong> Measuring success through KPIs and feedback.</li>
+      <li><strong>Providing Feedback and Coaching:</strong> Supporting employees in adapting to improvements.</li>
+    </ul>
   </div>
+</div>
 
   <script>
     function toggleSubmenu(el) {
