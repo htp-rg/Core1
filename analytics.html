@@ -788,13 +788,14 @@
      </div>
 
      <script>
-        function toggleSubmenu(el) {
-            document.querySelectorAll('.item').forEach(item => {
-                if (item !== el.closest('.item')) item.classList.remove('show-submenu');
-            });
-            el.closest('.item').classList.toggle('show-submenu');
+      function toggleSubmenu(el) {
+    document.querySelectorAll('.item').forEach(item => {
+        if (item !== el.closest('.item')) {
+            item.classList.remove('show-submenu');
         }
-                 }
+    });
+    el.closest('.item').classList.toggle('show-submenu');
+}
              });
 
              const parent = el.closest('.item');
