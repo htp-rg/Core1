@@ -456,7 +456,7 @@
                      </div>
                      <ul class="submenu">
                          <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
-                         <li class="item"><a href="contract-tracking.CONTRACT STATUS TRACKING</a></li>
+                         <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
                          <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
                          <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
                          <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
@@ -465,7 +465,7 @@
 
                  <li class="item">
                      <div class="submenu-header" onclick="toggleSubmenu(this)">
-                         <span class="icon"><i class='bx bx-group'></i></span>
+                         <span classclass="icon"><i class='bx bx-group'></i></span>
                          <span>User Management</span>
                          <i class="fa-solid fa-chevron-right"></i>
                      </div>
@@ -503,7 +503,7 @@
      </nav>
 
      <div class="main">
-       <div class="reports-container">
+         <div class="reports-container">
              <div class="reports-header">
                  <h2>Job Position Reports (5)</h2>
                  <div>
@@ -575,8 +575,6 @@
                  </tbody>
              </table>
          </div>
-     </div>
-
 
          <div class="custom-reports-container">
              <div class="custom-reports-header">
@@ -612,7 +610,7 @@
                              <button class="download-button" onclick="downloadReport('excel', 2)">Download Excel</button>
                          </td>
                      </tr>
-                     </tbody>
+                 </tbody>
              </table>
          </div>
      </div>
@@ -761,15 +759,26 @@
 
          
          function downloadReport(format, reportId) {
-             alert(`Downloading report ID ${reportId} in ${format} format... (Simulated download)`);
-             console.log('Download Report ID:', reportId, 'Format:', format);
-            .
-             const downloadLink = document.createElement('a');
-             downloadLink.href = `/download-report/<span class="math-inline">\{reportId\}\.</span>{format}`; 
-             downloadLink.download = `report_${reportId}.${format}`;
-             document.body.appendChild(downloadLink);
-             downloadLink.click();
-             document.body.removeChild(downloadLink);
+             if (reportId) {
+                 alert(`Downloading custom report ID ${reportId} in ${format} format... (Simulated download)`);
+                 console.log('Download Custom Report ID:', reportId, 'Format:', format);
+                 const downloadLink = document.createElement('a');
+                 downloadLink.href = `/download-custom-report/<span class="math-inline">\{reportId\}\.</span>{format}`; // Example URL for custom reports
+                 downloadLink.download = `custom_report_${reportId}.${format}`;
+                 document.body.appendChild(downloadLink);
+                 downloadLink.click();
+                 document.body.removeChild(downloadLink);
+             } else {
+                 
+                 alert(`Downloading all job position reports in ${format} format... (Simulated download)`);
+                 console.log('Download All Job Position Reports Format:', format);
+                 const downloadLink = document.createElement('a');
+                 downloadLink.href = `/download-job-reports.${format}`; // Example URL for all job reports
+                 downloadLink.download = `job_position_reports.${format}`;
+                 document.body.appendChild(downloadLink);
+                 downloadLink.click();
+                 document.body.removeChild(downloadLink);
+             }
          }
 
          
