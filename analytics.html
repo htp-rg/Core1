@@ -788,297 +788,296 @@
      </div>
 
      <script>
-      function toggleSubmenu(el) {
-    document.querySelectorAll('.item').forEach(item => {
-        if (item !== el.closest('.item')) {
-            item.classList.remove('show-submenu');
+    function toggleSubmenu(el) {
+        document.querySelectorAll('.item').forEach(item => {
+            if (item !== el.closest('.item')) {
+                item.classList.remove('show-submenu');
+            }
+        });
+        el.closest('.item').classList.toggle('show-submenu');
+    }
+
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebarClose = document.getElementById('sidebar-close');
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', function () {
+                sidebar.classList.toggle('close');
+            });
         }
     });
-    el.closest('.item').classList.toggle('show-submenu');
-}
-             });
 
+   
+    window.onclick = function (event) {
+        const modals = [
+            addCustomReportModal,
+            editCustomReportModal,
+            addPerformanceModal,
+            editPerformanceModal,
+            addApplicationModal,
+            editApplicationModal
+        ];
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    };
 
-         const addCustomReportModal = document.getElementById('addCustomReportModal');
-         let nextCustomReportId = 3; // Start with an ID after the initial sample reports
+   
+    const addCustomReportModal = document.getElementById('addCustomReportModal');
+    const editCustomReportModal = document.getElementById('editCustomReportModal');
+    let nextCustomReportId = 3;
+    let currentCustomReportId = null;
 
-         function openAddCustomReportModal() {
-             addCustomReportModal.style.display = "block";
-             document.getElementById('addCustomReportName').value = '';
-             document.getElementById('addCustomReportDescription').value = '';
-         }
+    function openAddCustomReportModal() {
+        addCustomReportModal.style.display = "block";
+        document.getElementById('addCustomReportName').value = '';
+        document.getElementById('addCustomReportDescription').value = '';
+    }
 
-         function closeAddCustomReportModal() {
-             addCustomReportModal.style.display = "none";
-         }
+    function closeAddCustomReportModal() {
+        addCustomReportModal.style.display = "none";
+    }
 
-         function saveAddCustomReportForm() {
-             const reportName = document.getElementById('addCustomReportName').value;
-             const reportDescription = document.getElementById('addCustomReportDescription').value;
-             const newRow = document.createElement('tr');
-             newRow.dataset.reportId = nextCustomReportId;
-             newRow.innerHTML = `
-                 <td><span class="math-inline">\{reportName\}</td\>
-<td\></span>{reportDescription}</td>
-                 <td class="report-actions">
-                     <button class="edit-button" onclick="openEditCustomReportModal(this)">Edit</button>
-                     <button class="delete-button" onclick="deleteCustomReport(${nextCustomReportId})">Delete</button>
-                     <button class="download-button" onclick="downloadReport('pdf', ${nextCustomReportId})">Download PDF</button>
-                     <button class="download-button" onclick="downloadReport('excel', ${nextCustomReportId})">Download Excel</button>
-                 </td>
-             `;
-             document.querySelector('.custom-reports-table tbody').appendChild(newRow);
-             closeAddCustomReportModal();
-             alert(`Report "${reportName}" added successfully! (Simulated)`);
-             nextCustomReportId++;
-         }
+    function saveAddCustomReportForm() {
+        const reportName = document.getElementById('addCustomReportName').value;
+        const reportDescription = document.getElementById('addCustomReportDescription').value;
+        const newRow = document.createElement('tr');
+        newRow.dataset.reportId = nextCustomReportId;
+        newRow.innerHTML = `
+            <td>${reportName}</td>
+            <td>${reportDescription}</td>
+            <td class="report-actions">
+                <button class="edit-button" onclick="openEditCustomReportModal(this)">Edit</button>
+                <button class="delete-button" onclick="deleteCustomReport(${nextCustomReportId})">Delete</button>
+                <button class="download-button" onclick="downloadReport('pdf', ${nextCustomReportId})">Download PDF</button>
+                <button class="download-button" onclick="downloadReport('excel', ${nextCustomReportId})">Download Excel</button>
+            </td>
+        `;
+        document.querySelector('.custom-reports-table tbody').appendChild(newRow);
+        closeAddCustomReportModal();
+        alert(`Report "${reportName}" added successfully! (Simulated)`);
+        nextCustomReportId++;
+    }
 
+    function openEditCustomReportModal(button) {
+        const row = button.closest('tr');
+        currentCustomReportId = row.dataset.reportId;
+        document.getElementById('editCustomReportId').value = currentCustomReportId;
+        document.getElementById('editCustomReportName').value = row.cells[0].textContent;
+        document.getElementById('editCustomReportDescription').value = row.cells[1].textContent;
+        editCustomReportModal.style.display = "block";
+    }
 
-         const editCustomReportModal = document.getElementById('editCustomReportModal');
-         let currentCustomReportId = null;
+    function closeEditCustomReportModal() {
+        editCustomReportModal.style.display = "none";
+        currentCustomReportId = null;
+    }
 
-         function openEditCustomReportModal(button) {
-             const row = button.closest('tr');
-             currentCustomReportId = row.dataset.reportId;
-             const name = row.cells[0].textContent;
-             const description = row.cells[1].textContent;
+    function saveEditCustomReportForm() {
+        if (currentCustomReportId) {
+            const row = document.querySelector(`.custom-reports-table tbody tr[data-report-id="${currentCustomReportId}"]`);
+            if (row) {
+                row.cells[0].textContent = document.getElementById('editCustomReportName').value;
+                row.cells[1].textContent = document.getElementById('editCustomReportDescription').value;
+            }
+            closeEditCustomReportModal();
+            alert(`Report ID ${currentCustomReportId} updated successfully! (Simulated)`);
+        }
+    }
 
-             document.getElementById('editCustomReportId').value = currentCustomReportId;
-             document.getElementById('editCustomReportName').value = name;
-             document.getElementById('editCustomReportDescription').value = description;
+    function deleteCustomReport(reportId) {
+        if (confirm(`Are you sure you want to delete report ID ${reportId}?`)) {
+            const rowToRemove = document.querySelector(`.custom-reports-table tbody tr[data-report-id="${reportId}"]`);
+            if (rowToRemove) {
+                rowToRemove.remove();
+                alert(`Report ID ${reportId} deleted successfully! (Simulated)`);
+            }
+        }
+    }
 
-             editCustomReportModal.style.display = "block";
-         }
+    function downloadReport(format, reportId) {
+        alert(`Downloading report${reportId ? ' ID ' + reportId : 's'} in ${format.toUpperCase()} format... (Simulated)`);
+        const downloadLink = document.createElement('a');
+        if (reportId) {
+            downloadLink.href = `/download-report/${reportId}.${format}`;
+            downloadLink.download = `report_${reportId}.${format}`;
+        } else {
+            downloadLink.href = `/download-job-reports.${format}`;
+            downloadLink.download = `job_position_reports.${format}`;
+        }
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
 
-         function closeEditCustomReportModal() {
-             editCustomReportModal.style.display = "none";
-             currentCustomReportId = null;
-         }
+    
+    const addPerformanceModal = document.getElementById('addPerformanceModal');
+    const editPerformanceModal = document.getElementById('editPerformanceModal');
+    let nextPerformanceId = 11;
+    let currentPerformanceId = null;
 
-         function saveEditCustomReportForm() {
-             if (currentCustomReportId) {
-                 const row = document.querySelector(`.custom-reports-table tbody tr[data-report-id="${currentCustomReportId}"]`);
-                 if (row) {
-                     row.cells[0].textContent = document.getElementById('editCustomReportName').value;
-                     row.cells[1].textContent = document.getElementById('editCustomReportDescription').value;
-                 }
-                 closeEditCustomReportModal();
-                 alert(`Report ID ${currentCustomReportId} updated successfully! (Simulated)`);
-             }
-         }
+    function openAddPerformanceModal() {
+        addPerformanceModal.style.display = "block";
+        document.getElementById('addPerformanceForm').reset();
+    }
 
+    function closeAddPerformanceModal() {
+        addPerformanceModal.style.display = "none";
+    }
 
-         function deleteCustomReport(reportId) {
-             if (confirm(`Are you sure you want to delete report ID ${reportId}?`)) {
-                 const rowToRemove = document.querySelector(`.custom-reports-table tbody tr[data-report-id="${reportId}"]`);
-                 if (rowToRemove) {
-                     rowToRemove.remove();
-                     alert(`Report ID ${reportId} deleted successfully! (Simulated)`);
-                 }
-             }
-         }
+    function saveAddPerformanceForm() {
+        const title = document.getElementById('addPerformanceTitle').value;
+        const views = document.getElementById('addPerformanceViews').value;
+        const applications = document.getElementById('addPerformanceApplications').value;
+        const timeToFill = document.getElementById('addPerformanceTimeToFill').value;
 
+        const newRow = document.createElement('tr');
+        newRow.dataset.performanceId = nextPerformanceId;
+        newRow.innerHTML = `
+            <td>${title}</td>
+            <td>${views}</td>
+            <td>${applications}</td>
+            <td>${timeToFill}</td>
+            <td class="report-actions">
+                <button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button>
+                <button class="delete-button" onclick="deletePerformanceEntry(${nextPerformanceId})">Delete</button>
+            </td>
+        `;
+        document.querySelector('.performance-table tbody').appendChild(newRow);
+        closeAddPerformanceModal();
+        alert(`Performance entry for "${title}" added! (Simulated)`);
+        nextPerformanceId++;
+    }
 
-         function downloadReport(format, reportId) {
-             if (reportId) {
-                 alert(`Downloading report ID ${reportId} in ${format} format... (Simulated download)`);
-                 console.log('Download Report ID:', reportId, 'Format:', format);
-                 const downloadLink = document.createElement('a');
-                 downloadLink.href = `/download-report/<span class="math-inline">\{reportId\}\.</span>{format}`; // Example URL
-                 downloadLink.download = `report_${reportId}.${format}`;
-                 document.body.appendChild(downloadLink);
-                 downloadLink.click();
-                 document.body.removeChild(downloadLink);
-             } else {
-                 alert(`Downloading all job position reports in ${format} format... (Simulated download)`);
-                 console.log('Download All Job Position Reports Format:', format);
-                 const downloadLink = document.createElement('a');
-                 downloadLink.href = `/download-job-reports.${format}`; // Example URL
-                 downloadLink.download = `job_position_reports.${format}`;
-                 document.body.appendChild(downloadLink);
-                 downloadLink.click();
-                 document.body.removeChild(downloadLink);
-             }
-         }
+    function openEditPerformanceModal(button) {
+        const row = button.closest('tr');
+        currentPerformanceId = row.dataset.performanceId;
+        document.getElementById('editPerformanceId').value = currentPerformanceId;
+        document.getElementById('editPerformanceTitle').value = row.cells[0].textContent;
+        document.getElementById('editPerformanceViews').value = row.cells[1].textContent;
+        document.getElementById('editPerformanceApplications').value = row.cells[2].textContent;
+        document.getElementById('editPerformanceTimeToFill').value = row.cells[3].textContent;
+        editPerformanceModal.style.display = "block";
+    }
 
+    function closeEditPerformanceModal() {
+        editPerformanceModal.style.display = "none";
+        currentPerformanceId = null;
+    }
 
-         window.onclick = function(event) {
-             if (event.target == addCustomReportModal) {
-                 closeAddCustomReportModal();
-             }
-             if (event.target == editCustomReportModal) {
-                 closeEditCustomReportModal();
-             }
-             if (event.target == addPerformanceModal) {
-                 closeAddPerformanceModal();
-             }
-             if (event.target == editPerformanceModal) {
-                 closeEditPerformanceModal();
-             }
-             if (event.target == addApplicationModal) {
-                 closeAddApplicationModal();
-             }
-             if (event.target == editApplicationModal) {
-                 closeEditApplicationModal();
-             }
-         }
+    function saveEditPerformanceForm() {
+        if (currentPerformanceId) {
+            const row = document.querySelector(`.performance-table tbody tr[data-performance-id="${currentPerformanceId}"]`);
+            if (row) {
+                row.cells[0].textContent = document.getElementById('editPerformanceTitle').value;
+                row.cells[1].textContent = document.getElementById('editPerformanceViews').value;
+                row.cells[2].textContent = document.getElementById('editPerformanceApplications').value;
+                row.cells[3].textContent = document.getElementById('editPerformanceTimeToFill').value;
+            }
+            closeEditPerformanceModal();
+            alert(`Performance entry ID ${currentPerformanceId} updated! (Simulated)`);
+        }
+    }
 
-         document.addEventListener('DOMContentLoaded', function() {
-             const sidebarClose = document.getElementById('sidebar-close');
-             const sidebar = document.querySelector('.sidebar');
+    function deletePerformanceEntry(id) {
+        if (confirm(`Are you sure you want to delete performance entry ID ${id}?`)) {
+            const rowToRemove = document.querySelector(`.performance-table tbody tr[data-performance-id="${id}"]`);
+            if (rowToRemove) {
+                rowToRemove.remove();
+                alert(`Performance entry ID ${id} deleted! (Simulated)`);
+            }
+        }
+    }
 
-             if (sidebarClose) {
-                 sidebarClose.addEventListener('click', function() {
-                     sidebar.classList.toggle('close');
-                 });
-             }
-         });
+    
+    const addApplicationModal = document.getElementById('addApplicationModal');
+    const editApplicationModal = document.getElementById('editApplicationModal');
+    let nextApplicationId = 11;
+    let currentApplicationId = null;
 
-         
-         const addPerformanceModal = document.getElementById('addPerformanceModal');
-         const editPerformanceModal = document.getElementById('editPerformanceModal');
-         let nextPerformanceId = 11;
-         let currentPerformanceId = null;
+    function openAddApplicationModal() {
+        addApplicationModal.style.display = "block";
+        document.getElementById('addApplicationForm').reset();
+    }
 
-         function openAddPerformanceModal() {
-             addPerformanceModal.style.display = "block";
-             document.getElementById('addPerformanceForm').reset();
-         }
+    function closeAddApplicationModal() {
+        addApplicationModal.style.display = "none";
+    }
 
-         function closeAddPerformanceModal() {
-             addPerformanceModal.style.display = "none";
-         }
+    function saveAddApplicationForm() {
+        const title = document.getElementById('addApplicationTitle').value;
+        const total = document.getElementById('addTotalApplications').value;
+        const newApps = document.getElementById('addNewApplications').value;
+        const shortlisted = document.getElementById('addShortlisted').value;
+        const interviewed = document.getElementById('addInterviewed').value;
+        const offered = document.getElementById('addOffered').value;
 
-         function saveAddPerformanceForm() {
-             const title = document.getElementById('addPerformanceTitle').value;
-             const views = document.getElementById('addPerformanceViews').value;
-             const applications = document.getElementById('addPerformanceApplications').value;
-             const timeToFill = document.getElementById('addPerformanceTimeToFill').value;
+        const newRow = document.createElement('tr');
+        newRow.dataset.applicationId = nextApplicationId;
+        newRow.innerHTML = `
+            <td>${title}</td>
+            <td>${total}</td>
+            <td>${newApps}</td>
+            <td>${shortlisted}</td>
+            <td>${interviewed}</td>
+            <td>${offered}</td>
+            <td class="report-actions">
+                <button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button>
+                <button class="delete-button" onclick="deleteApplicationEntry(${nextApplicationId})">Delete</button>
+            </td>
+        `;
+        document.querySelector('.application-table tbody').appendChild(newRow);
+        closeAddApplicationModal();
+        alert(`Application entry for "${title}" added! (Simulated)`);
+        nextApplicationId++;
+    }
 
-             const newRow = document.createElement('tr');
-             newRow.dataset.performanceId = nextPerformanceId;
-             newRow.innerHTML = `<td><span class="math-inline">\{title\}</td\><td\></span>{views}</td><td><span class="math-inline">\{applications\}</td\><td\></span>{timeToFill}</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(${nextPerformanceId})">Delete</button></td>`;
-             document.querySelector('.performance-table tbody').appendChild(newRow);
-             closeAddPerformanceModal();
-             alert(`Performance entry for "${title}" added! (Simulated)`);
-             nextPerformanceId++;
-         }
+    function openEditApplicationModal(button) {
+        const row = button.closest('tr');
+        currentApplicationId = row.dataset.applicationId;
+        document.getElementById('editApplicationId').value = currentApplicationId;
+        document.getElementById('editApplicationTitle').value = row.cells[0].textContent;
+        document.getElementById('editTotalApplications').value = row.cells[1].textContent;
+        document.getElementById('editNewApplications').value = row.cells[2].textContent;
+        document.getElementById('editShortlisted').value = row.cells[3].textContent;
+        document.getElementById('editInterviewed').value = row.cells[4].textContent;
+        document.getElementById('editOffered').value = row.cells[5].textContent;
+        editApplicationModal.style.display = "block";
+    }
 
-         function openEditPerformanceModal(button) {
-             const row = button.closest('tr');
-             currentPerformanceId = row.dataset.performanceId;
-             document.getElementById('editPerformanceId').value = currentPerformanceId;
-             document.getElementById('editPerformanceTitle').value = row.cells[0].textContent;
-             document.getElementById('editPerformanceViews').value = row.cells[1].textContent;
-             document.getElementById('editPerformanceApplications').value = row.cells[2].textContent;
-             document.getElementById('editPerformanceTimeToFill').value = row.cells[3].textContent;
-             editPerformanceModal.style.display = "block";
-         }
+    function closeEditApplicationModal() {
+        editApplicationModal.style.display = "none";
+        currentApplicationId = null;
+    }
 
-         function closeEditPerformanceModal() {
-             editPerformanceModal.style.display = "none";
-             currentPerformanceId = null;
-         }
+    function saveEditApplicationForm() {
+        if (currentApplicationId) {
+            const row = document.querySelector(`.application-table tbody tr[data-application-id="${currentApplicationId}"]`);
+            if (row) {
+                row.cells[0].textContent = document.getElementById('editApplicationTitle').value;
+                row.cells[1].textContent = document.getElementById('editTotalApplications').value;
+                row.cells[2].textContent = document.getElementById('editNewApplications').value;
+                row.cells[3].textContent = document.getElementById('editShortlisted').value;
+                row.cells[4].textContent = document.getElementById('editInterviewed').value;
+                row.cells[5].textContent = document.getElementById('editOffered').value;
+            }
+            closeEditApplicationModal();
+            alert(`Application entry ID ${currentApplicationId} updated! (Simulated)`);
+        }
+    }
 
-         function saveEditPerformanceForm() {
-             if (currentPerformanceId) {
-                 const row = document.querySelector(`.performance-table tbody tr[data-performance-id="${currentPerformanceId}"]`);
-                 if (row) {
-                     row.cells[0].textContent = document.getElementById('editPerformanceTitle').value;
-                     row.cells[1].textContent = document.getElementById('editPerformanceViews').value;
-                     row.cells[2].textContent = document.getElementById('editPerformanceApplications').value;
-                     row.cells[3].textContent = document.getElementById('editPerformanceTimeToFill').value;
-                 }
-                 closeEditPerformanceModal();
-                 alert(`Performance entry ID ${currentPerformanceId} updated! (Simulated)`);
-             }
-         }
-
-         function deletePerformanceEntry(id) {
-             if (confirm(`Are you sure you want to delete performance entry ID ${id}?`)) {
-                 const rowToRemove = document.querySelector(`.performance-table tbody tr[data-performance-id="${id}"]`);
-                 if (rowToRemove) {
-                     rowToRemove.remove();
-                     alert(`Performance entry ID ${id} deleted! (Simulated)`);
-                 }
-             }
-         }
-
-         
-         const addApplicationModal = document.getElementById('addApplicationModal');
-         const editApplicationModal = document.getElementById('editApplicationModal');
-         let nextApplicationId = 11;
-         let currentApplicationId = null;
-
-         function openAddApplicationModal() {
-             addApplicationModal.style.display = "block";
-             document.getElementById('addApplicationForm').reset();
-         }
-
-         function closeAddApplicationModal() {
-             addApplicationModal.style.display = "none";
-         }
-
-         function saveAddApplicationForm() {
-             const title = document.getElementById('addApplicationTitle').value;
-             const total = document.getElementById('addTotalApplications').value;
-             const newApps = document.getElementById('addNewApplications').value;
-             const shortlisted = document.getElementById('addShortlisted').value;
-             const interviewed = document.getElementById('addInterviewed').value;
-             const offered = document.getElementById('addOffered').value;
-
-             const newRow = document.createElement('tr');
-             newRow.dataset.applicationId = nextApplicationId;
-             newRow.innerHTML = `<td><span class="math-inline">\{title\}</td\><td\></span>{total}</td><td><span class="math-inline">\{newApps\}</td\><td\></span>{shortlisted}</td><td><span class="math-inline">\{interviewed\}</td\><td\></span>{offered}</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(${nextApplicationId})">Delete</button></td>`;
-             document.querySelector('.application-table tbody').appendChild(newRow);
-             closeAddApplicationModal();
-             alert(`Application entry for "${title}" added! (Simulated)`);
-             nextApplicationId++;
-         }
-
-         function openEditApplicationModal(button) {
-             const row = button.closest('tr');
-             currentApplicationId = row.dataset.applicationId;
-             document.getElementById('editApplicationId').value = currentApplicationId;
-             document.getElementById('editApplicationTitle').value = row.cells[0].textContent;
-             document.getElementById('editTotalApplications').value = row.cells[1].textContent;
-             document.getElementById('editNewApplications').value = row.cells[2].textContent;
-             document.getElementById('editShortlisted').value = row.cells[3].textContent;
-             document.getElementById('editInterviewed').value = row.cells[4].textContent;
-             document.getElementById('editOffered').value = row.cells[5].textContent;
-             editApplicationModal.style.display = "block";
-         }
-
-         function closeEditApplicationModal() {
-             editApplicationModal.style.display = "none";
-             currentApplicationId = null;
-         }
-
-         function saveEditApplicationForm() {
-             if (currentApplicationId) {
-                 const row = document.querySelector(`.application-table tbody tr[data-application-id="${currentApplicationId}"]`);
-                 if (row) {
-                     row.cells[0].textContent = document.getElementById('editApplicationTitle').value;
-                     row.cells[1].textContent = document.getElementById('editTotalApplications').value;
-                     row.cells[2].textContent = document.getElementById('editNewApplications').value;
-                     row.cells[3].textContent = document.getElementById('editShortlisted').value;
-                     row.cells[4].textContent = document.getElementById('editInterviewed').value;
-                     row.cells[5].textContent = document.getElementById('editOffered').value;
-                 }
-                 closeEditApplicationModal();
-                 alert(`Application entry ID ${currentApplicationId} updated! (Simulated)`);
-             }
-         }
-
-         function deleteApplicationEntry(id) {
-             if (confirm(`Are you sure you want to delete application entry ID ${id}?`)) {
-                 const rowToRemove = document.querySelector(`.application-table tbody tr[data-application-id="${id}"]`);
-                 if (rowToRemove) {
-                     rowToRemove.remove();
-                     alert(`Application entry ID ${id} deleted! (Simulated)`);
-                 }
-             }
-         }
-     </script>
+    function deleteApplicationEntry(id) {
+        if (confirm(`Are you sure you want to delete application entry ID ${id}?`)) {
+            const rowToRemove = document.querySelector(`.application-table tbody tr[data-application-id="${id}"]`);
+            if (rowToRemove) {
+                rowToRemove.remove();
+                alert(`Application entry ID ${id} deleted! (Simulated)`);
+            }
+        }
+    }
+</script>
  </body>
  </html>
