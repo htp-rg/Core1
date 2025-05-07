@@ -798,16 +798,6 @@
 }
              });
 
-             const parent = el.closest('.item');
-             const icon = el.querySelector('i');
-             const isOpen = parent.classList.toggle('show-submenu');
-
-             if (icon) {
-                 icon.classList.toggle('fa-chevron-right', !isOpen);
-                 icon.classList.toggle('fa-chevron-down', isOpen);
-             }
-         }
-
 
          const addCustomReportModal = document.getElementById('addCustomReportModal');
          let nextCustomReportId = 3; // Start with an ID after the initial sample reports
