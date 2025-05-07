@@ -203,6 +203,94 @@
         .report-actions button:hover {
             background-color: #27ae60;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #reportViewer {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        #reportSender {
+            display: none;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        #reportSender label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #reportSender select,
+        #reportSender textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        #reportSender button[type="submit"] {
+            background-color: #4070f4;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #reportSender button[type="submit"]:hover {
+            background-color: #3355a4;
+        }
     </style>
 </head>
 
@@ -335,23 +423,33 @@
             <ul class="report-list">
                 <li class="report-item">
                     <div class="report-details">HR Department Budget Report</div>
-                    <div class="report-actions"><button>View</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('HR Department Budget Report')">View</button>
+                    </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">HR Project Status Report</div>
-                    <div class="report-actions"><button>View</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('HR Project Status Report')">View</button>
+                    </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Employee Relations Case Report</div>
-                    <div class="report-actions"><button>View</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('Employee Relations Case Report')">View</button>
+                    </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">HR Audit Report</div>
-                    <div class="report-actions"><button>View</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('HR Audit Report')">View</button>
+                    </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Workforce Planning Report</div>
-                    <div class="report-actions"><button>View</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('Workforce Planning Report')">View</button>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -361,29 +459,73 @@
             <ul class="report-list">
                 <li class="report-item">
                     <div class="report-details">Payroll Processing Report</div>
-                    <div class="report-actions"><button>View</button> <button>Send</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('Payroll Processing Report')">View</button>
+                        <button onclick="openSendForm('Payroll Processing Report')">Send</button>
+                    </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Benefits Administration Report</div>
-                    <div class="report-actions"><button>View</button> <button>Send</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('Benefits Administration Report')">View</button>
+                        <button onclick="openSendForm('Benefits Administration Report')">Send</button>
+                    </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Recruitment Process Outsourcing (RPO) Report</div>
-                    <div class="report-actions"><button>View</button> <button>Send</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('Recruitment Process Outsourcing (RPO) Report')">View</button>
+                        <button onclick="openSendForm('Recruitment Process Outsourcing (RPO) Report')">Send</button>
+                    </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">HR Consulting Project Report</div>
-                    <div class="report-actions"><button>View</button> <button>Send</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('HR Consulting Project Report')">View</button>
+                        <button onclick="openSendForm('HR Consulting Project Report')">Send</button>
+                    </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Training Delivery Report</div>
-                    <div class="report-actions"><button>View</button> <button>Send</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('Training Delivery Report')">View</button>
+                        <button onclick="openSendForm('Training Delivery Report')">Send</button>
+                    </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Compliance Reporting for Clients</div>
-                    <div class="report-actions"><button>View</button> <button>Send</button></div>
+                    <div class="report-actions">
+                        <button onclick="viewReport('Compliance Reporting for Clients')">View</button>
+                        <button onclick="openSendForm('Compliance Reporting for Clients')">Send</button>
+                    </div>
                 </li>
             </ul>
+        </div>
+
+        <div id="reportModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('reportModal')">&times;</span>
+                <div id="reportViewer"></div>
+            </div>
+        </div>
+
+        <div id="sendModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal('sendModal')">&times;</span>
+                <div id="reportSender">
+                    <form onsubmit="submitReport(event)">
+                        <label for="reportType">Report Type:</label>
+                        <select id="reportType" name="reportType" disabled>
+                            <option value="">Select Report</option>
+                            </select>
+
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="5"></textarea>
+
+                        <button type="submit">Send Report</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -408,6 +550,46 @@
                 icon.classList.toggle('fa-chevron-right', !isOpen);
                 icon.classList.toggle('fa-chevron-down', isOpen);
             }
+        }
+
+        function viewReport(reportName) {
+            const modal = document.getElementById('reportModal');
+            const reportViewer = document.getElementById('reportViewer');
+            reportViewer.innerHTML = `<h3>Viewing Report: ${reportName}</h3><p>This is a placeholder for the actual report content for '${reportName}'.</p>`;
+            modal.style.display = "block";
+        }
+
+        function openSendForm(reportName) {
+            const modal = document.getElementById('sendModal');
+            const reportSender = document.getElementById('reportSender');
+            const reportTypeSelect = reportSender.querySelector('#reportType');
+            reportTypeSelect.innerHTML = `<option value="${reportName}">${reportName}</option>`;
+            modal.style.display = "block";
+            reportSender.style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+            if (modalId === 'sendModal') {
+                document.getElementById('reportSender').style.display = "none";
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+                if (event.target.id === 'sendModal') {
+                    document.getElementById('reportSender').style.display = "none";
+                }
+            }
+        }
+
+        function submitReport(event) {
+            event.preventDefault();
+            const reportType = document.getElementById('reportType').value;
+            const message = document.getElementById('message').value;
+            alert(`Report Type: ${reportType}\nMessage: ${message}\nReport sent (placeholder action).`);
+            closeModal('sendModal');
         }
     </script>
 
