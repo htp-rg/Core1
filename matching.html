@@ -550,14 +550,14 @@ const candidates = [
 ];
 
   function renderCandidateTable() {
- function renderCandidateTable() {
   const tableBody = document.getElementById('candidateTableBody');
   tableBody.innerHTML = '';
 
   candidates.forEach(candidate => {
     const row = document.createElement('tr');
+
     row.innerHTML = `
-      <td><img src="${candidate.photo}" alt="${candidate.name}" style="border-radius: 50%; width: 60px; height: 60px;"></td>
+      <td><img src="${candidate.photo}" alt="${candidate.name}"></td>
       <td>${candidate.name}</td>
       <td>${candidate.interviewSchedule}</td>
       <td>${candidate.skills}</td>
@@ -566,11 +566,12 @@ const candidates = [
       <td>${candidate.evaluation}</td>
       <td>${candidate.deliberation}</td>
       <td>${candidate.consensus}</td>
-      <td class="actions">
-        <button onclick="openEditModal('${candidate.id}')">Edit</button>
-        <button onclick="openDeleteModal('${candidate.id}')">Delete</button>
+      <td class="action-buttons">
+        <button class="edit" onclick="editCandidate('${candidate.id}')">Edit</button>
+        <button class="delete" onclick="deleteCandidate('${candidate.id}')">Delete</button>
       </td>
     `;
+
     tableBody.appendChild(row);
   });
 }
