@@ -159,6 +159,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin-bottom: 20px;
             border: 1px solid #ddd;
+            position: relative; /* For absolute positioning of the modal */
         }
 
         .access-control-container h2 {
@@ -271,6 +272,84 @@
 
         .add-role-section button:hover {
             background-color: #27ae60;
+        }
+
+       
+        .modal {
+            display: none;
+            position: fixed; 
+            z-index: 100; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h4 {
+            color: #002966;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .modal-content input[type="text"],
+        .modal-content textarea {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .modal-content button {
+            background-color: #4070f4;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .modal-content button:hover {
+            background-color: #365fd0;
         }
     </style>
 </head>
@@ -404,7 +483,7 @@
             <h2>User Roles and Permissions</h2>
             <p>This section outlines the different user roles within the system and their corresponding access permissions. HR Administrators and Hiring Managers have full control over job positions, while other roles have specific capabilities to manage the recruitment process.</p>
             <ul class="access-control-list">
-                <li>
+                <li data-role="hr-administrator">
                     <div class="role-info">
                         <span class="role-name">HR Administrator</span>
                         <div class="permissions">
@@ -412,10 +491,10 @@
                         </div>
                     </div>
                     <div class="controls">
-                        <button>Edit</button>
+                        <button class="edit-role-btn">Edit</button>
                     </div>
                 </li>
-                <li>
+                <li data-role="hiring-manager">
                     <div class="role-info">
                         <span class="role-name">Hiring Manager</span>
                         <div class="permissions">
@@ -423,10 +502,10 @@
                         </div>
                     </div>
                     <div class="controls">
-                        <button>Edit</button>
+                        <button class="edit-role-btn">Edit</button>
                     </div>
                 </li>
-                <li>
+                <li data-role="recruiter">
                     <div class="role-info">
                         <span class="role-name">Recruiter</span>
                         <div class="permissions">
@@ -434,10 +513,10 @@
                         </div>
                     </div>
                     <div class="controls">
-                        <button>Edit</button>
+                        <button class="edit-role-btn">Edit</button>
                     </div>
                 </li>
-                <li>
+                <li data-role="manager">
                     <div class="role-info">
                         <span class="role-name">Manager</span>
                         <div class="permissions">
@@ -445,7 +524,7 @@
                         </div>
                     </div>
                     <div class="controls">
-                        <button>Edit</button>
+                        <button class="edit-role-btn">Edit</button>
                     </div>
                 </li>
             </ul>
@@ -464,10 +543,26 @@
                 <button type="submit">Add Role</button>
             </form>
         </div>
+
+        <div id="editRoleModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h4>Edit Role</h4>
+                <form id="editRoleForm">
+                    <label for="editRoleName">Role Name:</label>
+                    <input type="text" id="editRoleName" name="editRoleName">
+
+                    <label for="editRolePermissions">Permissions:</label>
+                    <textarea id="editRolePermissions" name="editRolePermissions" rows="4"></textarea>
+
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
-     function toggleSubmenu(el) {
+        function toggleSubmenu(el) {
             document.querySelectorAll('.item').forEach(item => {
                 if (item !== el.closest('.item')) {
                     item.classList.remove('show-submenu');
@@ -509,6 +604,56 @@
                     this.reset();
                 });
             }
+
+            
+            const editModal = document.getElementById('editRoleModal');
+            const editButtons = document.querySelectorAll('.edit-role-btn');
+            const closeButton = editModal.querySelector('.close-button');
+            const editForm = document.getElementById('editRoleForm');
+            const editRoleNameInput = document.getElementById('editRoleName');
+            const editRolePermissionsTextarea = document.getElementById('editRolePermissions');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const listItem = this.closest('li');
+                    const roleName = listItem.querySelector('.role-name').textContent;
+                    const permissions = listItem.querySelector('.permissions').textContent.trim();
+
+                    editRoleNameInput.value = roleName;
+                    editRolePermissionsTextarea.value = permissions;
+                    editModal.style.display = "block";
+                });
+            });
+
+            closeButton.addEventListener('click', function() {
+                editModal.style.display = "none";
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === editModal) {
+                    editModal.style.display = "none";
+                }
+            });
+
+            editForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const updatedRoleName = editRoleNameInput.value;
+                const updatedPermissions = editRolePermissionsTextarea.value;
+
+                
+                alert(`Role "${updatedRoleName}" updated with permissions: "${updatedPermissions}" (example only).`);
+                editModal.style.display = "none";
+
+                
+                const activeEditButton = document.activeElement;
+                if (activeEditButton) {
+                    const listItemToUpdate = activeEditButton.closest('li');
+                    if (listItemToUpdate) {
+                        listItemToUpdate.querySelector('.role-name').textContent = updatedRoleName;
+                        listItemToUpdate.querySelector('.permissions').textContent = updatedPermissions;
+                    }
+                }
+            });
         });
     </script>
 </body>
