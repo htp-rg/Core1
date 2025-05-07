@@ -417,6 +417,10 @@
         <i class="fa-solid fa-bars" id="sidebar-close"></i>
     </nav>
 
+     <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+    </nav>
+
     <div class="main">
         <div class="report-group">
             <h2><i class="fas fa-chart-bar" style="margin-right: 10px;"></i> Internal Reports</h2>
@@ -424,31 +428,36 @@
                 <li class="report-item">
                     <div class="report-details">HR Department Budget Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('HR Department Budget Report')">View</button>
+                        <button onclick="viewReport('HR Department Budget Report', getHRBudgetReport())">View</button>
+                        <button onclick="openSendForm('HR Department Budget Report')">Send</button>
                     </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">HR Project Status Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('HR Project Status Report')">View</button>
+                        <button onclick="viewReport('HR Project Status Report', getHRProjectStatusReport())">View</button>
+                        <button onclick="openSendForm('HR Project Status Report')">Send</button>
                     </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Employee Relations Case Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('Employee Relations Case Report')">View</button>
-                    </div>
+                        <button onclick="viewReport('Employee Relations Case Report', getEmployeeRelationsReport())">View</button>
+                        <button onclick="openSendForm('Employee Relations Case Report')">Send</button>
+                        </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">HR Audit Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('HR Audit Report')">View</button>
+                        <button onclick="viewReport('HR Audit Report', getHRAuditReport())">View</button>
+                        <button onclick="openSendForm('HR Audit Report')">Send</button>
                     </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Workforce Planning Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('Workforce Planning Report')">View</button>
+                        <button onclick="viewReport('Workforce Planning Report', getWorkforcePlanningReport())">View</button>
+                        <button onclick="openSendForm('Workforce Planning Report')">Send</button>
                     </div>
                 </li>
             </ul>
@@ -460,42 +469,42 @@
                 <li class="report-item">
                     <div class="report-details">Payroll Processing Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('Payroll Processing Report')">View</button>
+                        <button onclick="viewReport('Payroll Processing Report', getPayrollProcessingReport())">View</button>
                         <button onclick="openSendForm('Payroll Processing Report')">Send</button>
                     </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Benefits Administration Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('Benefits Administration Report')">View</button>
+                        <button onclick="viewReport('Benefits Administration Report', getBenefitsAdministrationReport())">View</button>
                         <button onclick="openSendForm('Benefits Administration Report')">Send</button>
                     </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Recruitment Process Outsourcing (RPO) Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('Recruitment Process Outsourcing (RPO) Report')">View</button>
+                        <button onclick="viewReport('Recruitment Process Outsourcing (RPO) Report', getRPOReport())">View</button>
                         <button onclick="openSendForm('Recruitment Process Outsourcing (RPO) Report')">Send</button>
                     </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">HR Consulting Project Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('HR Consulting Project Report')">View</button>
+                        <button onclick="viewReport('HR Consulting Project Report', getHRConsultingReport())">View</button>
                         <button onclick="openSendForm('HR Consulting Project Report')">Send</button>
                     </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Training Delivery Report</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('Training Delivery Report')">View</button>
+                        <button onclick="viewReport('Training Delivery Report', getTrainingDeliveryReport())">View</button>
                         <button onclick="openSendForm('Training Delivery Report')">Send</button>
                     </div>
                 </li>
                 <li class="report-item">
                     <div class="report-details">Compliance Reporting for Clients</div>
                     <div class="report-actions">
-                        <button onclick="viewReport('Compliance Reporting for Clients')">View</button>
+                        <button onclick="viewReport('Compliance Reporting for Clients', getComplianceReport())">View</button>
                         <button onclick="openSendForm('Compliance Reporting for Clients')">Send</button>
                     </div>
                 </li>
@@ -506,6 +515,10 @@
             <div class="modal-content">
                 <span class="close-button" onclick="closeModal('reportModal')">&times;</span>
                 <div id="reportViewer"></div>
+                <div class="report-viewer-actions">
+                    <button onclick="closeModal('reportModal')">Close</button>
+                    <button onclick="openSendForm(document.getElementById('reportViewer').dataset.reportName)">Send Report</button>
+                </div>
             </div>
         </div>
 
@@ -517,7 +530,7 @@
                         <label for="reportType">Report Type:</label>
                         <select id="reportType" name="reportType" disabled>
                             <option value="">Select Report</option>
-                            </select>
+                        </select>
 
                         <label for="message">Message:</label>
                         <textarea id="message" name="message" rows="5"></textarea>
@@ -552,10 +565,11 @@
             }
         }
 
-        function viewReport(reportName) {
+        function viewReport(reportName, reportContent) {
             const modal = document.getElementById('reportModal');
             const reportViewer = document.getElementById('reportViewer');
-            reportViewer.innerHTML = `<h3>Viewing Report: ${reportName}</h3><p>This is a placeholder for the actual report content for '${reportName}'.</p>`;
+            reportViewer.innerHTML = `<h3>Viewing Report: ${reportName}</h3>${reportContent}`;
+            reportViewer.dataset.reportName = reportName; // Store report name for the send button in the modal
             modal.style.display = "block";
         }
 
@@ -590,6 +604,137 @@
             const message = document.getElementById('message').value;
             alert(`Report Type: ${reportType}\nMessage: ${message}\nReport sent (placeholder action).`);
             closeModal('sendModal');
+        }
+
+    
+        function getHRBudgetReport() {
+            return `<p>This report outlines the budget allocated to the HR department for the fiscal year.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Budget Item</th>
+                                <th>Allocated Amount</th>
+                                <th>Spent Amount</th>
+                                <th>Remaining Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Salaries & Wages</td>
+                                <td>$500,000</td>
+                                <td>$450,000</td>
+                                <td>$50,000</td>
+                            </tr>
+                            <tr>
+                                <td>Recruitment Costs</td>
+                                <td>$50,000</td>
+                                <td>$35,000</td>
+                                <td>$15,000</td>
+                            </tr>
+                            <tr>
+                                <td>Training & Development</td>
+                                <td>$30,000</td>
+                                <td>$20,000</td>
+                                <td>$10,000</td>
+                            </tr>
+                        </tbody>
+                    </table>`;
+        }
+
+        function getHRProjectStatusReport() {
+            return `<p>This report provides an update on the various HR projects currently underway.</p>
+                    <ul>
+                        <li>Performance Management System Upgrade: 75% complete, on track for next month launch.</li>
+                        <li>Employee Onboarding Process Improvement: Pilot phase initiated with positive feedback.</li>
+                        <li>Compensation Review: Data gathering in progress, analysis to follow.</li>
+                    </ul>`;
+        }
+
+        function getEmployeeRelationsReport() {
+            return `<p>This report summarizes the employee relations cases handled in the reporting period.</p>
+                    <ul>
+                        <li>Total Cases Opened: 12</li>
+                        <li>Cases Resolved: 10</li>
+                        <li>Types of Cases: Grievances, Disciplinary Actions, Mediation.</li>
+                        <li>Average Resolution Time: 5 days.</li>
+                    </ul>`;
+        }
+
+        function getHRAuditReport() {
+            return `<p>This report presents the findings of the recent HR audit.</p>
+                    <ul>
+                        <li>Key Findings: All core HR functions are operating effectively.</li>
+                        <li>Areas for Improvement: Documentation processes can be further streamlined.</li>
+                        <li>Recommendations: Implement a digital document management system.</li>
+                    </ul>`;
+        }
+
+        function getWorkforcePlanningReport() {
+            return `<p>This report outlines the current and future workforce needs of the organization.</p>
+                    <ul>
+                        <li>Current Employee Count: 300</li>
+                        <li>Projected Growth (Next 3 Years): 15%</li>
+                        <li>Key Skill Gaps: Data Analytics, Digital Marketing.</li>
+                        <li>Recruitment Strategies: Focus on talent acquisition in identified skill areas.</li>
+                    </ul>`;
+        }
+
+        function getPayrollProcessingReport() {
+            return `<p>This report details the payroll processed for the last pay period.</p>
+                    <ul>
+                        <li>Number of Employees Paid: 150</li>
+                        <li>Total Gross Pay: $300,000</li>
+                        <li>Total Deductions: $75,000</li>
+                        <li>Total Net Pay: $225,000</li>
+                    </ul>`;
+        }
+
+        function getBenefitsAdministrationReport() {
+            return `<p>This report summarizes employee enrollment in various benefits programs.</p>
+                    <ul>
+                        <li>Health Insurance Enrollment: 120 employees</li>
+                        <li>Retirement Plan Participation: 100 employees</li>
+                        <li>Paid Time Off (PTO) Usage: Average 5 days per employee</li>
+                    </ul>`;
+        }
+
+        function getRPOReport() {
+            return `<p>This report provides an overview of the recruitment activities managed by the RPO provider.</p>
+                    <ul>
+                        <li>Number of Positions Opened: 30</li>
+                        <li>Number of Candidates Sourced: 200</li>
+                        <li>Number of Hires: 15</li>
+                        <li>Average Time-to-Hire: 45 days</li>
+                    </ul>`;
+        }
+
+        function getHRConsultingReport() {
+            return `<p>This report details the progress and outcomes of the ongoing HR consulting project.</p>
+                    <ul>
+                        <li>Project Name: Employee Engagement Initiative</li>
+                        <li>Current Phase: Implementation</li>
+                        <li>Key Achievements: Conducted employee surveys, developed action plans.</li>
+                        <li>Next Steps: Roll out engagement activities, monitor progress.</li>
+                    </ul>`;
+        }
+
+        function getTrainingDeliveryReport() {
+            return `<p>This report summarizes the training sessions conducted during the last quarter.</p>
+                    <ul>
+                        <li>Number of Training Sessions: 10</li>
+                        <li>Total Employees Trained: 80</li>
+                        <li>Average Training Satisfaction Score: 4.5/5</li>
+                        <li>Key Training Topics: Leadership Development, Communication Skills.</li>
+                    </ul>`;
+        }
+
+        function getComplianceReport() {
+            return `<p>This report outlines the company's compliance with relevant labor laws and regulations.</p>
+                    <ul>
+                        <li>EEO Compliance: In adherence with Equal Employment Opportunity guidelines.</li>
+                        <li>Data Privacy: Compliant with data protection regulations.</li>
+                        <li>Workplace Safety: All safety protocols are in place and followed.</li>
+                    </ul>`;
         }
     </script>
 
