@@ -185,6 +185,13 @@
       font-size: 14px;
       margin-bottom: 5px;
     }
+     .table-section {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      overflow-x: auto;
+    }
     .modal {
   display: none; 
   position: fixed;
@@ -463,38 +470,39 @@ button:hover {
   </div>
 </div>
 
-<script>
-  const candidates = [
-    { id: 'C001', name: 'Alice Smith', interviewSchedule: 'May 10, 10:00 AM', skills: 'JavaScript, React', psychometricTest: 'Complete', referenceCheck: 'Verified', evaluation: 'Excellent', deliberation: 'Panel Review', consensus: 'Approved' },
-    { id: 'C002', name: 'Frank Wilson', interviewSchedule: 'May 15, 2:00 PM', skills: 'Node.js, Express', psychometricTest: 'Pending', referenceCheck: 'In Progress', evaluation: 'Good', deliberation: 'Initial Review', consensus: 'Pending' },
-    { id: 'C003', name: 'Grace Miller', interviewSchedule: 'May 16, 4:30 PM', skills: 'Graphic Design, Adobe XD', psychometricTest: 'Complete', referenceCheck: 'Verified', evaluation: 'Excellent', deliberation: 'Team Review', consensus: 'Approved' },
-    { id: 'C004', name: 'Henry Zhao', interviewSchedule: 'May 17, 10:30 AM', skills: 'Cloud, AWS', psychometricTest: 'Complete', referenceCheck: 'Pending', evaluation: 'Very Good', deliberation: 'Manager Deliberation', consensus: 'Under Consideration' }
-  ];
+  <script>
+const candidates = [
+  { id: 'C001', name: 'Alice Smith', interviewSchedule: 'May 10, 10:00 AM', skills: 'JavaScript, React', psychometricTest: 'Complete', referenceCheck: 'Verified', evaluation: 'Excellent', deliberation: 'Panel Review', consensus: 'Approved', photo: 'https://via.placeholder.com/60' },
+  { id: 'C002', name: 'Frank Wilson', interviewSchedule: 'May 15, 2:00 PM', skills: 'Node.js, Express', psychometricTest: 'Pending', referenceCheck: 'In Progress', evaluation: 'Good', deliberation: 'Initial Review', consensus: 'Pending', photo: 'https://via.placeholder.com/60' },
+  { id: 'C003', name: 'Grace Miller', interviewSchedule: 'May 16, 4:30 PM', skills: 'Graphic Design, Adobe XD', psychometricTest: 'Complete', referenceCheck: 'Verified', evaluation: 'Excellent', deliberation: 'Team Review', consensus: 'Approved', photo: 'https://via.placeholder.com/60' },
+  { id: 'C004', name: 'Henry Zhao', interviewSchedule: 'May 17, 10:30 AM', skills: 'Cloud, AWS', psychometricTest: 'Complete', referenceCheck: 'Pending', evaluation: 'Very Good', deliberation: 'Manager Deliberation', consensus: 'Under Consideration', photo: 'https://via.placeholder.com/60' }
+];
 
   function renderCandidateTable() {
-    const tableBody = document.getElementById('candidateTableBody');
-    tableBody.innerHTML = '';
+ function renderCandidateTable() {
+  const tableBody = document.getElementById('candidateTableBody');
+  tableBody.innerHTML = '';
 
-    candidates.forEach(candidate => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td><img src="https://via.placeholder.com/60" alt="${candidate.name}" style="border-radius: 50%;"></td>
-        <td>${candidate.name}</td>
-        <td>${candidate.interviewSchedule}</td>
-        <td>${candidate.skills}</td>
-        <td>${candidate.psychometricTest}</td>
-        <td>${candidate.referenceCheck}</td>
-        <td>${candidate.evaluation}</td>
-        <td>${candidate.deliberation}</td>
-        <td>${candidate.consensus}</td>
-        <td class="actions">
-          <i class="fas fa-pencil-alt" onclick="editCandidate('${candidate.id}')"></i>
-          <i class="fas fa-trash" onclick="deleteCandidate('${candidate.id}')"></i>
-        </td>
-      `;
-      tableBody.appendChild(row);
-    });
-  }
+  candidates.forEach(candidate => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><img src="${candidate.photo}" alt="${candidate.name}" style="border-radius: 50%; width: 60px; height: 60px;"></td>
+      <td>${candidate.name}</td>
+      <td>${candidate.interviewSchedule}</td>
+      <td>${candidate.skills}</td>
+      <td>${candidate.psychometricTest}</td>
+      <td>${candidate.referenceCheck}</td>
+      <td>${candidate.evaluation}</td>
+      <td>${candidate.deliberation}</td>
+      <td>${candidate.consensus}</td>
+      <td class="actions">
+        <button onclick="openEditModal('${candidate.id}')">Edit</button>
+        <button onclick="openDeleteModal('${candidate.id}')">Delete</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
 
   function editCandidate(candidateId) {
     const candidate = candidates.find(cand => cand.id === candidateId);
