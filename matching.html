@@ -436,10 +436,29 @@
   <div style="background: white; padding: 20px; border-radius: 8px; width: 300px; text-align: center;">
     <h3 id="modal-title"></h3>
     <p id="modal-message"></p>
+    
+   
     <div id="edit-form" style="display: none;">
-      <input type="text" placeholder="Update name..." style="width: 100%; padding: 8px; margin: 10px 0;" />
+      <label for="candidate-name">Name</label>
+      <input id="candidate-name" type="text" placeholder="Update name..." style="width: 100%; padding: 8px; margin: 10px 0;" />
+      <label for="interview-schedule">Interview Schedule</label>
+      <input id="interview-schedule" type="text" placeholder="Schedule..." style="width: 100%; padding: 8px; margin: 10px 0;" />
+      <label for="skills">Skills</label>
+      <input id="skills" type="text" placeholder="Skills..." style="width: 100%; padding: 8px; margin: 10px 0;" />
+      <label for="psychometric-test">Psychometric Test</label>
+      <input id="psychometric-test" type="text" placeholder="Test details..." style="width: 100%; padding: 8px; margin: 10px 0;" />
+      <label for="reference-check">Reference Check</label>
+      <input id="reference-check" type="text" placeholder="Reference Check..." style="width: 100%; padding: 8px; margin: 10px 0;" />
+      <label for="evaluation">Evaluation</label>
+      <input id="evaluation" type="text" placeholder="Evaluation details..." style="width: 100%; padding: 8px; margin: 10px 0;" />
+      <label for="deliberation">Deliberation</label>
+      <input id="deliberation" type="text" placeholder="Deliberation details..." style="width: 100%; padding: 8px; margin: 10px 0;" />
+      <label for="consensus">Consensus</label>
+      <input id="consensus" type="text" placeholder="Consensus details..." style="width: 100%; padding: 8px; margin: 10px 0;" />
       <button style="background: #4070f4; color: white; border: none; padding: 8px 15px; border-radius: 5px;">Save</button>
     </div>
+    
+    
     <div id="delete-buttons" style="margin-top: 10px;">
       <button onclick="closeModal()" style="background: gray; color: white; border: none; padding: 8px 15px; border-radius: 5px;">Cancel</button>
       <button style="background: crimson; color: white; border: none; padding: 8px 15px; border-radius: 5px;">Confirm</button>
@@ -472,7 +491,7 @@
     document.getElementById('modal').style.display = 'none';
   }
 
-  // Optional: close modal when clicking outside
+  
   window.onclick = function(e) {
     if (e.target.id === 'modal') {
       closeModal();
