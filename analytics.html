@@ -151,7 +151,7 @@
              margin-bottom: 20px;
          }
 
-         .job-list-container, .reports-container, .performance-container, .applications-container {
+         .job-list-container, .reports-container, .performance-container, .applications-container, .custom-reports-container {
              background: white;
              border-radius: 10px;
              padding: 20px;
@@ -162,14 +162,14 @@
              border: 1px solid #ddd;
          }
 
-         .job-list-header, .reports-header, .performance-header, .applications-header {
+         .job-list-header, .reports-header, .performance-header, .applications-header, .custom-reports-header {
              display: flex;
              justify-content: space-between;
              align-items: center;
              margin-bottom: 15px;
          }
 
-         .job-list-header h2, .reports-header h2, .performance-header h2, .applications-header h2 {
+         .job-list-header h2, .reports-header h2, .performance-header h2, .applications-header h2, .custom-reports-header h2 {
              font-size: 20px;
              color: #002966;
              margin: 0;
@@ -216,24 +216,24 @@
              font-size: 14px;
          }
 
-         .job-table, .report-table, .performance-table, .application-table {
+         .job-table, .report-table, .performance-table, .application-table, .custom-reports-table {
              width: 100%;
              border-collapse: collapse;
          }
 
-         .job-table th, .job-table td, .report-table th, .report-table td, .performance-table th, .performance-table td, .application-table th, .application-table td {
+         .job-table th, .job-table td, .report-table th, .report-table td, .performance-table th, .performance-table td, .application-table th, .application-table td, .custom-reports-table th, .custom-reports-table td {
              border: 1px solid #eee;
              padding: 10px;
              text-align: left;
          }
 
-         .job-table th, .report-table th, .performance-table th, .application-table th {
+         .job-table th, .report-table th, .performance-table th, .application-table th, .custom-reports-table th {
              background-color: #f9f9f9;
              font-weight: bold;
              color: #333;
          }
 
-         .job-table tbody tr:nth-child(even), .report-table tbody tr:nth-child(even), .performance-table tbody tr:nth-child(even), .application-table tbody tr:nth-child(even) {
+         .job-table tbody tr:nth-child(even), .report-table tbody tr:nth-child(even), .performance-table tbody tr:nth-child(even), .application-table tbody tr:nth-child(even), .custom-reports-table tbody tr:nth-child(even) {
              background-color: #f2f2f2;
          }
 
@@ -257,8 +257,8 @@
              background-color: #f39c12;
          }
 
-         .edit-button {
-             background-color: Green;
+         .edit-button, .delete-button {
+             background-color: #3498db;
              color: white;
              border: none;
              padding: 8px 12px;
@@ -269,18 +269,11 @@
          }
 
          .edit-button:hover {
-             color: #2980b9;
+             background-color: #2980b9;
          }
 
          .delete-button {
              background-color: #e74c3c;
-             color: white;
-             border: none;
-             padding: 8px 12px;
-             border-radius: 5px;
-             cursor: pointer;
-             font-size: 12px;
-             margin-left: 5px;
          }
 
          .delete-button:hover {
@@ -327,7 +320,7 @@
              cursor: pointer;
          }
 
-         .edit-form label {
+         .edit-form label, .add-form label {
              display: block;
              margin-bottom: 5px;
              font-weight: bold;
@@ -335,7 +328,10 @@
          }
 
          .edit-form input[type="text"],
-         .edit-form select {
+         .edit-form select,
+         .add-form input[type="text"],
+         .add-form select,
+         .add-form textarea {
              width: 100%;
              padding: 8px;
              margin-bottom: 10px;
@@ -345,7 +341,7 @@
              font-size: 14px;
          }
 
-         .edit-form button {
+         .edit-form button, .add-form button {
              background-color: #4CAF50;
              color: white;
              padding: 10px 15px;
@@ -356,11 +352,11 @@
              margin-right: 10px;
          }
 
-         .edit-form button:hover {
+         .edit-form button:hover, .add-form button:hover {
              background-color: #45a049;
          }
 
-         .edit-actions {
+         .edit-actions, .add-actions {
              display: flex;
              justify-content: flex-end;
              gap: 10px;
@@ -372,287 +368,142 @@
              border: 1px solid #ddd;
              border-radius: 5px;
              background-color: #f9f9f9;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+         }
+
+         .report-actions button {
+             margin-left: 5px;
          }
      </style>
  </head>
 
-<body>
-  <nav class="sidebar">
-    <h2 id="h2">Administrative</h2>
-    <div class="menu-content">
-      <ul class="menu-items">
-        <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
+ <body>
+     <nav class="sidebar">
+         <h2 id="h2">Administrative</h2>
+         <div class="menu-content">
+             <ul class="menu-items">
+                 <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
 
-        <li class="item">
-          <a class="submenu-header" href="dashboard.html">
-            <span class="icon"><i class='bx bxs-dashboard'></i></span>
-            <span>Dashboard</span>
-          </a>
-        </li>
+                 <li class="item">
+                     <a class="submenu-header" href="dashboard.html">
+                         <span class="icon"><i class='bx bxs-dashboard'></i></span>
+                         <span>Dashboard</span>
+                     </a>
+                 </li>
 
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-link'></i></span>
-            <span>Placement Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
-            <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
-            <li class="item"><a href="reporting.html">REPORTING</a></li>
-          </ul>
-        </li>
+                 <li class="item">
+                     <div class="submenu-header" onclick="toggleSubmenu(this)">
+                         <span class="icon"><i class='bx bx-link'></i></span>
+                         <span>Placement Management</span>
+                         <i class="fa-solid fa-chevron-right"></i>
+                     </div>
+                     <ul class="submenu">
+                         <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
+                         <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
+                         <li class="item"><a href="reporting.html">REPORTING</a></li>
+                     </ul>
+                 </li>
 
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-folder'></i></span>
-            <span>Position Job Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
-            <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
-            <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
-            <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
-          </ul>
-        </li>
+                 <li class="item show-submenu">
+                     <div class="submenu-header" onclick="toggleSubmenu(this)">
+                         <span class="icon"><i class='bx bx-folder'></i></span>
+                         <span>Position Job Management</span>
+                         <i class="fa-solid fa-chevron-down"></i>
+                     </div>
+                     <ul class="submenu">
+                         <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
+                         <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
+                         <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
+                         <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
+                     </ul>
+                 </li>
 
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-file'></i></span>
-            <span>Client Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
-            <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
-            <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
-          </ul>
-        </li>
+                 <li class="item">
+                     <div class="submenu-header" onclick="toggleSubmenu(this)">
+                         <span class="icon"><i class='bx bx-file'></i></span>
+                         <span>Client Management</span>
+                         <i class="fa-solid fa-chevron-right"></i>
+                     </div>
+                     <ul class="submenu">
+                         <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
+                         <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
+                         <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
+                     </ul>
+                 </li>
 
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-user'></i></span>
-            <span>Payroll Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
-            <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
-            <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
-            <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
-            <li class="item"><a href="taxation.html">TAXATION</a></li>
-          </ul>
-        </li>
+                 <li class="item">
+                     <div class="submenu-header" onclick="toggleSubmenu(this)">
+                         <span class="icon"><i class='bx bx-user'></i></span>
+                         <span>Payroll Management</span>
+                         <i class="fa-solid fa-chevron-right"></i>
+                     </div>
+                     <ul class="submenu">
+                         <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
+                         <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
+                         <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                         <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
+                         <li class="item"><a href="taxation.html">TAXATION</a></li>
+                     </ul>
+                 </li>
 
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-calendar'></i></span>
-            <span>Contract Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
-            <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
-            <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
-            <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
-            <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
-          </ul>
-        </li>
+                 <li class="item">
+                     <div class="submenu-header" onclick="toggleSubmenu(this)">
+                         <span class="icon"><i class='bx bx-calendar'></i></span>
+                         <span>Contract Management</span>
+                         <i class="fa-solid fa-chevron-right"></i>
+                     </div>
+                     <ul class="submenu">
+                         <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
+                         <li class="item"><a href="contract-tracking.CONTRACT STATUS TRACKING</a></li>
+                         <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                         <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
+                         <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
+                     </ul>
+                 </li>
 
-        <li class="item">
-          <div class="submenu-header" onclick="toggleSubmenu(this)">
-            <span class="icon"><i class='bx bx-group'></i></span>
-            <span>User Management</span>
-            <i class="fa-solid fa-chevron-right"></i>
-          </div>
-          <ul class="submenu">
-            <li class="item">
-              <a href="#">Contract Management</a>
-              <div class="dropdown-content">
-                <a href="dash.html"><small>1</small></a>
-                <a href="user2.html"><small>2</small></a>
-                <a href="logging.html"><small>3</small></a>
-              </div>
-            </li>
-          </ul>
-        </li>
+                 <li class="item">
+                     <div class="submenu-header" onclick="toggleSubmenu(this)">
+                         <span class="icon"><i class='bx bx-group'></i></span>
+                         <span>User Management</span>
+                         <i class="fa-solid fa-chevron-right"></i>
+                     </div>
+                     <ul class="submenu">
+                         <li class="item">
+                             <a href="#">Contract Management</a>
+                             <div class="dropdown-content">
+                                 <a href="dash.html"><small>1</small></a>
+                                 <a href="user2.html"><small>2</small></a>
+                                 <a href="logging.html"><small>3</small></a>
+                             </div>
+                         </li>
+                     </ul>
+                 </li>
 
-        <li class="item">
-          <a class="submenu-header" href="aboutus.html">
-            <span class="icon"><i class='bx bx-info-circle'></i></span>
-            <span>About Us</span>
-          </a>
-        </li>
+                 <li class="item">
+                     <a class="submenu-header" href="aboutus.html">
+                         <span class="icon"><i class='bx bx-info-circle'></i></span>
+                         <span>About Us</span>
+                     </a>
+                 </li>
 
-        <li class="item">
-          <a class="submenu-header" href="logout.html">
-            <span class="icon"><i class='bx bx-log-out'></i></span>
-            <span>Logout</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <nav class="navbar">
-    <i class="fa-solid fa-bars" id="sidebar-close"></i>
-  </nav>
-
- <div class="main">
-     <div style="padding: 20px; width: 95%; max-width: 1200px;">
-         <div class="job-list-container">
-             <div class="job-list-header">
-                 <h2>View All Available Job Positions (10)</h2>
-                 <a href="job-position.html" class="add-button">Add New Job</a>
-             </div>
-
-             <div class="filter-search-container">
-                 <div>
-                     <label for="filterDepartment">Filter by Department (5):</label>
-                     <select id="filterDepartment">
-                         <option value="">All</option>
-                         <option value="Engineering">Engineering</option>
-                         <option value="Marketing">Marketing</option>
-                         <option value="Human Resources">Human Resources</option>
-                         <option value="Sales">Sales</option>
-                         <option value="Project Management">Project Management</option>
-                     </select>
-                 </div>
-                 <div>
-                     <label for="filterLocation">Filter by Location:</label>
-                     <select id="filterLocation">
-                         <option value="">All</option>
-                         <option value="New York">New York</option>
-                         <option value="London">London</option>
-                         <option value="Paris">Paris</option>
-                         <option value="Tokyo">Tokyo</option>
-                         <option value="San Francisco">San Francisco</option>
-                     </select>
-                 </div>
-                 <div>
-                     <label for="searchJob">Search:</label>
-                     <input type="text" id="searchJob" placeholder="Search by title">
-                 </div>
-             </div>
-
-             <h2>Manage Job Status (10):</h2>
-             <table class="job-table">
-                 <thead>
-                     <tr>
-                         <th>Title</th>
-                         <th>Department</th>
-                         <th>Location</th>
-                         <th>Status</th>
-                         <th>Actions</th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                     <tr data-job-id="1">
-                         <td>Software Engineer</td>
-                         <td>Engineering</td>
-                         <td>New York</td>
-                         <td><span class="job-status status-open">Open</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(1)">Delete</button>
-                         </td>
-                     </tr>
-                     <tr data-job-id="2">
-                         <td>Marketing Manager</td>
-                         <td>Marketing</td>
-                         <td>London</td>
-                         <td><span class="job-status status-closed">Closed</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(2)">Delete</button>
-                         </td>
-                     </tr>
-                     <tr data-job-id="3">
-                         <td>HR Generalist</td>
-                         <td>Human Resources</td>
-                         <td>Paris</td>
-                         <td><span class="job-status status-pending">Pending Approval</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(3)">Delete</button>
-                         </td>
-                     </tr>
-                     <tr data-job-id="4">
-                         <td>Sales Representative</td>
-                         <td>Sales</td>
-                         <td>Tokyo</td>
-                         <td><span class="job-status status-open">Open</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(4)">Delete</button>
-                         </td>
-                     </tr>
-                     <tr data-job-id="5">
-                         <td>Project Manager</td>
-                         <td>Project Management</td>
-                         <td>San Francisco</td>
-                         <td><span class="job-status status-open">Open</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(5)">Delete</button>
-                         </td>
-                     </tr>
-                     <tr data-job-id="6">
-                         <td>Data Analyst</td>
-                         <td>Engineering</td>
-                         <td>New York</td>
-                         <td><span class="job-status status-open">Open</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(6)">Delete</button>
-                         </td>
-                     </tr>
-                     <tr data-job-id="7">
-                         <td>Content Writer</td>
-                         <td>Marketing</td>
-                         <td>London</td>
-                         <td><span class="job-status status-closed">Closed</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(7)">Delete</button>
-                         </td>
-                     </tr>
-                     <tr data-job-id="8">
-                         <td>Recruitment Specialist</td>
-                         <td>Human Resources</td>
-                         <td>Paris</td>
-                         <td><span class="job-status status-open">Open</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(8)">Delete</button>
-                         </td>
-                     </tr>
-                     <tr data-job-id="9">
-                         <td>Account Executive</td>
-                         <td>Sales</td>
-                         <td>Tokyo</td>
-                         <td><span class="job-status status-pending">Pending Approval</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(9)">Delete</button>
-                         </td>
-                     </tr>
-                     <tr data-job-id="10">
-                         <td>Business Analyst</td>
-                         <td>Project Management</td>
-                         <td>San Francisco</td>
-                         <td><span class="job-status status-open">Open</span></td>
-                         <td>
-                             <button class="edit-button" onclick="openEditModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteJob(10)">Delete</button>
-                         </td>
-                     </tr>
-                 </tbody>
-             </table>
+                 <li class="item">
+                     <a class="submenu-header" href="logout.html">
+                         <span class="icon"><i class='bx bx-log-out'></i></span>
+                         <span>Logout</span>
+                     </a>
+                 </li>
+             </ul>
          </div>
+     </nav>
 
-         <div class="reports-container">
+     <nav class="navbar">
+         <i class="fa-solid fa-bars" id="sidebar-close"></i>
+     </nav>
+
+     <div class="main">
+       <div class="reports-container">
              <div class="reports-header">
                  <h2>Job Position Reports (5)</h2>
                  <div>
@@ -726,39 +577,76 @@
          </div>
      </div>
 
+
+         <div class="custom-reports-container">
+             <div class="custom-reports-header">
+                 <h2>Custom Reports</h2>
+                 <button class="add-button" onclick="openAddModal()">Add New Report</button>
+             </div>
+             <table class="custom-reports-table">
+                 <thead>
+                     <tr>
+                         <th>Report Name</th>
+                         <th>Description</th>
+                         <th>Actions</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr data-report-id="1">
+                         <td>Monthly Summary</td>
+                         <td>Overview of key metrics for the past month.</td>
+                         <td class="report-actions">
+                             <button class="edit-button" onclick="openEditReportModal(this)">Edit</button>
+                             <button class="delete-button" onclick="deleteReport(1)">Delete</button>
+                             <button class="download-button" onclick="downloadReport('pdf', 1)">Download PDF</button>
+                             <button class="download-button" onclick="downloadReport('excel', 1)">Download Excel</button>
+                         </td>
+                     </tr>
+                     <tr data-report-id="2">
+                         <td>Department Performance</td>
+                         <td>Comparative performance of different departments.</td>
+                         <td class="report-actions">
+                             <button class="edit-button" onclick="openEditReportModal(this)">Edit</button>
+                             <button class="delete-button" onclick="deleteReport(2)">Delete</button>
+                             <button class="download-button" onclick="downloadReport('pdf', 2)">Download PDF</button>
+                             <button class="download-button" onclick="downloadReport('excel', 2)">Download Excel</button>
+                         </td>
+                     </tr>
+                     </tbody>
+             </table>
+         </div>
+     </div>
+
+     <div id="addModal" class="modal">
+         <div class="modal-content">
+             <span class="close-button" onclick="closeAddModal()">&times;</span>
+             <h2>Add New Report Definition</h2>
+             <form id="addForm" class="add-form">
+                 <label for="addName">Report Name:</label>
+                 <input type="text" id="addName" name="name" required>
+
+                 <label for="addDescription">Description:</label>
+                 <textarea id="addDescription" name="description"></textarea>
+
+                 <div class="add-actions">
+                     <button type="button" onclick="saveAddForm()">Add Report</button>
+                     <button type="button" onclick="closeAddModal()">Cancel</button>
+                 </div>
+             </form>
+         </div>
+     </div>
+
      <div id="editModal" class="modal">
          <div class="modal-content">
              <span class="close-button" onclick="closeEditModal()">&times;</span>
-             <h2>Edit Job Position</h2>
+             <h2>Edit Report Definition</h2>
              <form id="editForm" class="edit-form">
-                 <input type="hidden" id="editJobId">
-                 <label for="editTitle">Title:</label>
-                 <input type="text" id="editTitle" name="title" required>
+                 <input type="hidden" id="editReportId">
+                 <label for="editName">Report Name:</label>
+                 <input type="text" id="editName" name="name" required>
 
-                 <label for="editDepartment">Department:</label>
-                 <select id="editDepartment" name="department" required>
-                     <option value="Engineering">Engineering</option>
-                     <option value="Marketing">Marketing</option>
-                     <option value="Human Resources">Human Resources</option>
-                     <option value="Sales">Sales</option>
-                     <option value="Project Management">Project Management</option>
-                 </select>
-
-                 <label for="editLocation">Location:</label>
-                 <select id="editLocation" name="location" required>
-                     <option value="New York">New York</option>
-                     <option value="London">London</option>
-                     <option value="Paris">Paris</option>
-                     <option value="Tokyo">Tokyo</option>
-                     <option value="San Francisco">San Francisco</option>
-                 </select>
-
-                 <label for="editStatus">Status:</label>
-                 <select id="editStatus" name="status" required>
-                     <option value="open">Open</option>
-                     <option value="closed">Closed</option>
-                     <option value="pending">Pending Approval</option>
-                 </select>
+                 <label for="editDescription">Description:</label>
+                 <textarea id="editDescription" name="description"></textarea>
 
                  <div class="edit-actions">
                      <button type="button" onclick="saveEditForm()">Save Changes</button>
@@ -791,106 +679,104 @@
              }
          }
 
+         
+         const addModal = document.getElementById('addModal');
+         let nextReportId = 3; // Start with an ID after the initial sample reports
 
-         document.getElementById('filterDepartment').addEventListener('change', filterJobs);
-         document.getElementById('filterLocation').addEventListener('change', filterJobs);
-         document.getElementById('searchJob').addEventListener('input', filterJobs);
-
-         function filterJobs() {
-             const departmentFilter = document.getElementById('filterDepartment').value.toLowerCase();
-             const locationFilter = document.getElementById('filterLocation').value.toLowerCase();
-             const searchInput = document.getElementById('searchJob').value.toLowerCase();
-             const jobRows = document.querySelector('.job-table tbody').querySelectorAll('tr');
-
-             jobRows.forEach(row => {
-                 const title = row.cells[0].textContent.toLowerCase();
-                 const department = row.cells[1].textContent.toLowerCase();
-                 const location = row.cells[2].textContent.toLowerCase();
-                 const matchesDepartment = departmentFilter === '' || department === departmentFilter;
-                 const matchesLocation = locationFilter === '' || location === locationFilter;
-                 const matchesSearch = searchInput === '' || title.includes(searchInput);
-
-                 if (matchesDepartment && matchesLocation && matchesSearch) {
-                     row.style.display = '';
-                 } else {
-                     row.style.display = 'none';
-                 }
-             });
+         function openAddModal() {
+             addModal.style.display = "block";
+             document.getElementById('addName').value = '';
+             document.getElementById('addDescription').value = '';
          }
 
+         function closeAddModal() {
+             addModal.style.display = "none";
+         }
 
+         function saveAddForm() {
+             const reportName = document.getElementById('addName').value;
+             const reportDescription = document.getElementById('addDescription').value;
+             const newRow = document.createElement('tr');
+             newRow.dataset.reportId = nextReportId;
+             newRow.innerHTML = `
+                 <td><span class="math-inline">\{reportName\}</td\>
+<td\></span>{reportDescription}</td>
+                 <td class="report-actions">
+                     <button class="edit-button" onclick="openEditReportModal(this)">Edit</button>
+                     <button class="delete-button" onclick="deleteReport(${nextReportId})">Delete</button>
+                     <button class="download-button" onclick="downloadReport('pdf', ${nextReportId})">Download PDF</button>
+                     <button class="download-button" onclick="downloadReport('excel', ${nextReportId})">Download Excel</button>
+                 </td>
+             `;
+             document.querySelector('.custom-reports-table tbody').appendChild(newRow);
+             closeAddModal();
+             alert(`Report "${reportName}" added successfully! (Simulated)`);
+             nextReportId++;
+         }
+
+         
          const editModal = document.getElementById('editModal');
-         let currentJobId = null;
+         let currentReportId = null;
 
-         function openEditModal(button) {
+         function openEditReportModal(button) {
              const row = button.closest('tr');
-             currentJobId = row.dataset.jobId;
-             const title = row.cells[0].textContent;
-             const department = row.cells[1].textContent;
-             const location = row.cells[2].textContent;
-             const status = row.cells[3].querySelector('span').classList[1].split('-')[1];
+             currentReportId = row.dataset.reportId;
+             const name = row.cells[0].textContent;
+             const description = row.cells[1].textContent;
 
-             document.getElementById('editJobId').value = currentJobId;
-             document.getElementById('editTitle').value = title;
-             document.getElementById('editDepartment').value = department;
-             document.getElementById('editLocation').value = location;
-             document.getElementById('editStatus').value = status;
+             document.getElementById('editReportId').value = currentReportId;
+             document.getElementById('editName').value = name;
+             document.getElementById('editDescription').value = description;
 
              editModal.style.display = "block";
          }
 
          function closeEditModal() {
              editModal.style.display = "none";
-             currentJobId = null;
+             currentReportId = null;
          }
 
          function saveEditForm() {
-             if (currentJobId) {
-                 const row = document.querySelector(`.job-table tbody tr[data-job-id="${currentJobId}"]`);
+             if (currentReportId) {
+                 const row = document.querySelector(`.custom-reports-table tbody tr[data-report-id="${currentReportId}"]`);
                  if (row) {
-                     row.cells[0].textContent = document.getElementById('editTitle').value;
-                     row.cells[1].textContent = document.getElementById('editDepartment').value;
-                     row.cells[2].textContent = document.getElementById('editLocation').value;
-
-                     const statusSpan = row.cells[3].querySelector('span');
-                     const newStatus = document.getElementById('editStatus').value;
-                     statusSpan.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1) + (newStatus === 'pending' ? ' Approval' : '');
-                     statusSpan. className = `job-status status-${newStatus}`;
+                     row.cells[0].textContent = document.getElementById('editName').value;
+                     row.cells[1].textContent = document.getElementById('editDescription').value;
                  }
                  closeEditModal();
-                 alert(`Job ID ${currentJobId} updated successfully! (This is a simulated action)`);
-                 
-                 const updatedJobData = {
-                     id: currentJobId,
-                     title: document.getElementById('editTitle').value,
-                     department: document.getElementById('editDepartment').value,
-                     location: document.getElementById('editLocation').value,
-                     status: document.getElementById('editStatus').value
-                 };
-                 console.log('Updated Job Data:', updatedJobData);
+                 alert(`Report ID ${currentReportId} updated successfully! (Simulated)`);
              }
          }
 
-         function deleteJob(jobId) {
-             if (confirm(`Are you sure you want to delete job ID ${jobId}?`)) {
-                 const rowToRemove = document.querySelector(`.job-table tbody tr[data-job-id="${jobId}"]`);
+         
+         function deleteReport(reportId) {
+             if (confirm(`Are you sure you want to delete report ID ${reportId}?`)) {
+                 const rowToRemove = document.querySelector(`.custom-reports-table tbody tr[data-report-id="${reportId}"]`);
                  if (rowToRemove) {
                      rowToRemove.remove();
-                     alert(`Job ID ${jobId} deleted successfully! (This is a simulated action)`);
-                     .
-                     console.log('Deleted Job ID:', jobId);
+                     alert(`Report ID ${reportId} deleted successfully! (Simulated)`);
                  }
              }
          }
 
-         function downloadReport(format) {
-             alert(`Downloading job position reports in ${format} format... (This is a simulated download)`);
-             console.log('Download Report Format:', format);
          
+         function downloadReport(format, reportId) {
+             alert(`Downloading report ID ${reportId} in ${format} format... (Simulated download)`);
+             console.log('Download Report ID:', reportId, 'Format:', format);
+            .
+             const downloadLink = document.createElement('a');
+             downloadLink.href = `/download-report/<span class="math-inline">\{reportId\}\.</span>{format}`; 
+             downloadLink.download = `report_${reportId}.${format}`;
+             document.body.appendChild(downloadLink);
+             downloadLink.click();
+             document.body.removeChild(downloadLink);
          }
 
          
          window.onclick = function(event) {
+             if (event.target == addModal) {
+                 closeAddModal();
+             }
              if (event.target == editModal) {
                  closeEditModal();
              }
