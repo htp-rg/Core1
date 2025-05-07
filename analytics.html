@@ -506,21 +506,38 @@
          <div class="reports-container">
              <div class="reports-header">
                  <h2>Job Position Reports (5)</h2>
-                 <div>
-                     <button class="download-button" onclick="downloadReport('pdf')">Download PDF</button>
-                     <button class="download-button" onclick="downloadReport('excel')">Download Excel</button>
-                 </div>
              </div>
-             <div class="report-item">Report 1: Summary of Open Positions by Department</div>
-             <div class="report-item">Report 2: List of Closed Positions in the Last Quarter</div>
-             <div class="report-item">Report 3: Pending Approval Job Requests</div>
-             <div class="report-item">Report 4: New Job Positions Created This Month</div>
-             <div class="report-item">Report 5: Distribution of Job Locations</div>
+             <div class="report-item">
+                 <span>Report 1: Summary of Open Positions by Department</span>
+                 <button class="download-button" onclick="downloadReport('pdf', 1)">Download PDF</button>
+                 <button class="download-button" onclick="downloadReport('excel', 1)">Download Excel</button>
+             </div>
+             <div class="report-item">
+                 <span>Report 2: List of Closed Positions in the Last Quarter</span>
+                 <button class="download-button" onclick="downloadReport('pdf', 2)">Download PDF</button>
+                 <button class="download-button" onclick="downloadReport('excel', 2)">Download Excel</button>
+             </div>
+             <div class="report-item">
+                 <span>Report 3: Pending Approval Job Requests</span>
+                 <button class="download-button" onclick="downloadReport('pdf', 3)">Download PDF</button>
+                 <button class="download-button" onclick="downloadReport('excel', 3)">Download Excel</button>
+             </div>
+             <div class="report-item">
+                 <span>Report 4: New Job Positions Created This Month</span>
+                 <button class="download-button" onclick="downloadReport('pdf', 4)">Download PDF</button>
+                 <button class="download-button" onclick="downloadReport('excel', 4)">Download Excel</button>
+             </div>
+             <div class="report-item">
+                 <span>Report 5: Distribution of Job Locations</span>
+                 <button class="download-button" onclick="downloadReport('pdf', 5)">Download PDF</button>
+                 <button class="download-button" onclick="downloadReport('excel', 5)">Download Excel</button>
+             </div>
          </div>
 
          <div class="performance-container">
              <div class="performance-header">
                  <h2>Job Listing Performance (10)</h2>
+                 <button class="add-button" onclick="openAddPerformanceModal()">Add New Entry</button>
              </div>
              <table class="performance-table">
                  <thead>
@@ -529,19 +546,20 @@
                          <th>Views</th>
                          <th>Applications</th>
                          <th>Average Time to Fill</th>
+                         <th>Actions</th>
                      </tr>
                  </thead>
                  <tbody>
-                     <tr><td>Software Engineer</td><td>150</td><td>35</td><td>30 days</td></tr>
-                     <tr><td>Marketing Manager</td><td>120</td><td>28</td><td>45 days</td></tr>
-                     <tr><td>HR Generalist</td><td>95</td><td>20</td><td>25 days</td></tr>
-                     <tr><td>Sales Representative</td><td>180</td><td>42</td><td>35 days</td></tr>
-                     <tr><td>Project Manager</td><td>130</td><td>30</td><td>50 days</td></tr>
-                     <tr><td>Data Analyst</td><td>165</td><td>38</td><td>40 days</td></tr>
-                     <tr><td>Content Writer</td><td>110</td><td>25</td><td>30 days</td></tr>
-                     <tr><td>Recruitment Specialist</td><td>100</td><td>22</td><td>28 days</td></tr>
-                     <tr><td>Account Executive</td><td>140</td><td>32</td><td>42 days</td></tr>
-                     <tr><td>Business Analyst</td><td>125</td><td>29</td><td>38 days</td></tr>
+                     <tr data-performance-id="1"><td>Software Engineer</td><td>150</td><td>35</td><td>30 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(1)">Delete</button></td></tr>
+                     <tr data-performance-id="2"><td>Marketing Manager</td><td>120</td><td>28</td><td>45 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(2)">Delete</button></td></tr>
+                     <tr data-performance-id="3"><td>HR Generalist</td><td>95</td><td>20</td><td>25 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(3)">Delete</button></td></tr>
+                     <tr data-performance-id="4"><td>Sales Representative</td><td>180</td><td>42</td><td>35 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(4)">Delete</button></td></tr>
+                     <tr data-performance-id="5"><td>Project Manager</td><td>130</td><td>30</td><td>50 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(5)">Delete</button></td></tr>
+                     <tr data-performance-id="6"><td>Data Analyst</td><td>165</td><td>38</td><td>40 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(6)">Delete</button></td></tr>
+                     <tr data-performance-id="7"><td>Content Writer</td><td>110</td><td>25</td><td>30 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(7)">Delete</button></td></tr>
+                     <tr data-performance-id="8"><td>Recruitment Specialist</td><td>100</td><td>22</td><td>28 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(8)">Delete</button></td></tr>
+                     <tr data-performance-id="9"><td>Account Executive</td><td>140</td><td>32</td><td>42 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(9)">Delete</button></td></tr>
+                     <tr data-performance-id="10"><td>Business Analyst</td><td>125</td><td>29</td><td>38 days</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(10)">Delete</button></td></tr>
                  </tbody>
              </table>
          </div>
@@ -549,6 +567,7 @@
          <div class="applications-container">
              <div class="applications-header">
                  <h2>Application Listings (10)</h2>
+                 <button class="add-button" onclick="openAddApplicationModal()">Add New Entry</button>
              </div>
              <table class="application-table">
                  <thead>
@@ -559,19 +578,20 @@
                          <th>Shortlisted</th>
                          <th>Interviewed</th>
                          <th>Offered</th>
+                         <th>Actions</th>
                      </tr>
                  </thead>
                  <tbody>
-                     <tr><td>Software Engineer</td><td>120</td><td>15</td><td>25</td><td>15</td><td>5</td></tr>
-                     <tr><td>Marketing Manager</td><td>90</td><td>10</td><td>20</td><td>12</td><td>3</td></tr>
-                     <tr><td>HR Generalist</td><td>75</td><td>8</td><td>15</td><td>10</td><td>2</td></tr>
-                     <tr><td>Sales Representative</td><td>150</td><td>20</td><td>30</td><td>18</td><td>7</td></tr>
-                     <tr><td>Project Manager</td><td>105</td><td>12</td><td>22</td><td>14</td><td>4</td></tr>
-                     <tr><td>Data Analyst</td><td>135</td><td>18</td><td>28</td><td>16</td><td>6</td></tr>
-                     <tr><td>Content Writer</td><td>80</td><td>9</td><td>18</td><td>11</td><td>3</td></tr>
-                     <tr><td>Recruitment Specialist</td><td>65</td><td>7</td><td>13</td><td>9</td><td>1</td></tr>
-                     <tr><td>Account Executive</td><td>115</td><td>14</td><td>24</td><td>15</td><td>5</td></tr>
-                     <tr><td>Business Analyst</td><td>95</td><td>11</td><td>21</td><td>13</td><td>4</td></tr>
+                     <tr data-application-id="1"><td>Software Engineer</td><td>120</td><td>15</td><td>25</td><td>15</td><td>5</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(1)">Delete</button></td></tr>
+                     <tr data-application-id="2"><td>Marketing Manager</td><td>90</td><td>10</td><td>20</td><td>12</td><td>3</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(2)">Delete</button></td></tr>
+                     <tr data-application-id="3"><td>HR Generalist</td><td>75</td><td>8</td><td>15</td><td>10</td><td>2</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(3)">Delete</button></td></tr>
+                     <tr data-application-id="4"><td>Sales Representative</td><td>150</td><td>20</td><td>30</td><td>18</td><td>7</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(4)">Delete</button></td></tr>
+                     <tr data-application-id="5"><td>Project Manager</td><td>105</td><td>12</td><td>22</td><td>14</td><td>4</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(5)">Delete</button></td></tr>
+                     <tr data-application-id="6"><td>Data Analyst</td><td>135</td><td>18</td><td>28</td><td>16</td><td>6</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(6)">Delete</button></td></tr>
+                     <tr data-application-id="7"><td>Content Writer</td><td>80</td><td>9</td><td>18</td><td>11</td><td>3</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(7)">Delete</button></td></tr>
+                     <tr data-application-id="8"><td>Recruitment Specialist</td><td>65</td><td>7</td><td>13</td><td>9</td><td>1</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(8)">Delete</button></td></tr>
+                     <tr data-application-id="9"><td>Account Executive</td><td>115</td><td>14</td><td>24</td><td>15</td><td>5</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(9)">Delete</button></td></tr>
+                     <tr data-application-id="10"><td>Business Analyst</td><td>95</td><td>11</td><td>21</td><td>13</td><td>4</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(10)">Delete</button></td></tr>
                  </tbody>
              </table>
          </div>
@@ -579,7 +599,7 @@
          <div class="custom-reports-container">
              <div class="custom-reports-header">
                  <h2>Custom Reports</h2>
-                 <button class="add-button" onclick="openAddModal()">Add New Report</button>
+                 <button class="add-button" onclick="openAddCustomReportModal()">Add New Report</button>
              </div>
              <table class="custom-reports-table">
                  <thead>
@@ -594,8 +614,8 @@
                          <td>Monthly Summary</td>
                          <td>Overview of key metrics for the past month.</td>
                          <td class="report-actions">
-                             <button class="edit-button" onclick="openEditReportModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteReport(1)">Delete</button>
+                             <button class="edit-button" onclick="openEditCustomReportModal(this)">Edit</button>
+                             <button class="delete-button" onclick="deleteCustomReport(1)">Delete</button>
                              <button class="download-button" onclick="downloadReport('pdf', 1)">Download PDF</button>
                              <button class="download-button" onclick="downloadReport('excel', 1)">Download Excel</button>
                          </td>
@@ -604,8 +624,8 @@
                          <td>Department Performance</td>
                          <td>Comparative performance of different departments.</td>
                          <td class="report-actions">
-                             <button class="edit-button" onclick="openEditReportModal(this)">Edit</button>
-                             <button class="delete-button" onclick="deleteReport(2)">Delete</button>
+                             <button class="edit-button" onclick="openEditCustomReportModal(this)">Edit</button>
+                             <button class="delete-button" onclick="deleteCustomReport(2)">Delete</button>
                              <button class="download-button" onclick="downloadReport('pdf', 2)">Download PDF</button>
                              <button class="download-button" onclick="downloadReport('excel', 2)">Download Excel</button>
                          </td>
@@ -615,40 +635,154 @@
          </div>
      </div>
 
-     <div id="addModal" class="modal">
+     <div id="addPerformanceModal" class="modal">
          <div class="modal-content">
-             <span class="close-button" onclick="closeAddModal()">&times;</span>
-             <h2>Add New Report Definition</h2>
-             <form id="addForm" class="add-form">
-                 <label for="addName">Report Name:</label>
-                 <input type="text" id="addName" name="name" required>
+             <span class="close-button" onclick="closeAddPerformanceModal()">&times;</span>
+             <h2>Add New Performance Entry</h2>
+             <form id="addPerformanceForm" class="add-form">
+                 <label for="addPerformanceTitle">Job Title:</label>
+                 <input type="text" id="addPerformanceTitle" name="title" required>
 
-                 <label for="addDescription">Description:</label>
-                 <textarea id="addDescription" name="description"></textarea>
+                 <label for="addPerformanceViews">Views:</label>
+                 <input type="number" id="addPerformanceViews" name="views" required>
+
+                 <label for="addPerformanceApplications">Applications:</label>
+                 <input type="number" id="addPerformanceApplications" name="applications" required>
+
+                 <label for="addPerformanceTimeToFill">Average Time to Fill:</label>
+                 <input type="text" id="addPerformanceTimeToFill" name="timeToFill">
 
                  <div class="add-actions">
-                     <button type="button" onclick="saveAddForm()">Add Report</button>
-                     <button type="button" onclick="closeAddModal()">Cancel</button>
+                     <button type="button" onclick="saveAddPerformanceForm()">Add Entry</button>
+                     <button type="button" onclick="closeAddPerformanceModal()">Cancel</button>
                  </div>
              </form>
          </div>
      </div>
 
-     <div id="editModal" class="modal">
+     <div id="editPerformanceModal" class="modal">
          <div class="modal-content">
-             <span class="close-button" onclick="closeEditModal()">&times;</span>
-             <h2>Edit Report Definition</h2>
-             <form id="editForm" class="edit-form">
-                 <input type="hidden" id="editReportId">
-                 <label for="editName">Report Name:</label>
-                 <input type="text" id="editName" name="name" required>
+             <span class="close-button" onclick="closeEditPerformanceModal()">&times;</span>
+             <h2>Edit Performance Entry</h2>
+             <form id="editPerformanceForm" class="edit-form">
+                 <input type="hidden" id="editPerformanceId">
+                 <label for="editPerformanceTitle">Job Title:</label>
+                 <input type="text" id="editPerformanceTitle" name="title" required>
 
-                 <label for="editDescription">Description:</label>
-                 <textarea id="editDescription" name="description"></textarea>
+                 <label for="editPerformanceViews">Views:</label>
+                 <input type="number" id="editPerformanceViews" name="views" required>
+
+                 <label for="editPerformanceApplications">Applications:</label>
+                 <input type="number" id="editPerformanceApplications" name="applications" required>
+
+                 <label for="editPerformanceTimeToFill">Average Time to Fill:</label>
+                 <input type="text" id="editPerformanceTimeToFill" name="timeToFill">
 
                  <div class="edit-actions">
-                     <button type="button" onclick="saveEditForm()">Save Changes</button>
-                     <button type="button" onclick="closeEditModal()">Cancel</button>
+                     <button type="button" onclick="saveEditPerformanceForm()">Save Changes</button>
+                     <button type="button" onclick="closeEditPerformanceModal()">Cancel</button>
+                 </div>
+             </form>
+         </div>
+     </div>
+
+     <div id="addApplicationModal" class="modal">
+         <div class="modal-content">
+             <span class="close-button" onclick="closeAddApplicationModal()">&times;</span>
+             <h2>Add New Application Entry</h2>
+             <form id="addApplicationForm" class="add-form">
+                 <label for="addApplicationTitle">Job Title:</label>
+                 <input type="text" id="addApplicationTitle" name="title" required>
+
+                 <label for="addTotalApplications">Total Applications:</label>
+                 <input type="number" id="addTotalApplications" name="totalApplications" required>
+
+                 <label for="addNewApplications">New Applications (Last 7 Days):</label>
+                 <input type="number" id="addNewApplications" name="newApplications">
+
+                 <label for="addShortlisted">Shortlisted:</label>
+                 <input type="number" id="addShortlisted" name="shortlisted">
+
+                 <label for="addInterviewed">Interviewed:</label>
+                 <input type="number" id="addInterviewed" name="interviewed">
+
+                 <label for="addOffered">Offered:</label>
+                 <input type="number" id="addOffered" name="offered">
+
+                 <div class="add-actions">
+                     <button type="button" onclick="saveAddApplicationForm()">Add Entry</button>
+                     <button type="button" onclick="closeAddApplicationModal()">Cancel</button>
+                 </div>
+             </form>
+         </div>
+     </div>
+
+     <div id="editApplicationModal" class="modal">
+         <div class="modal-content">
+             <span class="close-button" onclick="closeEditApplicationModal()">&times;</span>
+             <h2>Edit Application Entry</h2>
+             <form id="editApplicationForm" class="edit-form">
+                 <input type="hidden" id="editApplicationId">
+                 <label for="editApplicationTitle">Job Title:</label>
+                 <input type="text" id="editApplicationTitle" name="title" required>
+
+                 <label for="editTotalApplications">Total Applications:</label>
+                 <input type="number" id="editTotalApplications"<input type="number" id="editTotalApplications" name="totalApplications" required>
+
+                 <label for="editNewApplications">New Applications (Last 7 Days):</label>
+                 <input type="number" id="editNewApplications" name="newApplications">
+
+                 <label for="editShortlisted">Shortlisted:</label>
+                 <input type="number" id="editShortlisted" name="shortlisted">
+
+                 <label for="editInterviewed">Interviewed:</label>
+                 <input type="number" id="editInterviewed" name="interviewed">
+
+                 <label for="editOffered">Offered:</label>
+                 <input type="number" id="editOffered" name="offered">
+
+                 <div class="edit-actions">
+                     <button type="button" onclick="saveEditApplicationForm()">Save Changes</button>
+                     <button type="button" onclick="closeEditApplicationModal()">Cancel</button>
+                 </div>
+             </form>
+         </div>
+     </div>
+
+     <div id="addCustomReportModal" class="modal">
+         <div class="modal-content">
+             <span class="close-button" onclick="closeAddCustomReportModal()">&times;</span>
+             <h2>Add New Report Definition</h2>
+             <form id="addCustomReportForm" class="add-form">
+                 <label for="addCustomReportName">Report Name:</label>
+                 <input type="text" id="addCustomReportName" name="name" required>
+
+                 <label for="addCustomReportDescription">Description:</label>
+                 <textarea id="addCustomReportDescription" name="description"></textarea>
+
+                 <div class="add-actions">
+                     <button type="button" onclick="saveAddCustomReportForm()">Add Report</button>
+                     <button type="button" onclick="closeAddCustomReportModal()">Cancel</button>
+                 </div>
+             </form>
+         </div>
+     </div>
+
+     <div id="editCustomReportModal" class="modal">
+         <div class="modal-content">
+             <span class="close-button" onclick="closeEditCustomReportModal()">&times;</span>
+             <h2>Edit Report Definition</h2>
+             <form id="editCustomReportForm" class="edit-form">
+                 <input type="hidden" id="editCustomReportId">
+                 <label for="editCustomReportName">Report Name:</label>
+                 <input type="text" id="editCustomReportName" name="name" required>
+
+                 <label for="editCustomReportDescription">Description:</label>
+                 <textarea id="editCustomReportDescription" name="description"></textarea>
+
+                 <div class="edit-actions">
+                     <button type="button" onclick="saveEditCustomReportForm()">Save Changes</button>
+                     <button type="button" onclick="closeEditCustomReportModal()">Cancel</button>
                  </div>
              </form>
          </div>
@@ -677,77 +811,77 @@
              }
          }
 
-         
-         const addModal = document.getElementById('addModal');
-         let nextReportId = 3; // Start with an ID after the initial sample reports
 
-         function openAddModal() {
-             addModal.style.display = "block";
-             document.getElementById('addName').value = '';
-             document.getElementById('addDescription').value = '';
+         const addCustomReportModal = document.getElementById('addCustomReportModal');
+         let nextCustomReportId = 3; // Start with an ID after the initial sample reports
+
+         function openAddCustomReportModal() {
+             addCustomReportModal.style.display = "block";
+             document.getElementById('addCustomReportName').value = '';
+             document.getElementById('addCustomReportDescription').value = '';
          }
 
-         function closeAddModal() {
-             addModal.style.display = "none";
+         function closeAddCustomReportModal() {
+             addCustomReportModal.style.display = "none";
          }
 
-         function saveAddForm() {
-             const reportName = document.getElementById('addName').value;
-             const reportDescription = document.getElementById('addDescription').value;
+         function saveAddCustomReportForm() {
+             const reportName = document.getElementById('addCustomReportName').value;
+             const reportDescription = document.getElementById('addCustomReportDescription').value;
              const newRow = document.createElement('tr');
-             newRow.dataset.reportId = nextReportId;
+             newRow.dataset.reportId = nextCustomReportId;
              newRow.innerHTML = `
                  <td><span class="math-inline">\{reportName\}</td\>
 <td\></span>{reportDescription}</td>
                  <td class="report-actions">
-                     <button class="edit-button" onclick="openEditReportModal(this)">Edit</button>
-                     <button class="delete-button" onclick="deleteReport(${nextReportId})">Delete</button>
-                     <button class="download-button" onclick="downloadReport('pdf', ${nextReportId})">Download PDF</button>
-                     <button class="download-button" onclick="downloadReport('excel', ${nextReportId})">Download Excel</button>
+                     <button class="edit-button" onclick="openEditCustomReportModal(this)">Edit</button>
+                     <button class="delete-button" onclick="deleteCustomReport(${nextCustomReportId})">Delete</button>
+                     <button class="download-button" onclick="downloadReport('pdf', ${nextCustomReportId})">Download PDF</button>
+                     <button class="download-button" onclick="downloadReport('excel', ${nextCustomReportId})">Download Excel</button>
                  </td>
              `;
              document.querySelector('.custom-reports-table tbody').appendChild(newRow);
-             closeAddModal();
+             closeAddCustomReportModal();
              alert(`Report "${reportName}" added successfully! (Simulated)`);
-             nextReportId++;
+             nextCustomReportId++;
          }
 
-         
-         const editModal = document.getElementById('editModal');
-         let currentReportId = null;
 
-         function openEditReportModal(button) {
+         const editCustomReportModal = document.getElementById('editCustomReportModal');
+         let currentCustomReportId = null;
+
+         function openEditCustomReportModal(button) {
              const row = button.closest('tr');
-             currentReportId = row.dataset.reportId;
+             currentCustomReportId = row.dataset.reportId;
              const name = row.cells[0].textContent;
              const description = row.cells[1].textContent;
 
-             document.getElementById('editReportId').value = currentReportId;
-             document.getElementById('editName').value = name;
-             document.getElementById('editDescription').value = description;
+             document.getElementById('editCustomReportId').value = currentCustomReportId;
+             document.getElementById('editCustomReportName').value = name;
+             document.getElementById('editCustomReportDescription').value = description;
 
-             editModal.style.display = "block";
+             editCustomReportModal.style.display = "block";
          }
 
-         function closeEditModal() {
-             editModal.style.display = "none";
-             currentReportId = null;
+         function closeEditCustomReportModal() {
+             editCustomReportModal.style.display = "none";
+             currentCustomReportId = null;
          }
 
-         function saveEditForm() {
-             if (currentReportId) {
-                 const row = document.querySelector(`.custom-reports-table tbody tr[data-report-id="${currentReportId}"]`);
+         function saveEditCustomReportForm() {
+             if (currentCustomReportId) {
+                 const row = document.querySelector(`.custom-reports-table tbody tr[data-report-id="${currentCustomReportId}"]`);
                  if (row) {
-                     row.cells[0].textContent = document.getElementById('editName').value;
-                     row.cells[1].textContent = document.getElementById('editDescription').value;
+                     row.cells[0].textContent = document.getElementById('editCustomReportName').value;
+                     row.cells[1].textContent = document.getElementById('editCustomReportDescription').value;
                  }
-                 closeEditModal();
-                 alert(`Report ID ${currentReportId} updated successfully! (Simulated)`);
+                 closeEditCustomReportModal();
+                 alert(`Report ID ${currentCustomReportId} updated successfully! (Simulated)`);
              }
          }
 
-         
-         function deleteReport(reportId) {
+
+         function deleteCustomReport(reportId) {
              if (confirm(`Are you sure you want to delete report ID ${reportId}?`)) {
                  const rowToRemove = document.querySelector(`.custom-reports-table tbody tr[data-report-id="${reportId}"]`);
                  if (rowToRemove) {
@@ -757,23 +891,22 @@
              }
          }
 
-         
+
          function downloadReport(format, reportId) {
              if (reportId) {
-                 alert(`Downloading custom report ID ${reportId} in ${format} format... (Simulated download)`);
-                 console.log('Download Custom Report ID:', reportId, 'Format:', format);
+                 alert(`Downloading report ID ${reportId} in ${format} format... (Simulated download)`);
+                 console.log('Download Report ID:', reportId, 'Format:', format);
                  const downloadLink = document.createElement('a');
-                 downloadLink.href = `/download-custom-report/<span class="math-inline">\{reportId\}\.</span>{format}`; // Example URL for custom reports
-                 downloadLink.download = `custom_report_${reportId}.${format}`;
+                 downloadLink.href = `/download-report/<span class="math-inline">\{reportId\}\.</span>{format}`; // Example URL
+                 downloadLink.download = `report_${reportId}.${format}`;
                  document.body.appendChild(downloadLink);
                  downloadLink.click();
                  document.body.removeChild(downloadLink);
              } else {
-                 
                  alert(`Downloading all job position reports in ${format} format... (Simulated download)`);
                  console.log('Download All Job Position Reports Format:', format);
                  const downloadLink = document.createElement('a');
-                 downloadLink.href = `/download-job-reports.${format}`; // Example URL for all job reports
+                 downloadLink.href = `/download-job-reports.${format}`; // Example URL
                  downloadLink.download = `job_position_reports.${format}`;
                  document.body.appendChild(downloadLink);
                  downloadLink.click();
@@ -781,13 +914,25 @@
              }
          }
 
-         
+
          window.onclick = function(event) {
-             if (event.target == addModal) {
-                 closeAddModal();
+             if (event.target == addCustomReportModal) {
+                 closeAddCustomReportModal();
              }
-             if (event.target == editModal) {
-                 closeEditModal();
+             if (event.target == editCustomReportModal) {
+                 closeEditCustomReportModal();
+             }
+             if (event.target == addPerformanceModal) {
+                 closeAddPerformanceModal();
+             }
+             if (event.target == editPerformanceModal) {
+                 closeEditPerformanceModal();
+             }
+             if (event.target == addApplicationModal) {
+                 closeAddApplicationModal();
+             }
+             if (event.target == editApplicationModal) {
+                 closeEditApplicationModal();
              }
          }
 
@@ -801,6 +946,152 @@
                  });
              }
          });
+
+         
+         const addPerformanceModal = document.getElementById('addPerformanceModal');
+         const editPerformanceModal = document.getElementById('editPerformanceModal');
+         let nextPerformanceId = 11;
+         let currentPerformanceId = null;
+
+         function openAddPerformanceModal() {
+             addPerformanceModal.style.display = "block";
+             document.getElementById('addPerformanceForm').reset();
+         }
+
+         function closeAddPerformanceModal() {
+             addPerformanceModal.style.display = "none";
+         }
+
+         function saveAddPerformanceForm() {
+             const title = document.getElementById('addPerformanceTitle').value;
+             const views = document.getElementById('addPerformanceViews').value;
+             const applications = document.getElementById('addPerformanceApplications').value;
+             const timeToFill = document.getElementById('addPerformanceTimeToFill').value;
+
+             const newRow = document.createElement('tr');
+             newRow.dataset.performanceId = nextPerformanceId;
+             newRow.innerHTML = `<td><span class="math-inline">\{title\}</td\><td\></span>{views}</td><td><span class="math-inline">\{applications\}</td\><td\></span>{timeToFill}</td><td class="report-actions"><button class="edit-button" onclick="openEditPerformanceModal(this)">Edit</button><button class="delete-button" onclick="deletePerformanceEntry(${nextPerformanceId})">Delete</button></td>`;
+             document.querySelector('.performance-table tbody').appendChild(newRow);
+             closeAddPerformanceModal();
+             alert(`Performance entry for "${title}" added! (Simulated)`);
+             nextPerformanceId++;
+         }
+
+         function openEditPerformanceModal(button) {
+             const row = button.closest('tr');
+             currentPerformanceId = row.dataset.performanceId;
+             document.getElementById('editPerformanceId').value = currentPerformanceId;
+             document.getElementById('editPerformanceTitle').value = row.cells[0].textContent;
+             document.getElementById('editPerformanceViews').value = row.cells[1].textContent;
+             document.getElementById('editPerformanceApplications').value = row.cells[2].textContent;
+             document.getElementById('editPerformanceTimeToFill').value = row.cells[3].textContent;
+             editPerformanceModal.style.display = "block";
+         }
+
+         function closeEditPerformanceModal() {
+             editPerformanceModal.style.display = "none";
+             currentPerformanceId = null;
+         }
+
+         function saveEditPerformanceForm() {
+             if (currentPerformanceId) {
+                 const row = document.querySelector(`.performance-table tbody tr[data-performance-id="${currentPerformanceId}"]`);
+                 if (row) {
+                     row.cells[0].textContent = document.getElementById('editPerformanceTitle').value;
+                     row.cells[1].textContent = document.getElementById('editPerformanceViews').value;
+                     row.cells[2].textContent = document.getElementById('editPerformanceApplications').value;
+                     row.cells[3].textContent = document.getElementById('editPerformanceTimeToFill').value;
+                 }
+                 closeEditPerformanceModal();
+                 alert(`Performance entry ID ${currentPerformanceId} updated! (Simulated)`);
+             }
+         }
+
+         function deletePerformanceEntry(id) {
+             if (confirm(`Are you sure you want to delete performance entry ID ${id}?`)) {
+                 const rowToRemove = document.querySelector(`.performance-table tbody tr[data-performance-id="${id}"]`);
+                 if (rowToRemove) {
+                     rowToRemove.remove();
+                     alert(`Performance entry ID ${id} deleted! (Simulated)`);
+                 }
+             }
+         }
+
+         
+         const addApplicationModal = document.getElementById('addApplicationModal');
+         const editApplicationModal = document.getElementById('editApplicationModal');
+         let nextApplicationId = 11;
+         let currentApplicationId = null;
+
+         function openAddApplicationModal() {
+             addApplicationModal.style.display = "block";
+             document.getElementById('addApplicationForm').reset();
+         }
+
+         function closeAddApplicationModal() {
+             addApplicationModal.style.display = "none";
+         }
+
+         function saveAddApplicationForm() {
+             const title = document.getElementById('addApplicationTitle').value;
+             const total = document.getElementById('addTotalApplications').value;
+             const newApps = document.getElementById('addNewApplications').value;
+             const shortlisted = document.getElementById('addShortlisted').value;
+             const interviewed = document.getElementById('addInterviewed').value;
+             const offered = document.getElementById('addOffered').value;
+
+             const newRow = document.createElement('tr');
+             newRow.dataset.applicationId = nextApplicationId;
+             newRow.innerHTML = `<td><span class="math-inline">\{title\}</td\><td\></span>{total}</td><td><span class="math-inline">\{newApps\}</td\><td\></span>{shortlisted}</td><td><span class="math-inline">\{interviewed\}</td\><td\></span>{offered}</td><td class="report-actions"><button class="edit-button" onclick="openEditApplicationModal(this)">Edit</button><button class="delete-button" onclick="deleteApplicationEntry(${nextApplicationId})">Delete</button></td>`;
+             document.querySelector('.application-table tbody').appendChild(newRow);
+             closeAddApplicationModal();
+             alert(`Application entry for "${title}" added! (Simulated)`);
+             nextApplicationId++;
+         }
+
+         function openEditApplicationModal(button) {
+             const row = button.closest('tr');
+             currentApplicationId = row.dataset.applicationId;
+             document.getElementById('editApplicationId').value = currentApplicationId;
+             document.getElementById('editApplicationTitle').value = row.cells[0].textContent;
+             document.getElementById('editTotalApplications').value = row.cells[1].textContent;
+             document.getElementById('editNewApplications').value = row.cells[2].textContent;
+             document.getElementById('editShortlisted').value = row.cells[3].textContent;
+             document.getElementById('editInterviewed').value = row.cells[4].textContent;
+             document.getElementById('editOffered').value = row.cells[5].textContent;
+             editApplicationModal.style.display = "block";
+         }
+
+         function closeEditApplicationModal() {
+             editApplicationModal.style.display = "none";
+             currentApplicationId = null;
+         }
+
+         function saveEditApplicationForm() {
+             if (currentApplicationId) {
+                 const row = document.querySelector(`.application-table tbody tr[data-application-id="${currentApplicationId}"]`);
+                 if (row) {
+                     row.cells[0].textContent = document.getElementById('editApplicationTitle').value;
+                     row.cells[1].textContent = document.getElementById('editTotalApplications').value;
+                     row.cells[2].textContent = document.getElementById('editNewApplications').value;
+                     row.cells[3].textContent = document.getElementById('editShortlisted').value;
+                     row.cells[4].textContent = document.getElementById('editInterviewed').value;
+                     row.cells[5].textContent = document.getElementById('editOffered').value;
+                 }
+                 closeEditApplicationModal();
+                 alert(`Application entry ID ${currentApplicationId} updated! (Simulated)`);
+             }
+         }
+
+         function deleteApplicationEntry(id) {
+             if (confirm(`Are you sure you want to delete application entry ID ${id}?`)) {
+                 const rowToRemove = document.querySelector(`.application-table tbody tr[data-application-id="${id}"]`);
+                 if (rowToRemove) {
+                     rowToRemove.remove();
+                     alert(`Application entry ID ${id} deleted! (Simulated)`);
+                 }
+             }
+         }
      </script>
  </body>
  </html>
