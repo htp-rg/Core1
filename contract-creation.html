@@ -224,7 +224,7 @@
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 30%;
+            width: 40%;
             border-radius: 5px;
             position: relative;
         }
@@ -453,7 +453,7 @@
                         <td>2025-01-15</td>
                         <td>2025-12-31</td>
                         <td>Active</td>
-                        <td><button style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button></td>
+                        <td><button onclick="openViewContractModal('CON001')" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button></td>
                     </tr>
                     <tr>
                         <td>CON002</td>
@@ -461,288 +461,343 @@
                         <td>2025-03-01</td>
                         <td>2025-11-30</td>
                         <td>Pending Approval</td>
-                        <td><button style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button></td>
-</tr>
-<tr>
-<td>CON003</td>
-<td>Gamma Solutions</td>
-<td>2024-07-01</td>
-<td>2025-06-30</td>
-<td>Completed</td>
-<td><button style="background-color: #607D8B; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="addContractModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeAddContractModal()">&times;</span>
-            <h3>Add New Contract</h3>
-            <label for="addClientName">Client Name:</label>
-            <input type="text" id="addClientName" name="addClientName">
-            <label for="addStartDate">Start Date:</label>
-            <input type="text" id="addStartDate" name="addStartDate" placeholder="YYYY-MM-DD">
-            <label for="addEndDate">End Date:</label>
-            <input type="text" id="addEndDate" name="addEndDate" placeholder="YYYY-MM-DD">
-            <label for="addStatus">Status:</label>
-            <select id="addStatus" name="addStatus">
-                <option value="Draft">Draft</option>
-                <option value="Pending Approval">Pending Approval</option>
-                <option value="Active">Active</option>
-                <option value="Completed">Completed</option>
-                <option value="Terminated">Terminated</option>
-            </select>
-            <div class="modal-actions">
-                <button onclick="closeAddContractModal()">Cancel</button>
-                <button onclick="saveNewContract()">Save Contract</button>
-            </div>
+                        <td><button onclick="openViewContractModal('CON002')" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>CON003</td>
+                        <td>Gamma Solutions</td>
+                        <td>2024-07-01</td>
+                        <td>2025-06-30</td>
+                        <td>Completed</td>
+                        <td><button onclick="openViewContractModal('CON003')" style="background-color: #607D8B; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
 
-    <div id="editContractModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeEditContractModal()">&times;</span>
-            <h3>Edit Contract</h3>
-            <label for="editContractId">Contract ID:</label>
-            <input type="text" id="editContractId" name="editContractId" readonly>
-            <label for="editClientName">Client Name:</label>
-            <input type="text" id="editClientName" name="editClientName">
-            <label for="editStartDate">Start Date:</label>
-            <input type="text" id="editStartDate" name="editStartDate" placeholder="YYYY-MM-DD">
-            <label for="editEndDate">End Date:</label>
-            <input type="text" id="editEndDate" name="editEndDate" placeholder="YYYY-MM-DD">
-            <label for="editStatus">Status:</label>
-            <select id="editStatus" name="editStatus">
-                <option value="Draft">Draft</option>
-                <option value="Pending Approval">Pending Approval</option>
-                <option value="Active">Active</option>
-                <option value="Completed">Completed</option>
-                <option value="Terminated">Terminated</option>
-            </select>
-            <div class="modal-actions">
-                <button onclick="closeEditContractModal()">Cancel</button>
-                <button onclick="saveEditedContract()">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="deleteContractModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeDeleteContractModal()">&times;</span>
-            <h3>Delete Contract</h3>
-            <p>Are you sure you want to delete contract <strong id="deleteContractId"></strong>?</p>
-            <div class="modal-actions">
-                <button onclick="closeDeleteContractModal()">Cancel</button>
-                <button onclick="confirmDeleteContract()">Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="draftContractModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeDraftContractModal()">&times;</span>
-            <h3>Draft Contract Creation</h3>
-            <label for="draftClientName">Client Name:</label>
-            <input type="text" id="draftClientName" name="draftClientName">
-            <label for="draftTemplate">Select Template:</label>
-            <select id="draftTemplate" name="draftTemplate">
-                <option value="">-- Select a Template --</option>
-                <option value="template1">Standard Service Agreement</option>
-                <option value="template2">Consulting Contract</option>
-                <option value="template3">NDA Agreement</option>
+        <div id="addContractModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeAddContractModal()">&times;</span>
+                <h3>Add New Contract</h3>
+                <label for="addClientName">Client Name:</label>
+                <input type="text" id="addClientName" name="addClientName">
+                <label for="addStartDate">Start Date:</label>
+                <input type="text" id="addStartDate" name="addStartDate" placeholder="YYYY-MM-DD">
+                <label for="addEndDate">End Date:</label>
+                <input type="text" id="addEndDate" name="addEndDate" placeholder="YYYY-MM-DD">
+                <label for="addStatus">Status:</label>
+                <select id="addStatus" name="addStatus">
+                    <option value="Draft">Draft</option>
+                    <option value="Pending Approval">Pending Approval</option>
+                    <option value="Active">Active</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Terminated">Terminated</option>
                 </select>
-            <label for="draftDetails">Contract Details:</label>
-            <textarea id="draftDetails" name="draftDetails" rows="5" placeholder="Enter specific details for this contract."></textarea>
-            <div class="modal-actions">
-                <button onclick="closeDraftContractModal()">Cancel</button>
-                <button onclick="createDraft()">Create Draft</button>
+                <div class="modal-actions">
+                    <button onclick="closeAddContractModal()">Cancel</button>
+                    <button onclick="saveNewContract()">Save Contract</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="templateManagementModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeTemplateManagementModal()">&times;</span>
-            <h3>Contract Template Management</h3>
-            <label for="addTemplateName">Template Name:</label>
-            <input type="text" id="addTemplateName" name="addTemplateName">
-            <label for="addTemplateContent">Template Content:</label>
-            <textarea id="addTemplateContent" name="addTemplateContent" rows="8" placeholder="Enter the content of the contract template."></textarea>
-            <button onclick="addTemplate()">Add New Template</button>
-
-            <h4>Existing Templates</h4>
-            <ul id="templateList">
-                <li>Standard Service Agreement <button onclick="editTemplate('template1')">Edit</button> <button onclick="deleteTemplate('template1')">Delete</button></li>
-                <li>Consulting Contract <button onclick="editTemplate('template2')">Edit</button> <button onclick="deleteTemplate('template2')">Delete</button></li>
-                <li>NDA Agreement <button onclick="editTemplate('template3')">Edit</button> <button onclick="deleteTemplate('template3')">Delete</button></li>
-                </ul>
-            <div class="modal-actions">
-                <button onclick="closeTemplateManagementModal()">Close</button>
+        <div id="editContractModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeEditContractModal()">&times;</span>
+                <h3>Edit Contract</h3>
+                <label for="editContractId">Contract ID:</label>
+                <input type="text" id="editContractId" name="editContractId" readonly>
+                <label for="editClientName">Client Name:</label>
+                <input type="text" id="editClientName" name="editClientName">
+                <label for="editStartDate">Start Date:</label>
+                <input type="text" id="editStartDate" name="editStartDate" placeholder="YYYY-MM-DD">
+                <label for="editEndDate">End Date:</label>
+                <input type="text" id="editEndDate" name="editEndDate" placeholder="YYYY-MM-DD">
+                <label for="editStatus">Status:</label>
+                <select id="editStatus" name="editStatus">
+                    <option value="Draft">Draft</option>
+                    <option value="Pending Approval">Pending Approval</option>
+                    <option value="Active">Active</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Terminated">Terminated</option>
+                </select>
+                <div class="modal-actions">
+                    <button onclick="closeEditContractModal()">Cancel</button>
+                    <button onclick="saveEditedContract()">Save Changes</button>
+                </div>
             </div>
         </div>
+
+        <div id="deleteContractModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeDeleteContractModal()">&times;</span>
+                <h3>Delete Contract</h3>
+                <p>Are you sure you want to delete contract <strong id="deleteContractId"></strong>?</p>
+                <div class="modal-actions">
+                    <button onclick="closeDeleteContractModal()">Cancel</button>
+                    <button onclick="confirmDeleteContract()">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="draftContractModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeDraftContractModal()">&times;</span>
+                <h3>Draft Contract Creation</h3>
+                <label for="draftClientName">Client Name:</label>
+                <input type="text" id="draftClientName" name="draftClientName">
+                <label for="draftTemplate">Select Template:</label>
+                <select id="draftTemplate" name="draftTemplate">
+                    <option value="">-- Select a Template --</option>
+                    <option value="template1">Standard Service Agreement</option>
+                    <option value="template2">Consulting Contract</option>
+                    <option value="template3">NDA Agreement</option>
+                    </select>
+                <label for="draftDetails">Contract Details:</label>
+                <textarea id="draftDetails" name="draftDetails" rows="5" placeholder="Enter specific details for this contract."></textarea>
+                <div class="modal-actions">
+                    <button onclick="closeDraftContractModal()">Cancel</button>
+                    <button onclick="createDraft()">Create Draft</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="templateManagementModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeTemplateManagementModal()">&times;</span>
+                <h3>Contract Template Management</h3>
+                <label for="addTemplateName">Template Name:</label>
+                <input type="text" id="addTemplateName" name="addTemplateName">
+                <label for="addTemplateContent">Template Content:</label>
+                <textarea id="addTemplateContent" name="addTemplateContent" rows="8" placeholder="Enter the content of the contract template."></textarea>
+                <button onclick="addTemplate()">Add New Template</button>
+
+                <h4>Existing Templates</h4>
+                <ul id="templateList">
+                    <li>Standard Service Agreement <button onclick="editTemplate('template1')">Edit</button> <button onclick="deleteTemplate('template1')">Delete</button></li>
+                    <li>Consulting Contract <button onclick="editTemplate('template2')">Edit</button> <button onclick="deleteTemplate('template2')">Delete</button></li>
+                    <li>NDA Agreement <button onclick="editTemplate('template3')">Edit</button> <button onclick="deleteTemplate('template3')">Delete</button></li>
+                    </ul>
+                <div class="modal-actions">
+                    <button onclick="closeTemplateManagementModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="viewContractModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeViewContractModal()">&times;</span>
+                <h3>View Contract Details</h3>
+                <div id="contractDetails">
+                    <p><strong>Contract ID:</strong> <span id="viewContractId"></span></p>
+                    <p><strong>Client Name:</strong> <span id="viewClientName"></span></p>
+                    <p><strong>Start Date:</strong> <span id="viewStartDate"></span></p>
+                    <p><strong>End Date:</strong> <span id="viewEndDate"></span></p>
+                    <p><strong>Status:</strong> <span id="viewStatus"></span></p>
+                    </div>
+                <div class="modal-actions">
+                    <button onclick="closeViewContractModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-</div>
-
-<script>
-    function toggleSubmenu(el) {
-        document.querySelectorAll('.item').forEach(item => {
-            if (item !== el.closest('.item')) {
-                item.classList.remove('show-submenu');
-                const icon = item.querySelector('.submenu-header i.fa-chevron-down');
-                if (icon) {
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-right');
+    <script>
+        function toggleSubmenu(el) {
+            document.querySelectorAll('.item').forEach(item => {
+                if (item !== el.closest('.item')) {
+                    item.classList.remove('show-submenu');
+                    const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
                 }
+            });
+
+            const parent = el.closest('.item');
+            const icon = el.querySelector('i');
+            const isOpen = parent.classList.toggle('show-submenu');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-right', !isOpen);
+                icon.classList.toggle('fa-chevron-down', isOpen);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
+                    sidebar.classList.toggle('close');
+                });
             }
         });
 
-        const parent = el.closest('.item');
-        const icon = el.querySelector('i');
-        const isOpen = parent.classList.toggle('show-submenu');
-
-        if (icon) {
-            icon.classList.toggle('fa-chevron-right', !isOpen);
-            icon.classList.toggle('fa-chevron-down', isOpen);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const sidebarClose = document.getElementById('sidebar-close');
-        const sidebar = document.querySelector('.sidebar');
-
-        if (sidebarClose) {
-            sidebarClose.addEventListener('click', function() {
-                sidebar.classList.toggle('close');
-            });
-        }
-    });
-
-    
-    function openAddContractModal() {
-        document.getElementById("addContractModal").style.display = "block";
-    }
-
-    function closeAddContractModal() {
-        document.getElementById("addContractModal").style.display = "none";
-    }
-
-    function saveNewContract() {
-        alert("New contract saved!");
-        closeAddContractModal();
         
-    }
+        function openAddContractModal() {
+            document.getElementById("addContractModal").style.display = "block";
+        }
 
-    function openEditContractModal(contractId) {
-        document.getElementById("editContractModal").style.display = "block";
-        if (contractId) {
-           
-            document.getElementById("editContractId").value = contractId;
+        function closeAddContractModal() {
+            document.getElementById("addContractModal").style.display = "none";
+        }
+
+        function saveNewContract() {
+            alert("New contract saved!");
+            closeAddContractModal();
             
-        } else {
-            
-            alert("Please select a contract to edit.");
-            closeEditContractModal();
         }
-    }
 
-    function closeEditContractModal() {
-        document.getElementById("editContractModal").style.display = "none";
-    }
-
-    function saveEditedContract() {
-        alert("Contract details saved!");
-        closeEditContractModal();
-      
-    }
-
-    function openDeleteContractModal(contractId) {
-        document.getElementById("deleteContractModal").style.display = "block";
-        if (contractId) {
-            document.getElementById("deleteContractId").textContent = contractId;
-        } else {
-            alert("Please select a contract to delete.");
-            closeDeleteContractModal();
-        }
-    }
-
-    function closeDeleteContractModal() {
-        document.getElementById("deleteContractModal").style.display = "none";
-    }
-
-    function confirmDeleteContract() {
-        const contractIdToDelete = document.getElementById("deleteContractId").textContent;
-        alert(`Contract ${contractIdToDelete} deleted!`);
-        closeDeleteContractModal();
-      
-    }
-
-    function openDraftContractModal() {
-        document.getElementById("draftContractModal").style.display = "block";
-    }
-
-    function closeDraftContractModal() {
-        document.getElementById("draftContractModal").style.display = "none";
-    }
-
-    function createDraft() {
-        const clientName = document.getElementById("draftClientName").value;
-        const template = document.getElementById("draftTemplate").value;
-        const details = document.getElementById("draftDetails").value;
-        alert(`Draft contract created for ${clientName} using template ${template} with details: ${details}`);
-        closeDraftContractModal();
-       
-    }
-
-    function openTemplateManagementModal() {
-        document.getElementById("templateManagementModal").style.display = "block";
-    }
-
-    function closeTemplateManagementModal() {
-        document.getElementById("templateManagementModal").style.display = "none";
-    }
-
-    function addTemplate() {
-        const templateName = document.getElementById("addTemplateName").value;
-        const templateContent = document.getElementById("addTemplateContent").value;
-        alert(`Template "${templateName}" added.`);
-        
-        const newListItem = document.createElement('li');
-        newListItem.textContent = `${templateName} `;
-        const editButton = document.createElement('button');
-        editButton.textContent = 'Edit';
-        editButton.onclick = function() { editTemplate(templateName); };
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.onclick = function() { deleteTemplate(templateName); };
-        newListItem.appendChild(editButton);
-        newListItem.appendChild(document.createTextNode(' '));
-        newListItem.appendChild(deleteButton);
-        document.getElementById("templateList").appendChild(newListItem);
-
-        document.getElementById("addTemplateName").value = '';
-        document.getElementById("addTemplateContent").value = '';
-    }
-
-    function editTemplate(templateId) {
-        alert(`Edit template "${templateId}"`);
-        
-    }
-
-    function deleteTemplate(templateId) {
-        alert(`Delete template "${templateId}"`);
-       
-        const list = document.getElementById("templateList");
-        const items = list.getElementsByTagName('li');
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].textContent.startsWith(templateId)) {
-                list.removeChild(items[i]);
-                break;
+        function openEditContractModal(contractId) {
+            document.getElementById("editContractModal").style.display = "block";
+            if (contractId) {
+                
+                document.getElementById("editContractId").value = contractId;
+                
+            } else {
+               
+                alert("Please select a contract to edit.");
+                closeEditContractModal();
             }
         }
-    }
 
-   
-</script>
+        function closeEditContractModal() {
+            document.getElementById("editContractModal").style.display = "none";
+        }
+
+        function saveEditedContract() {
+            alert("Contract details saved!");
+            closeEditContractModal();
+            
+        }
+
+        function openDeleteContractModal(contractId) {
+            document.getElementById("deleteContractModal").style.display = "block";
+            if (contractId) {
+                document.getElementById("deleteContractId").textContent = contractId;
+            } else {
+                alert("Please select a contract to delete.");
+                closeDeleteContractModal();
+            }
+        }
+
+        function closeDeleteContractModal() {
+            document.getElementById("deleteContractModal").style.display = "none";
+        }
+
+        function confirmDeleteContract() {
+            const contractIdToDelete = document.getElementById("deleteContractId").textContent;
+            alert(`Contract ${contractIdToDelete} deleted!`);
+            closeDeleteContractModal();
+            
+        }
+
+        function openDraftContractModal() {
+            document.getElementById("draftContractModal").style.display = "block";
+        }
+
+        function closeDraftContractModal() {
+            document.getElementById("draftContractModal").style.display = "none";
+        }
+
+        function createDraft() {
+            const clientName = document.getElementById("draftClientName").value;
+            const template = document.getElementById("draftTemplate").value;
+            const details = document.getElementById("draftDetails").value;
+            alert(`Draft contract created for ${clientName} using template ${template} with details: ${details}`);
+            closeDraftContractModal();
+           
+        }
+
+        function openTemplateManagementModal() {
+            document.getElementById("templateManagementModal").style.display = "block";
+        }
+
+        function closeTemplateManagementModal() {
+            document.getElementById("templateManagementModal").style.display = "none";
+        }
+
+        function addTemplate() {
+            const templateName = document.getElementById("addTemplateName").value;
+            const templateContent = document.getElementById("addTemplateContent").value;
+            alert(`Template "${templateName}" added.`);
+            
+            const newListItem = document.createElement('li');
+            newListItem.textContent = `${templateName} `;
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.onclick = function() { editTemplate(templateName); };
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = function() { deleteTemplate(templateName); };
+            newListItem.appendChild(editButton);
+            newListItem.appendChild(document.createTextNode(' '));
+            newListItem.appendChild(deleteButton);
+            document.getElementById("templateList").appendChild(newListItem);
+
+            document.getElementById("addTemplateName").value = '';
+            document.getElementById("addTemplateContent").value = '';
+        }
+
+        function editTemplate(templateId) {
+            alert(`Edit template "${templateId}"`);
+         
+        }
+
+        function deleteTemplate(templateId) {
+            alert(`Delete template "${templateId}"`);
+            
+            const list = document.getElementById("templateList");
+            const items = list.getElementsByTagName('li');
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].textContent.startsWith(templateId)) {
+                    list.removeChild(items[i]);
+                    break;
+                }
+            }
+        }
+
+        function openViewContractModal(contractId) {
+            document.getElementById("viewContractModal").style.display = "block";
+            
+           
+            document.getElementById("viewContractId").textContent = contractId;
+            
+            if (contractId === 'CON001') {
+                document.getElementById("viewClientName").textContent = 'Alpha Corp';
+                document.getElementById("viewStartDate").textContent = '2025-01-15';
+                document.getElementById("viewEndDate").textContent = '2025-12-31';
+                document.getElementById("viewStatus").textContent = 'Active';
+            } else if (contractId === 'CON002') {
+                document.getElementById("viewClientName").textContent = 'Beta Industries';
+                document.getElementById("viewStartDate").textContent = '2025-03-01';
+                document.getElementById("viewEndDate").textContent = '2025-11-30';
+                document.getElementById("viewStatus").textContent = 'Pending Approval';
+            } else if (contractId === 'CON003') {
+                document.getElementById("viewClientName").textContent = 'Gamma Solutions';
+                document.getElementById("viewStartDate").textContent = '2024-07-01';
+                document.getElementById("viewEndDate").textContent = '2025-06-30';
+                document.getElementById("viewStatus").textContent = 'Completed';
+            }
+            
+        }
+
+        function closeViewContractModal() {
+            document.getElementById("viewContractModal").style.display = "none";
+           
+            document.getElementById("contractDetails").innerHTML = `
+                <p><strong>Contract ID:</strong> <span id="viewContractId"></span></p>
+                <p><strong>Client Name:</strong> <span id="viewClientName"></span></p>
+                <p><strong>Start Date:</strong> <span id="viewStartDate"></span></p>
+                <p><strong>End Date:</strong> <span id="viewEndDate"></span></p>
+                <p><strong>Status:</strong> <span id="viewStatus"></span></p>
+            `;
+        }
+
+        
+    </script>
 </body>
 </html>
