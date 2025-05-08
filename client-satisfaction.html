@@ -1,1 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client Satisfaction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+        }
+
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-content {
+            position: relative;
+            height: 80%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: scroll;
+        }
+
+        .menu-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+        .menu-title {
+            color: whitesmoke;
+            font-size: 18px;
+            padding: 15px 20px;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+        }
+
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
+
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
+        .item.show-submenu .submenu {
+            display: flex;
+        }
+
+        .submenu .item a {
+            padding: 10px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 0;
+            width: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main {
+            position: absolute;
+            top: 0;
+            left: 260px;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #e7f2fd;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 50px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .main h1 {
+            color: #11101d;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .satisfaction-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .satisfaction-container h2, .satisfaction-container h3 {
+            font-size: 20px;
+            color: #002966;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .survey-question {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .survey-question label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .survey-question input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .survey-question:last-child {
+            border-bottom: none;
+        }
+
+        .improvement-strategies {
+            margin-top: 20px;
+        }
+
+        .improvement-strategies ol {
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+
+        .improvement-strategies li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2 id="h2">Administrative</h2>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
+
+                <li class="item">
+                    <a class="submenu-header" href="dashboard.html">
+                        <span class="icon"><i class='bx bxs-dashboard'></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-link'></i></span>
+                        <span>Placement Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
+                        <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
+                        <li class="item"><a href="reporting.html">REPORTING</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-folder'></i></span>
+                        <span>Position Job Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
+                        <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
+                        <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
+                        <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
+                    </ul>
+                </li>
+
+                <li class="item show-submenu">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-file'></i></span>
+                        <span>Client Management</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
+                        <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
+                        <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-user'></i></span>
+                        <span>Payroll Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
+                        <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
+                        <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
+                        <li class="item"><a href="taxation.html">TAXATION</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-calendar'></i></span>
+                        <span>Contract Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
+                        <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
+                        <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
+                        <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-group'></i></span>
+                        <span>User Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item">
+                            <a href="#">Contract Management</a>
+                            <div class="dropdown-content">
+                                <a href="dash.html"><small>1</small></a>
+                                <a href="user2.html"><small>2</small></a>
+                                <a href="logging.html"><small>3</small></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="aboutus.html">
+                        <span class="icon"><i class='bx bx-info-circle'></i></span>
+                        <span>About Us</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="logout.html">
+                        <span class="icon"><i class='bx bx-log-out'></i></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+    </nav>
+
+    <div class="main">
+        <div class="satisfaction-container">
+            <h2>Client Satisfaction Survey</h2>
+            <p>We value your feedback! Please rate your satisfaction with the following aspects of our service on a scale of 1 to 5, where 1 is very dissatisfied and 5 is very satisfied.</p>
+
+            <form id="satisfactionSurvey">
+                <div class="survey-question">
+                    <label for="question1">1. How satisfied were you with the responsiveness of our team?</label>
+                    <div>
+                        <input type="radio" id="q1_1" name="question1" value="1"> <label for="q1_1">1 (Very Dissatisfied)</label>
+                        <input type="radio" id="q1_2" name="question1" value="2"> <label for="q1_2">2</label>
+                        <input type="radio" id="q1_3" name="question1" value="3"> <label for="q1_3">3 (Neutral)</label>
+                        <input type="radio" id="q1_4" name="question1" value="4"> <label for="q1_4">4</label>
+                        <input type="radio" id="q1_5" name="question1" value="5"> <label for="q1_5">5 (Very Satisfied)</label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <label for="question2">2. How satisfied were you with the clarity of our communication?</label>
+                    <div>
+                        <input type="radio" id="q2_1" name="question2" value="1"> <label for="q2_1">1 (Very Dissatisfied)</label>
+                        <input type="radio" id="q2_2" name="question2" value="2"> <label for="q2_2">2</label>
+                        <input type="radio" id="q2_3" name="question2" value="3"> <label for="q2_3">3 (Neutral)</label>
+                        <input type="radio" id="q2_4" name="question2" value="4"> <label for="q2_4">4</label>
+                        <input type="radio" id="q2_5" name="question2" value="5"> <label for="q2_5">5 (Very Satisfied)</label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <label for="question3">3. How satisfied were you with the professionalism of our staff?</label>
+                    <div>
+                        <input type="radio" id="q3_1" name="question3" value="1"> <label for="q3_1">1 (Very Dissatisfied)</label>
+                        <input type="radio" id="q3_2" name="question3" value="2"> <label for="q3_2">2</label>
+                        <input type="radio" id="q3_3" name="question3" value="3"> <label for="q3_3">3 (Neutral)</label>
+                        <input type="radio" id="q3_4" name="question3" value="4"> <label for="q3_4">4</label>
+                          <input type="radio" id="q3_5" name="question3" value="5"> <label for="q3_5">5 (Very Satisfied)</label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <label for="question4">4. How satisfied were you with the efficiency of our service?</label>
+                    <div>
+                        <input type="radio" id="q4_1" name="question4" value="1"> <label for="q4_1">1 (Very Dissatisfied)</label>
+                        <input type="radio" id="q4_2" name="question4" value="2"> <label for="q4_2">2</label>
+                        <input type="radio" id="q4_3" name="question4" value="3"> <label for="q4_3">3 (Neutral)</label>
+                        <input type="radio" id="q4_4" name="question4" value="4"> <label for="q4_4">4</label>
+                        <input type="radio" id="q4_5" name="question4" value="5"> <label for="q4_5">5 (Very Satisfied)</label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <label for="question5">5. How satisfied were you with the quality of the candidates provided?</label>
+                    <div>
+                        <input type="radio" id="q5_1" name="question5" value="1"> <label for="q5_1">1 (Very Dissatisfied)</label>
+                        <input type="radio" id="q5_2" name="question5" value="2"> <label for="q5_2">2</label>
+                        <input type="radio" id="q5_3" name="question5" value="3"> <label for="q5_3">3 (Neutral)</label>
+                        <input type="radio" id="q5_4" name="question5" value="4"> <label for="q5_4">4</label>
+                        <input type="radio" id="q5_5" name="question5" value="5"> <label for="q5_5">5 (Very Satisfied)</label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <label for="question6">6. How well did our team understand your hiring needs?</label>
+                    <div>
+                        <input type="radio" id="q6_1" name="question6" value="1"> <label for="q6_1">1 (Very Poorly)</label>
+                        <input type="radio" id="q6_2" name="question6" value="2"> <label for="q6_2">2</label>
+                        <input type="radio" id="q6_3" name="question6" value="3"> <label for="q6_3">3 (Neutral)</label>
+                        <input type="radio" id="q6_4" name="question6" value="4"> <label for="q6_4">4</label>
+                        <input type="radio" id="q6_5" name="question6" value="5"> <label for="q6_5">5 (Very Well)</label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <label for="question7">7. How satisfied were you with the speed of the recruitment process?</label>
+                    <div>
+                        <input type="radio" id="q7_1" name="question7" value="1"> <label for="q7_1">1 (Very Dissatisfied)</label>
+                        <input type="radio" id="q7_2" name="question7" value="2"> <label for="q7_2">2</label>
+                        <input type="radio" id="q7_3" name="question7" value="3"> <label for="q7_3">3 (Neutral)</label>
+                        <input type="radio" id="q7_4" name="question7" value="4"> <label for="q7_4">4</label>
+                        <input type="radio" id="q7_5" name="question7" value="5"> <label for="q7_5">5 (Very Satisfied)</label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <label for="question8">8. How likely are you to use our services again in the future?</label>
+                    <div>
+                        <input type="radio" id="q8_1" name="question8" value="1"> <label for="q8_1">1 (Very Unlikely)</label>
+                        <input type="radio" id="q8_2" name="question8" value="2"> <label for="q8_2">2</label>
+                        <input type="radio" id="q8_3" name="question8" value="3"> <label for="q8_3">3 (Neutral)</label>
+                        <input type="radio" id="q8_4" name="question8" value="4"> <label for="q8_4">4</label>
+                        <input type="radio" id="q8_5" name="question8" value="5"> <label for="q8_5">5 (Very Likely)</label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <label for="question9">9. How likely are you to recommend our services to other companies?</label>
+                    <div>
+                        <input type="radio" id="q9_1" name="question9" value="1"> <label for="q9_1">1 (Very Unlikely)</label>
+                        <input type="radio" id="q9_2" name="question9" value="2"> <label for="q9_2">2</label>
+                        <input type="radio" id="q9_3" name="question9" value="3"> <label for="q9_3">3 (Neutral)</label>
+                        <input type="radio" id="q9_4" name="question9" value="4"> <label for="q9_4">4</label>
+                        <input type="radio" id="q9_5" name="question9" value="5"> <label for="q9_5">5 (Very Likely)</label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <label for="question10">10. Do you have any additional comments or suggestions?</label>
+                    <textarea id="question10" rows="3" placeholder="Your feedback is important to us."></textarea>
+                </div>
+
+                <button type="submit">Submit Survey</button>
+            </form>
+
+            <div class="improvement-strategies">
+                <h3>Strategies to Improve Client Satisfaction</h3>
+                <ol>
+                    <li>**Enhance Communication:** Implement proactive communication strategies to keep clients informed at every stage of the recruitment process.</li>
+                    <li>**Improve Responsiveness:** Ensure timely responses to client inquiries and concerns. Set clear expectations for response times.</li>
+                    <li>**Focus on Quality:** Continuously refine the candidate sourcing and screening processes to provide higher quality candidates.</li>
+                    <li>**Personalize Service:** Tailor recruitment strategies to meet the specific needs and culture of each client.</li>
+                    <li>**Gather Regular Feedback:** Implement regular feedback loops beyond the initial survey to identify ongoing areas for improvement.</li>
+                    <li>**Streamline Processes:** Optimize internal workflows to improve efficiency and reduce the time-to-hire.</li>
+                    <li>**Invest in Training:** Provide ongoing training to recruitment staff to enhance their skills in communication, client management, and industry knowledge.</li>
+                    <li>**Build Strong Relationships:** Focus on building long-term partnerships with clients based on trust and mutual understanding.</li>
+                    <li>**Address Concerns Promptly:** Have a clear process for addressing and resolving client complaints or issues quickly and effectively.</li>
+                    <li>**Measure and Analyze Data:** Regularly analyze client satisfaction survey results and other relevant data to identify trends and areas needing attention.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSubmenu(el) {
+            document.querySelectorAll('.item').forEach(item => {
+                if (item !== el.closest('.item')) {
+                    item.classList.remove('show-submenu');
+                    const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                }
+            });
+
+            const parent = el.closest('.item');
+            const icon = el.querySelector('i');
+            const isOpen = parent.classList.toggle('show-submenu');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-right', !isOpen);
+                icon.classList.toggle('fa-chevron-down', isOpen);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
+                    sidebar.classList.toggle('close');
+                });
+            }
+
+            const satisfactionSurvey = document.getElementById('satisfactionSurvey');
+            if (satisfactionSurvey) {
+                satisfactionSurvey.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    let results = {};
+                    for (let i = 1; i <= 9; i++) {
+                        const questionName = `question${i}`;
+                        const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+                        results[questionName] = selectedOption ? selectedOption.value : 'Not Answered';
+                    }
+                    results['question10'] = document.getElementById('question10').value;
+                    console.log('Survey Results:', results);
+                    alert('Thank you for your feedback! (Results shown in console)');
+                    this.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
