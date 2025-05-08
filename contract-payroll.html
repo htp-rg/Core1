@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payroll Processing Status</title>
+    <title> Payroll Processing and Approval</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
@@ -16,6 +16,11 @@
             font-family: "Poppins", sans-serif;
         }
 
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
         .sidebar {
             position: fixed;
             height: 100%;
@@ -23,6 +28,7 @@
             background: #002966;
             padding: 15px;
             z-index: 99;
+            overflow-y: auto;
         }
 
         #h2 {
@@ -143,75 +149,100 @@
             box-sizing: border-box;
         }
 
-        .main h1 {
-            color: #11101d;
-            font-size: 32px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .status-container {
+        .employee-container {
             background: white;
             border-radius: 10px;
-            padding: 20px;
-            width: 90%;
-            max-width: 900px;
+            padding: 30px;
+            width: 95%;
+            max-width: 1200px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin-bottom: 20px;
             border: 1px solid #ddd;
         }
 
-        .status-container h2 {
-            font-size: 20px;
+        .employee-container h2 {
+            font-size: 24px;
             color: #002966;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 8px;
-        }
-
-        .status-actions {
             margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
         }
 
-        .status-actions button {
-            background-color: #4070f4;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .status-actions button:hover {
-            background-color: #3355aa;
-        }
-
-        .status-list {
+        .employee-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
-        .status-list th, .status-list td {
+        .employee-table th, .employee-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .employee-table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .attendance-table th, .attendance-table td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
 
-        .status-list th {
+        .attendance-table th {
             background-color: #f2f2f2;
             color: #333;
+        }
+
+        .action-buttons button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .add-employee-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .add-employee-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-employee-button:hover {
+            background-color: #218838;
         }
 
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
@@ -221,13 +252,12 @@
         }
 
         .modal-content {
-            background-color: navy;
+            background-color: #fefefe;
             margin: 10% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 60%;
-            border-radius: 10px;
-            color: white;
+            width: 40%;
+            border-radius: 8px;
             position: relative;
         }
 
@@ -245,55 +275,71 @@
         .close-button:focus {
             color: black;
             text-decoration: none;
+            cursor: pointer;
         }
 
-        .modal-content h4 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-
-        .modal-content label {
+        .modal-form label {
             display: block;
             margin-bottom: 5px;
-            font-size: 14px;
             font-weight: bold;
+            color: #333;
         }
 
-        .modal-content input[type="text"],
-        .modal-content input[type="datetime-local"],
-        .modal-content select,
-        .modal-content textarea {
+        .modal-form input[type="text"],
+        .modal-form input[type="number"],
+        .modal-form input[type="date"] {
             width: calc(100% - 12px);
             padding: 8px;
             margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             box-sizing: border-box;
-            color: black;
+            font-size: 14px;
         }
 
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            justify-content: flex-end;
-        }
-
-        .modal-actions button {
-            background-color: #2ecc71;
+        .modal-form button {
+            background-color: #007bff;
             color: white;
+            padding: 10px 15px;
             border: none;
-            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .modal-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-modal-content {
+            background-color: #fefefe;
+            margin: 20% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 8px;
+            position: relative;
+            text-align: center;
+        }
+
+        .delete-modal-content button {
+            padding: 10px 15px;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            margin: 10px;
         }
 
-        .modal-actions button:hover {
-            background-color: #27ae60;
+        .delete-modal-content .confirm-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .delete-modal-content .cancel-delete {
+            background-color: #6c757d;
+            color: white;
         }
     </style>
 </head>
@@ -352,16 +398,16 @@
                     </ul>
                 </li>
 
-                <li class="item show-submenu">
+                <li class="item">
                     <div class="submenu-header" onclick="toggleSubmenu(this)">
                         <span class="icon"><i class='bx bx-user'></i></span>
                         <span>Payroll Management</span>
-                        <i class="fa-solid fa-chevron-down"></i>
+                        <i class="fa-solid fa-chevron-right"></i>
                     </div>
-                    <ul class="submenu" style="display: flex;">
+                    <ul class="submenu">
                         <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
                         <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
-                        <li class="item"><a href="payroll-processing.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
                         <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
                         <li class="item"><a href="taxation.html">TAXATION</a></li>
                     </ul>
@@ -423,609 +469,264 @@
 
     <div class="main">
         <a href="admin.html"
-           style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
-           onmouseover="this.style.backgroundColor='darkred'"
-           onmouseout="this.style.backgroundColor='red'">
+            style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+            onmouseover="this.style.backgroundColor='darkred'"
+            onmouseout="this.style.backgroundColor='red'">
             Back
         </a>
-        <div class="status-container">
-            <h2>Payroll Processing Status Monitoring</h2>
-            <p>This page allows you to monitor and manage the status of various payroll processing runs. You can add new payroll cycles, edit existing ones, view detailed information, and handle actions such as deletion, sending notifications,triggering alerts, approving payroll, and processing payments.</p>
-             <div class="status-actions">
-            <button onclick="openAddModal()">Add New Payroll Run</button>
-            <button onclick="openEditModal()">Edit Payroll Run</button>
-            <button onclick="openViewModal()">View Details</button>
-            <button onclick="openDeleteModal()">Delete Payroll Run</button>
-            <button onclick="openSendNotificationModal()">Send Notification</button>
-            <button onclick="openViewNotificationsModal()">View Notifications</button>
-            <button onclick="openTriggerAlertModal()">Trigger Alert</button>
-            <button onclick="openViewAlertsModal()">View Alerts</button>
-            <button onclick="openApprovePayrollModal()">Approve Payroll</button>
-            <button onclick="openProcessPaymentModal()">Process Payment</button>
+        <div class="employee-container">
+            <h2>Payroll Processing and Approval</h2>
+            <table class="employee-table">
+                <thead>
+                    <tr>
+                        <th>Payroll ID</th>
+                        <th>Employee Name</th>
+                        <th>Pay Period</th>
+                        <th>Status</th>
+                        <th>Notifications & Alerts</th>
+                        <th>Workflow Automation</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="payrollTableBody">
+                    <tr>
+                        <td>PY2025-001</td>
+                        <td>John Doe</td>
+                        <td>May 1 - May 15, 2025</td>
+                        <td>Pending Approval</td>
+                        <td>-</td>
+                        <td>Automated Calculation</td>
+                        <td class="action-buttons">
+                            <button onclick="openViewPayrollModal('PY2025-001')">View</button>
+                            <button onclick="openEditPayrollModal('PY2025-001')">Edit</button>
+                            <button onclick="openDeletePayrollModal('PY2025-001', 'John Doe')">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PY2025-002</td>
+                        <td>Jane Smith</td>
+                        <td>May 1 - May 15, 2025</td>
+                        <td>Approved</td>
+                        <td>Payment Sent</td>
+                        <td>Automated Payment Processing</td>
+                        <td class="action-buttons">
+                            <button onclick="openViewPayrollModal('PY2025-002')">View</button>
+                            <button onclick="openEditPayrollModal('PY2025-002')">Edit</button>
+                            <button onclick="openDeletePayrollModal('PY2025-002', 'Jane Smith')">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PY2025-003</td>
+                        <td>Peter Jones</td>
+                        <td>May 1 - May 15, 2025</td>
+                        <td>Processing</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td class="action-buttons">
+                            <button onclick="openViewPayrollModal('PY2025-003')">View</button>
+                            <button onclick="openEditPayrollModal('PY2025-003')">Edit</button>
+                            <button onclick="openDeletePayrollModal('PY2025-003', 'Peter Jones')">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PY2025-004</td>
+                        <td>Alice Brown</td>
+                        <td>May 1 - May 15, 2025</td>
+                        <td>Rejected</td>
+                        <td>Review Required</td>
+                        <td>-</td>
+                        <td class="action-buttons">
+                            <button onclick="openViewPayrollModal('PY2025-004')">View</button>
+                            <button onclick="openEditPayrollModal('PY2025-004')">Edit</button>
+                            <button onclick="openDeletePayrollModal('PY2025-004', 'Alice Brown')">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PY2025-005</td>
+                        <td>Bob Green</td>
+                        <td>May 1 - May 15, 2025</td>
+                        <td>Approved</td>
+                        <td>-</td>
+                        <td>Automated Reporting</td>
+                        <td class="action-buttons">
+                            <button onclick="openViewPayrollModal('PY2025-005')">View</button>
+                            <button onclick="openEditPayrollModal('PY2025-005')">Edit</button>
+                            <button onclick="openDeletePayrollModal('PY2025-005', 'Bob Green')">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="add-employee-section">
+                <button class="add-employee-button" onclick="openAddPayrollModal()">Add Payroll</button>
+            </div>
         </div>
 
-        <table class="status-list">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Payroll Period</th>
-                    <th>Status</th>
-                    <th>Generated Date</th>
-                    <th>Approved By</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>2025-05-01 to 2025-05-15</td>
-                    <td>Pending Approval</td>
-                    <td>2025-05-16 10:00</td>
-                    <td>-</td>
-                    <td>
-                        <div class="actions-group">
-                            <button onclick="viewDetails('1')">View</button>
-                            <button class="edit" onclick="openEditModal('1')">Edit</button>
-                            <button class="delete" onclick="openDeleteModal('1', '2025-05-01 to 2025-05-15')">Delete</button>
-                            <button class="approve" onclick="openApprovePayrollModal('1')">Approve</button>
-                            <button class="process" onclick="openProcessPaymentModal('1')">Process</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>2025-04-16 to 2025-04-30</td>
-                    <td>Approved</td>
-                    <td>2025-05-01 09:30</td>
-                    <td>Admin</td>
-                    <td>
-                        <div class="actions-group">
-                            <button onclick="viewDetails('2')">View</button>
-                            <button class="edit" onclick="openEditModal('2')">Edit</button>
-                            <button class="delete" onclick="openDeleteModal('2', '2025-04-16 to 2025-04-30')">Delete</button>
-                            <button class="approve" onclick="openApprovePayrollModal('2')">Approve</button>
-                            <button class="process" onclick="openProcessPaymentModal('2')">Process</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>2025-04-01 to 2025-04-15</td>
-                    <td>Payment Processed</td>
-                    <td>2025-04-16 11:15</td>
-                    <td>Finance</td>
-                    <td>
-                        <div class="actions-group">
-                            <button onclick="viewDetails('3')">View</button>
-                            <button class="edit" onclick="openEditModal('3')">Edit</button>
-                            <button class="delete" onclick="openDeleteModal('3', '2025-04-01 to 2025-04-15')">Delete</button>
-                            <button class="approve" onclick="openApprovePayrollModal('3')">Approve</button>
-                            <button class="process" onclick="openProcessPaymentModal('3')">Process</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div id="addModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeAddModal()">&times;</span>
-            <h4>Add New Payroll Run</h4>
-            <form id="addForm">
-                <label for="addPayrollPeriod">Payroll Period:</label>
-                <input type="text" id="addPayrollPeriod" required>
-                <label for="addStatus">Status:</label>
-                <select id="addStatus">
-                    <option value="Pending Approval">Pending Approval</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Payment Processed">Payment Processed</option>
-                    <option value="Error">Error</option>
-                </select>
-                <label for="addGeneratedDate">Generated Date:</label>
-                <input type="datetime-local" id="addGeneratedDate">
-                <label for="addApprovedBy">Approved By:</label>
-                <input type="text" id="addApprovedBy">
-                <div class="modal-actions">
-                    <button type="submit">Add</button>
-                    <button type="button" onclick="closeAddModal()">Cancel</button>
-                </div>
-            </form>
+        <div id="addPayrollModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeAddPayrollModal()">&times;</span>
+                <h2>Add New Payroll</h2>
+                <form class="modal-form" id="addPayrollForm">
+                    <label for="addPayrollId">Payroll ID:</label>
+                    <input type="text" id="addPayrollId" required>
+                    <label for="addEmployeeName">Employee Name:</label>
+                    <input type="text" id="addEmployeeName" required>
+                    <label for="addPayPeriod">Pay Period:</label>
+                    <input type="text" id="addPayPeriod">
+                    <label for="addStatus">Status:</label>
+                    <input type="text" id="addStatus">
+                    <label for="addNotifications">Notifications & Alerts:</label>
+                    <input type="text" id="addNotifications">
+                    <label for="addAutomation">Workflow Automation:</label>
+                    <input type="text" id="addAutomation">
+                    <button type="submit">Add Payroll</button>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeEditModal()">&times;</span>
-            <h4>Edit Payroll Run</h4>
-            <form id="editForm">
-                <label for="editId">ID:</label>
-                <input type="text" id="editId" readonly>
-                <label for="editPayrollPeriod">Payroll Period:</label>
-                <input type="text" id="editPayrollPeriod" required>
-                <label for="editStatus">Status:</label>
-                <select id="editStatus">
-                    <option value="Pending Approval">Pending Approval</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Payment Processed">Payment Processed</option>
-                    <option value="Error">Error</option>
-                </select>
-                <label for="editGeneratedDate">Generated Date:</label>
-                <input type="datetime-local" id="editGeneratedDate">
-                <label for="editApprovedBy">Approved By:</label>
-                <input type="text" id="editApprovedBy">
-                <div class="modal-actions">
-                    <button type="submit">Save</button>
-                    <button type="button" onclick="closeEditModal()">Cancel</button>
-                </div>
-            </form>
+        <div id="viewPayrollModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeViewPayrollModal()">&times;</span>
+                <h2>Payroll Details</h2>
+                <div id="viewPayrollDetails">
+                    </div>
+            </div>
         </div>
-    </div>
 
-    <div id="viewModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeViewModal()">&times;</span>
-            <h4>Payroll Run Details</h4>
-            <div id="viewDetailsContent">
-                <p><strong>ID:</strong> <span id="viewId"></span></p>
-                <p><strong>Payroll Period:</strong> <span id="viewPayrollPeriod"></span></p>
-                <p><strong>Status:</strong> <span id="viewStatus"></span></p>
-                <p><strong>Generated Date:</strong> <span id="viewGeneratedDate"></span></p>
-                <p><strong>Approved By:</strong> <span id="viewApprovedBy"></span></p>
+        <div id="editPayrollModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeEditPayrollModal()">&times;</span>
+                <h2>Edit Payroll Details</h2>
+                <form class="modal-form" id="editPayrollForm">
+                    <label for="editPayrollId">Payroll ID:</label>
+                    <input type="text" id="editPayrollId" readonly>
+                    <label for="editEmployeeName">Employee Name:</label>
+                    <input type="text" id="editEmployeeName" required>
+                    <label for="editPayPeriod">Pay Period:</label>
+                    <input type="text" id="editPayPeriod">
+                    <label for="editStatus">Status:</label>
+                    <input type="text" id="editStatus">
+                    <label for="editNotifications">Notifications & Alerts:</label>
+                    <input type="text" id="editNotifications">
+                    <label for="editAutomation">Workflow Automation:</label>
+                    <input type="text" id="editAutomation">
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="deletePayrollModal" class="modal">
+            <div class="delete-modal-content">
+                <span class="close-button" onclick="closeDeletePayrollModal()">&times;</span>
+                <h2>Delete Payroll</h2>
+                <p>Are you sure you want to delete payroll for <span id="deletePayrollEmployee"></span> with ID <span id="deletePayrollId"></span>?</p>
+                <button class="cancel-delete" onclick="closeDeletePayrollModal()">Cancel</button>
+                <button class="confirm-delete" onclick="deletePayroll()">Delete</button>
             </div>
         </div>
     </div>
 
-    <div id="deleteModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeDeleteModal()">&times;</span>
-            <h4>Delete Payroll Run</h4>
-            <p>Are you sure you want to delete payroll run with ID: <strong id="deleteId"></strong> and period: <strong id="deletePayrollPeriod"></strong>?</p>
-            <div class="modal-actions">
-                <button type="button" onclick="confirmDelete()">Delete</button>
-                <button type="button" onclick="closeDeleteModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="sendNotificationModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeSendNotificationModal()">&times;</span>
-            <h4>Send Notification</h4>
-            <form id="sendNotificationForm">
-                <label for="notificationRecipient">Recipient(s):</label>
-                <input type="text" id="notificationRecipient" placeholder="e.g., Employees, Finance Team">
-                <label for="notificationSubject">Subject:</label>
-                <input type="text" id="notificationSubject" required>
-                <label for="notificationMessage">Message:</label>
-                <textarea id="notificationMessage" rows="4" required></textarea>
-                <div class="modal-actions">
-                    <button type="submit">Send</button>
-                    <button type="button" onclick="closeSendNotificationModal()">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="viewNotificationsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeViewNotificationsModal()">&times;</span>
-            <h4>View Notifications</h4>
-            <ul id="notificationsList" style="list-style: none; padding: 0;">
-                <li>No notifications yet.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="triggerAlertModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeTriggerAlertModal()">&times;</span>
-            <h4>Trigger Alert</h4>
-            <form id="triggerAlertForm">
-                <label for="alertSubject">Alert Subject:</label>
-                <input type="text" id="alertSubject" required>
-                <label for="alertMessage">Alert Message:</label>
-                <textarea id="alertMessage" rows="4" required></textarea>
-                <label for="alertSeverity">Severity:</label>
-                <select id="alertSeverity">
-                    <option value="Information">Information</option>
-                    <option value="Warning">Warning</option>
-                    <option value="Error">Error</option>
-                    <option value="Critical">Critical</option>
-                </select>
-                <div class="modal-actions">
-                    <button type="submit">Trigger</button>
-                    <button type="button" onclick="closeTriggerAlertModal()">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="viewAlertsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeViewAlertsModal()">&times;</span>
-            <h4>View Alerts</h4>
-            <ul id="alertsList" style="list-style: none; padding: 0;">
-                <li>No alerts yet.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="approvePayrollModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeApprovePayrollModal()">&times;</span>
-            <h4>Approve Payroll</h4>
-            <p>Are you sure you want to approve payroll run with ID: <strong id="approvePayrollId"></strong>?</p>
-            <div class="modal-actions">
-                <button type="button" onclick="confirmApprovePayroll()">Approve</button>
-                <button type="button" onclick="closeApprovePayrollModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="processPaymentModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeProcessPaymentModal()">&times;</span>
-            <h4>Process Payment</h4>
-            <p>Initiate payment processing for payroll run ID: <strong id="processPaymentId"></strong>?</p>
-            <div class="modal-actions">
-                <button type="button" onclick="confirmProcessPayment()">Process Payment</button>
-                <button type="button" onclick="closeProcessPaymentModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    </div>
-    
     <script>
-  function toggleSubmenu(el) {
-        document.querySelectorAll('.item').forEach(item => {
-            if (item !== el.closest('.item')) {
-                item.classList.remove('show-submenu');
-                const icon = item.querySelector('.submenu-header i.fa-chevron-down');
-                if (icon) {
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-right');
+        function toggleSubmenu(el) {
+            document.querySelectorAll('.item').forEach(item => {
+                if (item !== el.closest('.item')) {
+                    item.classList.remove('show-submenu');
+                    const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
                 }
+            });
+
+            const parent = el.closest('.item');
+            const icon = el.querySelector('i');
+            const isOpen = parent.classList.toggle('show-submenu');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-right', !isOpen);
+                icon.classList.toggle('fa-chevron-down', isOpen);
             }
-        });
-
-        const parent = el.closest('.item');
-        const icon = el.querySelector('i');
-        const isOpen = parent.classList.toggle('show-submenu');
-
-        if (icon) {
-            icon.classList.toggle('fa-chevron-right', !isOpen);
-            icon.classList.toggle('fa-chevron-down', isOpen);
         }
-    }
-        const parent = el.closest(&#39;.item&#39;);
-    const icon = el.querySelector(&#39;i&#39;);
-    const isOpen = parent.classList.toggle(&#39;show-submenu&#39;);
 
-    if (icon) {
-        icon.classList.toggle(&#39;fa-chevron-right&#39;, !isOpen);
-        icon.classList.toggle(&#39;fa-chevron-down&#39;, isOpen);
-    }
-}
-
-document.addEventListener(&#39;DOMContentLoaded&#39;, function() {
-    const sidebarClose = document.getElementById(&#39;sidebar-close&#39;);
-    const sidebar = document.querySelector(&#39;.sidebar&#39;);
-
-    if (sidebarClose) {
-        sidebarClose.addEventListener(&#39;click&#39;, function() {
-            sidebar.classList.toggle(&#39;close&#39;);
-        });
-    }
-
-    const statusTable = document.querySelector(&#39;.status-list tbody&#39;);
-    if (statusTable) {
-        statusTable.addEventListener(&#39;click&#39;, function(event) {
-            const viewButton = event.target.closest(&#39;button&#39;);
-            if (viewButton &amp;&amp; viewButton.textContent === &#39;View&#39;) {
-                const row = viewButton.closest(&#39;tr&#39;);
-                const id = row.cells[0].textContent;
-                viewDetails(id);
-            }
-            const editButton = event.target.closest(&#39;button.edit&#39;);
-            if (editButton) {
-                const row = editButton.closest(&#39;tr&#39;);
-                const id = row.cells[0].textContent;
-                openEditModal(id);
-            }
-            const deleteButton = event.target.closest(&#39;button.delete&#39;);
-            if (deleteButton) {
-                const row = deleteButton.closest(&#39;tr&#39;);
-                const id = row.cells[0].textContent;
-                const payrollPeriod = row.cells[1].textContent;
-                openDeleteModal(id, payrollPeriod);
-            }
-            const approveButton = event.target.closest(&#39;button.approve&#39;);
-            if (approveButton) {
-                const row = approveButton.closest(&#39;tr&#39;);
-                const id = row.cells[0].textContent;
-                openApprovePayrollModal(id);
-            }
-            const processButton = event.target.closest(&#39;button.process&#39;);
-            if (processButton) {
-                const row = processButton.closest(&#39;tr&#39;);
-                const id = row.cells[0].textContent;
-                openProcessPaymentModal(id);
-            }
-        });
-    }
-});
-
-let nextPayrollId = 4;
-const notifications = [];
-const alerts = [];
-
-// Add Modal Functions
-function openAddModal() {
-    document.getElementById(&#39;addModal&#39;).style.display = &#39;block&#39;;
-}
-
-function closeAddModal() {
-    document.getElementById(&#39;addModal&#39;).style.display = &#39;none&#39;;
-    document.getElementById(&#39;addForm&#39;).reset();
-}
-
-document.getElementById(&#39;addForm&#39;).addEventListener(&#39;submit&#39;, function(event) {
-    event.preventDefault();
-    const payrollPeriod = document.getElementById(&#39;addPayrollPeriod&#39;).value;
-    const status = document.getElementById(&#39;addStatus&#39;).value;
-    const generatedDate = document.getElementById(&#39;addGeneratedDate&#39;).value;
-    const approvedBy = document.getElementById(&#39;addApprovedBy&#39;).value;
-
-    const newRow = document.querySelector(&#39;.status-list tbody&#39;).insertRow();
-    const idCell = newRow.insertCell();
-    const periodCell = newRow.insertCell();
-    const statusCell = newRow.insertCell();
-    const generatedDateCell = newRow.insertCell();
-    const approvedByCell = newRow.insertCell();
-    const actionsCell = newRow.insertCell();
-
-    idCell.textContent = nextPayrollId++;
-    periodCell.textContent = payrollPeriod;
-    statusCell.textContent = status;
-    generatedDateCell.textContent = generatedDate || &#39;-&#39;;
-    approvedByCell.textContent = approvedBy || &#39;-&#39;;
-    actionsCell.innerHTML = `&lt;div class=&quot;actions-group&quot;&gt;
-                                &lt;button onclick=&quot;viewDetails(&#39;${nextPayrollId - 1}&#39;)&quot;&gt;View&lt;/button&gt;
-                                &lt;button class=&quot;edit&quot; onclick=&quot;openEditModal(&#39;${nextPayrollId - 1}&#39;)&quot;&gt;Edit&lt;/button&gt;
-                                &lt;button class=&quot;delete&quot; onclick=&quot;openDeleteModal(&#39;${nextPayrollId - 1}&#39;, &#39;${payrollPeriod}&#39;)&quot;&gt;Delete&lt;/button&gt;
-                                &lt;button class=&quot;approve&quot; onclick=&quot;openApprovePayrollModal(&#39;${nextPayrollId - 1}&#39;)&quot;&gt;Approve&lt;/button&gt;
-                                &lt;button class=&quot;process&quot; onclick=&quot;openProcessPaymentModal(&#39;${nextPayrollId - 1}&#39;)&quot;&gt;Process&lt;/button&gt;
-                            &lt;/div&gt;`;
-
-    closeAddModal();
-});
-
-
-let currentEditId = null;
-
-function openEditModal(id) {
-    currentEditId = id;
-    const row = Array.from(document.querySelector(&#39;.status-list tbody&#39;).rows).find(row =&gt; row.cells[0].textContent === id);
-    if (row) {
-        document.getElementById(&#39;editId&#39;).value = row.cells[0].textContent;
-        document.getElementById(&#39;editPayrollPeriod&#39;).value = row.cells[1].textContent;
-        document.getElementById(&#39;editStatus&#39;).value = row.cells[2].textContent;
-        const generatedDateValue = row.cells[3].textContent === &#39;-&#39; ? &#39;&#39; : row.cells[3].textContent.replace(&#39; &#39;, &#39;T&#39;);
-        document.getElementById(&#39;editGeneratedDate&#39;).value = generatedDateValue;
-        document.getElementById(&#39;editApprovedBy&#39;).value = row.cells[4].textContent === &#39;-&#39; ? &#39;&#39; : row.cells[4].textContent;
-        document.getElementById(&#39;editModal&#39;).style.display = 'block';
-    }
-}
-
-function closeEditModal() {
-    document.getElementById('editModal').style.display = 'none';
-    document.getElementById('editForm').reset();
-    currentEditId = null;
-}
-
-document.getElementById('editForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    if (currentEditId) {
-        const rowToUpdate = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === currentEditId);
-        if (rowToUpdate) {
-            rowToUpdate.cells[1].textContent = document.getElementById('editPayrollPeriod').value;
-            rowToUpdate.cells[2].textContent = document.getElementById('editStatus').value;
-            rowToUpdate.cells[3].textContent = document.getElementById('editGeneratedDate').value || '-';
-            rowToUpdate.cells[4].textContent = document.getElementById('editApprovedBy').value || '-';
+        // Modal functions for Add Payroll
+        function openAddPayrollModal() {
+            document.getElementById('addPayrollModal').style.display = 'block';
         }
-        closeEditModal();
-    }
-});
 
-// View Modal Functions
-function openViewModal(id) {
-    const row = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === id);
-    if (row) {
-        document.getElementById('viewId').textContent = row.cells[0].textContent;
-        document.getElementById('viewPayrollPeriod').textContent = row.cells[1].textContent;
-        document.getElementById('viewStatus').textContent = row.cells[2].textContent;
-        document.getElementById('viewGeneratedDate').textContent = row.cells[3].textContent;
-        document.getElementById('viewApprovedBy').textContent = row.cells[4].textContent;
-        document.getElementById('viewModal').style.display = 'block';
-    }
-}
-
-function viewDetails(id) {
-    openViewModal(id);
-}
-
-function closeViewModal() {
-    document.getElementById('viewModal').style.display = 'none';
-}
-
-// Delete Modal Functions
-let currentDeleteId = null;
-let currentDeletePeriod = null;
-
-function openDeleteModal(id, payrollPeriod) {
-    currentDeleteId = id;
-    currentDeletePeriod = payrollPeriod;
-    document.getElementById('deleteId').textContent = id;
-    document.getElementById('deletePayrollPeriod').textContent = payrollPeriod;
-    document.getElementById('deleteModal').style.display = 'block';
-}
-
-function closeDeleteModal() {
-    document.getElementById('deleteModal').style.display = 'none';
-    currentDeleteId = null;
-    currentDeletePeriod = null;
-}
-
-function confirmDelete() {
-    if (currentDeleteId) {
-        const tbody = document.querySelector('.status-list tbody');
-        const rows = Array.from(tbody.rows);
-        const rowToDelete = rows.find(row => row.cells[0].textContent === currentDeleteId);
-        if (rowToDelete) {
-            tbody.removeChild(rowToDelete);
+        function closeAddPayrollModal() {
+            document.getElementById('addPayrollModal').style.display = 'none';
         }
-        closeDeleteModal();
-    }
-}
 
-// Send Notification Modal Functions
-function openSendNotificationModal() {
-    document.getElementById('sendNotificationModal').style.display = 'block';
-}
-
-function closeSendNotificationModal() {
-    document.getElementById('sendNotificationModal').style.display = 'none';
-    document.getElementById('sendNotificationForm').reset();
-}
-
-document.getElementById('sendNotificationForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const recipient = document.getElementById('notificationRecipient').value;
-    const subject = document.getElementById('notificationSubject').value;
-    const message = document.getElementById('notificationMessage').value;
-    notifications.push({ recipient, subject, message, sentAt: new Date() });
-    alert(`Notification sent to: ${recipient} with subject: ${subject}`);
-    closeSendNotificationModal();
-});
-
-// View Notifications Modal Functions
-function openViewNotificationsModal() {
-    const list = document.getElementById('notificationsList');
-    list.innerHTML = '';
-    if (notifications.length === 0) {
-        const li = document.createElement('li');
-        li.textContent = 'No notifications yet.';
-        list.appendChild(li);
-    } else {
-        notifications.forEach(note => {
-            const li = document.createElement('li');
-            li.innerHTML = `<strong>To:</strong> ${note.recipient}<br><strong>Subject:</strong> ${note.subject}<br><strong>Message:</strong> ${note.message}<br><small>Sent at: ${note.sentAt.toLocaleString()}</small><hr>`;
-            list.appendChild(li);
-        });
-    }
-    document.getElementById('viewNotificationsModal').style.display = 'block';
-}
-
-function closeViewNotificationsModal() {
-    document.getElementById('viewNotificationsModal').style.display = 'none';
-}
-
-// Trigger Alert Modal Functions
-function openTriggerAlertModal() {
-    document.getElementById('triggerAlertModal').style.display = 'block';
-}
-
-function closeTriggerAlertModal() {
-    document.getElementById('triggerAlertModal').style.display = 'none';
-    document.getElementById('triggerAlertForm').reset();
-}
-
-document.getElementById('triggerAlertForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const subject = document.getElementById('alertSubject').value;
-    const message = document.getElementById('alertMessage').value;
-    const severity = document.getElementById('alertSeverity').value;
-    alerts.push({ subject, message, severity, triggeredAt: new Date() });
-    alert(`Alert triggered: ${subject} - ${severity}`);
-    closeTriggerAlertModal();
-});
-
-// View Alerts Modal Functions
-function openViewAlertsModal() {
-    const list = document.getElementById('alertsList');
-    list.innerHTML = '';
-    if (alerts.length === 0) {
-        const li = document.createElement('li');
-        li.textContent = 'No alerts yet.';
-        list.appendChild(li);
-    } else {
-        alerts.forEach(alert => {
-            const li = document.createElement('li');
-            li.innerHTML = `<strong>Subject:</strong> ${alert.subject}<br><strong>Message:</strong> ${alert.message}<br><strong>Severity:</strong> ${alert.severity}<br><small>Triggered at: ${alert.triggeredAt.toLocaleString()}</small><hr>`;
-            list.appendChild(li);
-        });
-    }
-    document.getElementById('viewAlertsModal').style.display = 'block';
-}
-
-function closeViewAlertsModal() {
-    document.getElementById('viewAlertsModal').style.display = 'none';
-}
-
-// Approve Payroll Modal Functions
-let currentApproveId = null;
-
-function openApprovePayrollModal(id) {
-    currentApproveId = id;
-    document.getElementById('approvePayrollId').textContent = id;
-    document.getElementById('approvePayrollModal').style.display = 'block';
-}
-
-function closeApprovePayrollModal() {
-    document.getElementById('approvePayrollModal').style.display = 'none';
-    currentApproveId = null;
-}
-
-function confirmApprovePayroll() {
-    if (currentApproveId) {
-        const rowToUpdate = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === currentApproveId);
-        if (rowToUpdate && rowToUpdate.cells[2].textContent !== 'Payment Processed') {
-            rowToUpdate.cells[2].textContent = 'Approved';
-            rowToUpdate.cells[4].textContent = 'Admin'; // Assuming 'Admin' approves
-        } else if (rowToUpdate && rowToUpdate.cells[2].textContent === 'Payment Processed') {
-            alert('Payroll has already been processed and cannot be unapproved.');
+        // Modal functions for View Payroll
+        function openViewPayrollModal(payrollId) {
+            // In a real application, you would fetch the payroll details using the ID
+            const detailsContainer = document.getElementById('viewPayrollDetails');
+            detailsContainer.innerHTML = `<p>Payroll ID: ${payrollId}</p><p>Details will be loaded here...</p>`;
+            document.getElementById('viewPayrollModal').style.display = 'block';
         }
-        closeApprovePayrollModal();
-    }
-}
 
-// Process Payment Modal Functions
-let currentProcessPaymentId = null;
-
-function openProcessPaymentModal(id) {
-    currentProcessPaymentId = id;
-    document.getElementById('processPaymentId').textContent = id;
-    document.getElementById('processPaymentModal').style.display = 'block';
-}
-
-function closeProcessPaymentModal() {
-    document.getElementById('processPaymentModal').style.display = 'none';
-    currentProcessPaymentId = null;
-}
-
-function confirmProcessPayment() {
-    if (currentProcessPaymentId) {
-        const rowToUpdate = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === currentProcessPaymentId);
-        if (rowToUpdate && rowToUpdate.cells[2].textContent === 'Approved') {
-            rowToUpdate.cells[2].textContent = 'Payment Processed';
-            rowToUpdate.cells[4].textContent = 'Finance';
-        } else if (rowToUpdate && rowToUpdate.cells[2].textContent !== 'Approved') {
-            alert('Payroll must be approved before processing payment.');
+        function closeViewPayrollModal() {
+            document.getElementById('viewPayrollModal').style.display = 'none';
         }
-        closeProcessPaymentModal();
-    }
-}
-        </body>
-</html>
+
+        // Modal functions for Edit Payroll
+        function openEditPayrollModal(payrollId) {
+            // In a real application, you would fetch the payroll data and populate the form
+            document.getElementById('editPayrollId').value = payrollId;
+            // Example: document.getElementById('editEmployeeName').value = 'Fetched Name';
+            document.getElementById('editPayrollModal').style.display = 'block';
+        }
+
+        function closeEditPayrollModal() {
+            document.getElementById('editPayrollModal').style.display = 'none';
+        }
+
+        // Modal functions for Delete Payroll
+        function openDeletePayrollModal(payrollId, employeeName) {
+            document.getElementById('deletePayrollId').innerText = payrollId;
+            document.getElementById('deletePayrollEmployee').innerText = employeeName;
+            document.getElementById('deletePayrollModal').style.display = 'block';
+        }
+
+        function closeDeletePayrollModal() {
+            document.getElementById('deletePayrollModal').style.display = 'none';
+        }
+
+        function deletePayroll() {
+            const payrollIdToDelete = document.getElementById('deletePayrollId').innerText;
+            // In a real application, you would send a request to delete the payroll record
+            console.log(`Deleting payroll with ID: ${payrollIdToDelete}`);
+            closeDeletePayrollModal();
+            // Optionally, update the table to remove the deleted row
+        }
+
+        // You would also need to handle the form submissions for adding and editing
+        document.getElementById('addPayrollForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const payrollId = document.getElementById('addPayrollId').value;
+            const employeeName = document.getElementById('addEmployeeName').value;
+            const payPeriod = document.getElementById('addPayPeriod').value;
+            const status = document.getElementById('addStatus').value;
+            const notifications = document.getElementById('addNotifications').value;
+const automation = document.getElementById('addAutomation').value;
+
+console.log('Adding new payroll:', { payrollId, employeeName, payPeriod, status, notifications, automation });
+closeAddPayrollModal();
+            
+});
+document.getElementById('editPayrollForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const payrollId = document.getElementById('editPayrollId').value;
+        const employeeName = document.getElementById('editEmployeeName').value;
+        const payPeriod = document.getElementById('editPayPeriod').value;
+        const status = document.getElementById('editStatus').value;
+        const notifications = document.getElementById('editNotifications').value;
+        const automation = document.getElementById('editAutomation').value;
+        // In a real application, you would send the updated data to your server
+        console.log('Saving changes for payroll ID:', payrollId, { employeeName, payPeriod, status, notifications, automation });
+        closeEditPayrollModal();
+        // Optionally, update the corresponding row in the table
+    });
+</script>
+</body>
