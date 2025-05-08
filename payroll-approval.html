@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payroll Processing and Approval</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+            overflow-y: auto;
+        }
+
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-content {
+            position: relative;
+            height: 80%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: scroll;
+        }
+
+        .menu-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+        .menu-title {
+            color: whitesmoke;
+            font-size: 18px;
+            padding: 15px 20px;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+        }
+
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
+
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
+        .item.show-submenu .submenu {
+            display: flex;
+        }
+
+        .submenu .item a {
+            padding: 10px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 0;
+            width: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main {
+            position: absolute;
+            top: 0;
+            left: 260px;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #e7f2fd;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 50px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .payroll-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 95%;
+            max-width: 1200px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .payroll-container h2 {
+            font-size: 24px;
+            color: #002966;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .payroll-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .payroll-section h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .salary-computation-details,
+        .payslip-generation,
+        .payroll-report-section,
+        .approval-process,
+        .compliance-check-section {
+            padding-left: 20px;
+        }
+
+        .salary-computation-details ul,
+        .payslip-generation ul,
+        .payroll-report-section ul,
+        .approval-process ul,
+        .compliance-check-section ul {
+            list-style-type: disc;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .salary-computation-details li,
+        .payslip-generation li,
+        .payroll-report-section li,
+        .approval-process li,
+        .compliance-check-section li {
+            margin-bottom: 5px;
+        }
+
+        .payslip-generation button,
+        .payroll-report-section button,
+        .approval-process button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .payslip-generation button:hover,
+        .payroll-report-section button:hover,
+        .approval-process button:hover {
+            background-color: #0056b3;
+        }
+
+        .compliance-check-section p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .compliance-check-section strong {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2 id="h2">Administrative</h2>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
+
+                <li class="item">
+                    <a class="submenu-header" href="dashboard.html">
+                        <span class="icon"><i class='bx bxs-dashboard'></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-link'></i></span>
+                        <span>Placement Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
+                        <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
+                        <li class="item"><a href="reporting.html">REPORTING</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-folder'></i></span>
+                        <span>Position Job Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
+                        <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
+                        <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
+                        <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-file'></i></span>
+                        <span>Client Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
+                        <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
+                        <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-user'></i></span>
+                        <span>Payroll Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
+                        <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
+                        <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
+                        <li class="item"><a href="taxation.html">TAXATION</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-calendar'></i></span>
+                        <span>Contract Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
+                        <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
+                        <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
+                        <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-group'></i></span>
+                        <span>User Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item">
+                            <a href="#">Contract Management</a>
+                            <div class="dropdown-content">
+                                <a href="dash.html"><small>1</small></a>
+                                <a href="user2.html"><small>2</small></a>
+                                <a href="logging.html"><small>3</small></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="aboutus.html">
+                        <span class="icon"><i class='bx bx-info-circle'></i></span>
+                        <span>About Us</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="logout.html">
+                        <span class="icon"><i class='bx bx-log-out'></i></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+    </nav>
+
+    <div class="main">
+        <a href="admin.html"
+            style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+            onmouseover="this.style.backgroundColor='darkred'"
+            onmouseout="this.style.backgroundColor='red'">
+            Back
+        </a>
+        <div class="payroll-container">
+            <h2>Payroll Processing and Approval</h2>
+
+            <div class="payroll-section">
+                <h3>1. Salary Computation</h3>
+                <div class="salary-computation-details">
+                    <p>This stage involves calculating each employee's gross salary based on their agreed-upon rate (hourly or fixed), hours worked, and any additional earnings such as overtime or bonuses.</p>
+                    <ul>
+                        <li><strong>Data Collection:</strong> Gathering data on regular hours, overtime, leaves, and other applicable factors from time tracking systems and employee records.</li>
+                        <li><strong>Gross Pay Calculation:</strong> Applying pay rates to the collected data to determine the initial earnings. For example:
+                            <ul>
+                                <li>Hourly Employee: <span class="math-inline">\\text\{Hourly Rate\} \\times \\text\{Hours Worked\}</span></li>
+                                <li>Salaried Employee: <span class="math-inline">\\frac\{\\text\{Annual Salary\}\}\{\\text\{Number of Pay Periods\}\}</span></li>
+                                <li>Overtime: <span class="math-inline">\\text\{Overtime Rate\} \\times \\text\{Overtime Hours\}</span> (where Overtime Rate is often 1.5 times the regular rate)</li>
+                                <li>Bonuses and Commissions: Adding any applicable bonuses or commissions for the pay period.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Deductions:</strong> Calculating and subtracting pre-tax deductions such as:
+                            <ul>
+                                <li>Pension contributions</li>
+                                <li>Health insurance premiums</li>
+                                <li>Other voluntary deductions</li>
+                            </ul>
+                        </li>
+                        <li><strong>Tax Calculation:</strong> Calculating applicable taxes (e.g., income tax, social security taxes) based on employee earnings and relevant tax laws.</li>
+                        <li><strong>Net Pay Calculation:</strong> Subtracting total deductions and taxes from the gross pay to arrive at the net salary payable to the employee.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="payroll-section">
+                <h3>2. Payslip Generation</h3>
+                <div class="payslip-generation">
+                    <p>Once the salary is computed, detailed payslips are generated for each employee. These documents provide a breakdown of their earnings, deductions, and net pay.</p>
+                    <ul>
+                        <li><strong>Employee Information:</strong> Name, employee ID, pay period.</li>
+                        <li><strong>Earnings Details:</strong> Regular pay, overtime pay, bonuses, etc.</li>
+                        <li><strong>Deductions Details:</strong> Each type of deduction and the amount.</li>
+                        <li><strong>Tax Details:</strong> Each type of tax and the amount withheld.</li>
+                        <li><strong>Net Pay:</strong> The final amount paid to the employee.</li>
+                        <li><strong>Year-to-Date Totals:</strong> Cumulative earnings, deductions, and taxes for the year.</li>
+                    </ul>
+                    <button onclick="generatePayslips()">Generate Payslips</button>
+                </div>
+            </div>
+
+            <div class="payroll-section">
+                <h3>3. Payroll Report Generation</h3>
+                <div class="payroll-report-section">
+                    <p>Comprehensive payroll reports are generated for internal review and accounting purposes. These reports summarize the payroll data for the entire organization or specific departments.</p>
+                    <ul>
+                        <li><strong>Summary Report:</strong> Total gross pay, total deductions, total taxes, total net pay for all employees.</li>
+                        <li><strong>Departmental Breakdown:</strong> Payroll costs allocated by department.</li>
+                        <li><strong>Tax Summary:</strong> Total amounts for each type of tax withheld.</li>
+                        <li><strong>Deduction Summary:</strong> Total amounts for each type of deduction.</li>
+                        <li><strong>Variance Reports:</strong> Comparison of current payroll with previous periods.</li>
+                    </ul>
+                    <button onclick="generatePayrollReports()">Generate Payroll Reports</button>
+                    </div>
+            </div>
+
+            <div class="payroll-section">
+                <h3>4. Payroll Approval Process</h3>
+                <div class="approval-process">
+                    <p>Before payments are processed, the generated payroll and reports undergo an approval process to ensure accuracy and compliance.</p>
+                    <ul>
+                        <li><strong>Review:</strong> Payroll administrators or managers review the payroll summary and departmental reports for any discrepancies or anomalies.</li>
+                        <li><strong>Verification:</strong> Cross-referencing payroll data with timekeeping records, employee contracts, and other relevant documentation.</li>
+                        <li><strong>Authorization:</strong> Designated personnel (e.g., Finance Manager, HR Director) formally approve the payroll run. This may involve electronic signatures or approvals within the payroll system.</li>
+                        <li><strong>Audit Trail:</strong> Maintaining a record of who reviewed and approved the payroll, along with the dates and times of approval.</li>
+                    </ul>
+                    <button onclick="initiatePayrollApproval()">Initiate Approval Workflow</button>
+                </div>
+            </div>
+
+            <div class="payroll-section">
+                <h3>5. Compliance Checks</h3>
+                <div class="compliance-check-section">
+                    <p>Payroll processing must adhere to various legal and regulatory requirements at the local, regional, and national levels.</p>
+                    <ul>
+                        <li><strong>Tax Regulations:</strong> Ensuring accurate calculation and withholding of income tax, social security contributions, and other statutory deductions as per the prevailing laws in San Jose del Monte City, Central Luzon, Philippines, and any national laws.</li>
+                        <li><strong>Labor Laws:</strong> Compliance with minimum wage laws, overtime pay regulations, and rules regarding deductions.</li>
+                        <li><strong>Company Policies:</strong> Adherence to internal payroll policies and procedures.</li>
+                        <li><strong>Reporting Requirements:</strong> Preparing and submitting required payroll-related reports to government agencies (e.g., tax authorities, labor departments) within the stipulated timelines.</li>
+                        <li><strong>Data Privacy:</strong> Ensuring the security and confidentiality of employee payroll data in accordance with data protection laws.</li>
+                    </ul>
+                    <p><strong>Important Note:</strong> Compliance requirements can be complex and vary by jurisdiction. It is crucial to stay updated on the latest regulations in San Jose del Monte City, Central Luzon, Philippines, to ensure adherence.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSubmenu(el) {
+            document.querySelectorAll('.item').forEach(item => {
+                if (item !== el.closest('.item')) {
+                    item.classList.remove('show-submenu');
+                    const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                }
+            });
+
+            const parent = el.closest('.item');
+            const icon = el.querySelector('i');
+            const isOpen = parent.classList.toggle('show-submenu');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-right', !isOpen);
+                icon.classList.toggle('fa-chevron-down', isOpen);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
+                    sidebar.classList.toggle('close');
+                });
+            }
+        });
+
+        function generatePayslips() {
+            alert('Payslips are being generated...');
+           
+            console.log('Generating payslips...');
+        }
+
+        function generatePayrollReports() {
+            alert('Payroll reports are being generated...');
+            
+            console.log('Generating payroll reports...');
+        }
+
+        function initiatePayrollApproval() {
+            alert('Payroll approval workflow initiated...');
+            
+            console.log('Initiating payroll approval workflow...');
+        }
+    </script>
+</body>
+</html>
