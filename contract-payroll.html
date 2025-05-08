@@ -8,17 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: "Poppins", sans-serif;
-        }
-
-        body {
-            position: relative;
-            min-height: 100vh;
         }
 
         .sidebar {
@@ -28,7 +23,6 @@
             background: #002966;
             padding: 15px;
             z-index: 99;
-            overflow-y: auto;
         }
 
         #h2 {
@@ -149,84 +143,95 @@
             box-sizing: border-box;
         }
 
-        .employee-container {
+        .main h1 {
+            color: #11101d;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .payroll-container {
             background: white;
             border-radius: 10px;
-            padding: 30px;
-            width: 95%;
-            max-width: 1200px;
+            padding: 20px;
+            width: 90%;
+            max-width: 950px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin-bottom: 20px;
             border: 1px solid #ddd;
         }
 
-        .employee-container h2 {
-            font-size: 24px;
+        .payroll-container h2 {
+            font-size: 20px;
             color: #002966;
-            margin-bottom: 20px;
-            text-align: center;
+            margin-bottom: 15px;
             border-bottom: 2px solid #eee;
-            padding-bottom: 15px;
+            padding-bottom: 8px;
         }
 
-        .employee-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .employee-table th, .employee-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        .employee-table th {
-            background-color: #f2f2f2;
-            color: #333;
-        }
-
-        .action-buttons button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 10px;
-            margin-right: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .action-buttons button:hover {
-            background-color: #0056b3;
-        }
-
-        .add-employee-section {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .add-employee-button {
-            background-color: #28a745;
+        .payroll-actions button {
+            background-color: #4070f4;
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             transition: background-color 0.3s ease;
         }
 
-        .add-employee-button:hover {
-            background-color: #218838;
+        .payroll-actions button:hover {
+            background-color: #3355aa;
+        }
+
+        .payroll-list {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .payroll-list th, .payroll-list td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .payroll-list th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .payroll-list td .actions-group {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .payroll-list td .actions-group button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s ease;
+            min-width: 50px; 
+            justify-content: center; 
+        }
+
+        .payroll-list td .actions-group button.edit {
+            background-color: #ff9800;
+        }
+
+        .payroll-list td .actions-group button.delete {
+            background-color: #f44336;
         }
 
         .modal {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
@@ -235,13 +240,14 @@
             background-color: rgba(0,0,0,0.4);
         }
 
-        .modal-content {
-            background-color: #fefefe;
+        .modal-content, .delete-modal-content {
+            background-color: navy;
             margin: 10% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 40%;
-            border-radius: 8px;
+            width: 60%;
+            border-radius: 10px;
+            color: white;
             position: relative;
         }
 
@@ -259,52 +265,57 @@
         .close-button:focus {
             color: black;
             text-decoration: none;
-            cursor: pointer;
+        }
+
+        .modal-content h2, .delete-modal-content h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
         }
 
         .modal-form label {
             display: block;
             margin-bottom: 5px;
+            font-size: 14px;
             font-weight: bold;
-            color: #333;
         }
 
         .modal-form input[type="text"],
-        .modal-form input[type="number"],
-        .modal-form input[type="date"] {
+        .modal-form input[type="datetime-local"],
+        .modal-form select,
+        .modal-form textarea {
             width: calc(100% - 12px);
             padding: 8px;
             margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
             font-size: 14px;
+            box-sizing: border-box;
+            color: black;
         }
 
         .modal-form button {
-            background-color: #007bff;
+            background-color: #2ecc71;
             color: white;
-            padding: 10px 15px;
             border: none;
-            border-radius: 4px;
+            padding: 10px 16px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             margin-top: 10px;
         }
 
         .modal-form button:hover {
-            background-color: #0056b3;
+            background-color: #27ae60;
         }
 
-        .delete-modal-content {
-            background-color: #fefefe;
-            margin: 20% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 30%;
-            border-radius: 8px;
-            position: relative;
-            text-align: center;
+        #viewPayrollDetails p {
+            margin-bottom: 8px;
+        }
+
+        .delete-modal-content p {
+            margin-bottom: 15px;
         }
 
         .delete-modal-content button {
@@ -312,18 +323,22 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            margin: 10px;
-        }
-
-        .delete-modal-content .confirm-delete {
-            background-color: #dc3545;
-            color: white;
+            font-size: 14px;
         }
 
         .delete-modal-content .cancel-delete {
-            background-color: #6c757d;
+            background-color: #f44336;
             color: white;
+            margin-right: 10px;
+        }
+
+        .delete-modal-content .confirm-delete {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .delete-modal-content button:hover {
+            filter: brightness(90%);
         }
     </style>
 </head>
@@ -541,12 +556,7 @@
                 </tbody>
             </table>
 
-            <div class="add-employee-section">
-                <button class="add-employee-button" onclick="openAddPayrollModal()">Add Payroll</button>
-            </div>
-        </div>
-
-        <div id="addPayrollModal" class="modal">
+         <div id="addPayrollModal" class="modal">
             <div class="modal-content">
                 <span class="close-button" onclick="closeAddPayrollModal()">&times;</span>
                 <h2>Add New Payroll</h2>
@@ -573,12 +583,13 @@
                 <span class="close-button" onclick="closeViewPayrollModal()">&times;</span>
                 <h2>Payroll Details</h2>
                 <div id="viewPayrollDetails">
-                 <div id="viewEmployeeNameDetails">
-                 <div id="viewPayperiodDetails">
-                     <div id="viewStatusDetails">
-                     <div id="viewNotificationsDetails">
-                     <div id="viewAutomationDetails">
-                    </div>
+                    <p><strong>Payroll ID:</strong> <span id="viewPayrollIdDetails"></span></p>
+                    <p><strong>Employee Name:</strong> <span id="viewEmployeeNameDetails"></span></p>
+                    <p><strong>Pay Period:</strong> <span id="viewPayperiodDetails"></span></p>
+                    <p><strong>Status:</strong> <span id="viewStatusDetails"></span></p>
+                    <p><strong>Notifications & Alerts:</strong> <span id="viewNotificationsDetails"></span></p>
+                    <p><strong>Workflow Automation:</strong> <span id="viewAutomationDetails"></span></p>
+                </div>
             </div>
         </div>
 
@@ -638,41 +649,50 @@
             }
         }
 
-      
         function openAddPayrollModal() {
             document.getElementById('addPayrollModal').style.display = 'block';
         }
 
         function closeAddPayrollModal() {
             document.getElementById('addPayrollModal').style.display = 'none';
+            document.getElementById('addPayrollForm').reset();
         }
 
-        
         function openViewPayrollModal(payrollId) {
-           
-            const detailsContainer = document.getElementById('viewPayrollDetails');
-             const detailsContainer = document.getElementById('viewEmployeeNameDetails');
-            detailsContainer.innerHTML = `<p>Payroll ID: ${payrollId}</p><p></p>`;
-            document.getElementById('viewPayrollModal').style.display = 'block';
+            const row = Array.from(document.querySelector('.payroll-list tbody').rows).find(row => row.cells[0].textContent === payrollId);
+            if (row) {
+                document.getElementById('viewPayrollIdDetails').textContent = row.cells[0].textContent;
+                document.getElementById('viewEmployeeNameDetails').textContent = row.cells[1].textContent;
+                document.getElementById('viewPayperiodDetails').textContent = row.cells[2].textContent;
+                document.getElementById('viewStatusDetails').textContent = row.cells[3].textContent;
+                document.getElementById('viewNotificationsDetails').textContent = row.cells[4] ? row.cells[4].textContent : '-';
+                document.getElementById('viewAutomationDetails').textContent = row.cells[5] ? row.cells[5].textContent : '-';
+                document.getElementById('viewPayrollModal').style.display = 'block';
+            }
         }
 
         function closeViewPayrollModal() {
             document.getElementById('viewPayrollModal').style.display = 'none';
         }
 
-        
         function openEditPayrollModal(payrollId) {
-           
-            document.getElementById('editPayrollId').value = payrollId;
-            
-            document.getElementById('editPayrollModal').style.display = 'block';
+            const row = Array.from(document.querySelector('.payroll-list tbody').rows).find(row => row.cells[0].textContent === payrollId);
+            if (row) {
+                document.getElementById('editPayrollId').value = row.cells[0].textContent;
+                document.getElementById('editEmployeeName').value = row.cells[1].textContent;
+                document.getElementById('editPayPeriod').value = row.cells[2].textContent;
+                document.getElementById('editStatus').value = row.cells[3].textContent;
+                document.getElementById('editNotifications').value = row.cells[4] ? row.cells[4].textContent : '';
+                document.getElementById('editAutomation').value = row.cells[5] ? row.cells[5].textContent : '';
+                document.getElementById('editPayrollModal').style.display = 'block';
+            }
         }
 
         function closeEditPayrollModal() {
             document.getElementById('editPayrollModal').style.display = 'none';
+            document.getElementById('editPayrollForm').reset();
         }
 
-       
         function openDeletePayrollModal(payrollId, employeeName) {
             document.getElementById('deletePayrollId').innerText = payrollId;
             document.getElementById('deletePayrollEmployee').innerText = employeeName;
@@ -685,13 +705,15 @@
 
         function deletePayroll() {
             const payrollIdToDelete = document.getElementById('deletePayrollId').innerText;
-            
-            console.log(`Deleting payroll with ID: ${payrollIdToDelete}`);
+            const tbody = document.querySelector('.payroll-list tbody');
+            const rows = Array.from(tbody.rows);
+            const rowToDelete = rows.find(row => row.cells[0].textContent === payrollIdToDelete);
+            if (rowToDelete) {
+                tbody.removeChild(rowToDelete);
+            }
             closeDeletePayrollModal();
-            
         }
 
-      
         document.getElementById('addPayrollForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const payrollId = document.getElementById('addPayrollId').value;
@@ -699,24 +721,84 @@
             const payPeriod = document.getElementById('addPayPeriod').value;
             const status = document.getElementById('addStatus').value;
             const notifications = document.getElementById('addNotifications').value;
-const automation = document.getElementById('addAutomation').value;
+            const automation = document.getElementById('addAutomation').value;
 
-console.log('Adding new payroll:', { payrollId, employeeName, payPeriod, status, notifications, automation });
-closeAddPayrollModal();
-            
-});
-document.getElementById('editPayrollForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const payrollId = document.getElementById('editPayrollId').value;
-        const employeeName = document.getElementById('editEmployeeName').value;
-        const payPeriod = document.getElementById('editPayPeriod').value;
-        const status = document.getElementById('editStatus').value;
-        const notifications = document.getElementById('editNotifications').value;
-        const automation = document.getElementById('editAutomation').value;
-        
-        console.log('Saving changes for payroll ID:', payrollId, { employeeName, payPeriod, status, notifications, automation });
-        closeEditPayrollModal();
-        
-    });
-</script>
+            const newRow = document.querySelector('.payroll-list tbody').insertRow();
+            newRow.insertCell().textContent = payrollId;
+            newRow.insertCell().textContent = employeeName;
+            newRow.insertCell().textContent = payPeriod;
+            newRow.insertCell().textContent = status;
+            const actionsCell = newRow.insertCell();
+            actionsCell.innerHTML = `<div class="actions-group">
+                                        <button onclick="openViewPayrollModal('${payrollId}')">View</button>
+                                        <button class="edit" onclick="openEditPayrollModal('${payrollId}')">Edit</button>
+                                        <button class="delete" onclick="openDeletePayrollModal('${payrollId}', '${employeeName}')">Delete</button>
+                                    </div>`;
+
+            closeAddPayrollModal();
+        });
+
+        document.getElementById('editPayrollForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const payrollId = document.getElementById('editPayrollId').value;
+            const employeeName = document.getElementById('editEmployeeName').value;
+            const payPeriod = document.getElementById('editPayPeriod').value;
+            const status = document.getElementById('editStatus').value;
+            const notifications = document.getElementById('editNotifications').value;
+            const automation = document.getElementById('editAutomation').value;
+
+            const rowToUpdate = Array.from(document.querySelector('.payroll-list tbody').rows).find(row => row.cells[0].textContent === payrollId);
+            if (rowToUpdate) {
+                rowToUpdate.cells[1].textContent = employeeName;
+                rowToUpdate.cells[2].textContent = payPeriod;
+                rowToUpdate.cells[3].textContent = status;
+                if (rowToUpdate.cells.length > 4) {
+                    rowToUpdate.cells[4].textContent = notifications;
+                } else {
+                    rowToUpdate.insertCell().textContent = notifications;
+                }
+                if (rowToUpdate.cells.length > 5) {
+                    rowToUpdate.cells[5].textContent = automation;
+                } else {
+                    rowToUpdate.insertCell().textContent = automation;
+                }
+            }
+            closeEditPayrollModal();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
+                    sidebar.classList.toggle('close');
+                });
+            }
+
+            const payrollTable = document.querySelector('.payroll-list tbody');
+            if (payrollTable) {
+                payrollTable.addEventListener('click', function(event) {
+                    const viewButton = event.target.closest('button');
+                    if (viewButton && viewButton.textContent === 'View') {
+                        const payrollId = viewButton.closest('tr').cells[0].textContent;
+                        openViewPayrollModal(payrollId);
+                    }
+                    const editButton = event.target.closest('button.edit');
+                    if (editButton) {
+                        const payrollId = editButton.closest('tr').cells[0].textContent;
+                        openEditPayrollModal(payrollId);
+                    }
+                    const deleteButton = event.target.closest('button.delete');
+                    if (deleteButton) {
+                        const row = deleteButton.closest('tr');
+                        const payrollId = row.cells[0].textContent;
+                        const employeeName = row.cells[1].textContent;
+                        openDeletePayrollModal(payrollId, employeeName);
+                    }
+                });
+            }
+        });
+    </script>
 </body>
+</html>
