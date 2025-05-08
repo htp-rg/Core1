@@ -179,7 +179,7 @@
             border: 1px solid #ddd;
             padding: 8px;
             font-size: 12px;
-            text-align: left;
+            text-align: center;
         }
 
         .employee-table th {
@@ -191,7 +191,7 @@
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 8px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 10px;
@@ -573,6 +573,11 @@
                 <span class="close-button" onclick="closeViewPayrollModal()">&times;</span>
                 <h2>Payroll Details</h2>
                 <div id="viewPayrollDetails">
+                 <div id="viewEmployeeNameDetails">
+                 <div id="viewPayperiodDetails">
+                     <div id="viewStatusDetails">
+                     <div id="viewNotificationsDetails">
+                     <div id="viewAutomationDetails">
                     </div>
             </div>
         </div>
@@ -633,7 +638,7 @@
             }
         }
 
-        // Modal functions for Add Payroll
+      
         function openAddPayrollModal() {
             document.getElementById('addPayrollModal').style.display = 'block';
         }
@@ -642,11 +647,12 @@
             document.getElementById('addPayrollModal').style.display = 'none';
         }
 
-        // Modal functions for View Payroll
+        
         function openViewPayrollModal(payrollId) {
-            // In a real application, you would fetch the payroll details using the ID
+           
             const detailsContainer = document.getElementById('viewPayrollDetails');
-            detailsContainer.innerHTML = `<p>Payroll ID: ${payrollId}</p><p>Details will be loaded here...</p>`;
+             const detailsContainer = document.getElementById('viewEmployeeNameDetails');
+            detailsContainer.innerHTML = `<p>Payroll ID: ${payrollId}</p><p></p>`;
             document.getElementById('viewPayrollModal').style.display = 'block';
         }
 
@@ -654,11 +660,11 @@
             document.getElementById('viewPayrollModal').style.display = 'none';
         }
 
-        // Modal functions for Edit Payroll
+        
         function openEditPayrollModal(payrollId) {
-            // In a real application, you would fetch the payroll data and populate the form
+           
             document.getElementById('editPayrollId').value = payrollId;
-            // Example: document.getElementById('editEmployeeName').value = 'Fetched Name';
+            
             document.getElementById('editPayrollModal').style.display = 'block';
         }
 
@@ -666,7 +672,7 @@
             document.getElementById('editPayrollModal').style.display = 'none';
         }
 
-        // Modal functions for Delete Payroll
+       
         function openDeletePayrollModal(payrollId, employeeName) {
             document.getElementById('deletePayrollId').innerText = payrollId;
             document.getElementById('deletePayrollEmployee').innerText = employeeName;
@@ -679,13 +685,13 @@
 
         function deletePayroll() {
             const payrollIdToDelete = document.getElementById('deletePayrollId').innerText;
-            // In a real application, you would send a request to delete the payroll record
+            
             console.log(`Deleting payroll with ID: ${payrollIdToDelete}`);
             closeDeletePayrollModal();
-            // Optionally, update the table to remove the deleted row
+            
         }
 
-        // You would also need to handle the form submissions for adding and editing
+      
         document.getElementById('addPayrollForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const payrollId = document.getElementById('addPayrollId').value;
@@ -707,10 +713,10 @@ document.getElementById('editPayrollForm').addEventListener('submit', function(e
         const status = document.getElementById('editStatus').value;
         const notifications = document.getElementById('editNotifications').value;
         const automation = document.getElementById('editAutomation').value;
-        // In a real application, you would send the updated data to your server
+        
         console.log('Saving changes for payroll ID:', payrollId, { employeeName, payPeriod, status, notifications, automation });
         closeEditPayrollModal();
-        // Optionally, update the corresponding row in the table
+        
     });
 </script>
 </body>
