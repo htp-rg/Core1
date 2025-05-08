@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client Communication and Engagement</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+            overflow-y: auto;
+        }
+
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-content {
+            position: relative;
+            height: 80%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: scroll;
+        }
+
+        .menu-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+        .menu-title {
+            color: whitesmoke;
+            font-size: 18px;
+            padding: 15px 20px;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+        }
+
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
+
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
+        .item.show-submenu .submenu {
+            display: flex;
+        }
+
+        .submenu .item a {
+            padding: 10px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 0;
+            width: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main {
+            position: absolute;
+            top: 0;
+            left: 260px;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #e7f2fd;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 50px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .communication-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .communication-container h2 {
+            font-size: 24px;
+            color: #002966;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .communication-container h3 {
+            font-size: 20px;
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .communication-container p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .communication-cadence ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .communication-cadence li {
+            margin-bottom: 8px;
+        }
+
+        .client-concerns {
+            margin-top: 30px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .client-concerns h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .q-and-a-box {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .q-and-a-box h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .q-and-a-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted #eee;
+        }
+
+        .q-and-a-item:last-child {
+            border-bottom: none;
+        }
+
+        .q-and-a-item strong {
+            display: block;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        .q-and-a-item p {
+            color: #555;
+        }
+
+        .client-list-section {
+            margin-top: 30px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+        }
+
+        .client-list-section h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .client-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .client-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dotted #eee;
+        }
+
+        .client-list li:last-child {
+            border-bottom: none;
+        }
+
+        .client-actions button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .client-actions button.edit {
+            background-color: #007bff;
+        }
+
+        .client-actions button.delete {
+            background-color: #dc3545;
+        }
+
+        .client-actions button:hover {
+            opacity: 0.8;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-form input[type="text"],
+        .modal-form input[type="email"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .modal-form button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .modal-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2 id="h2">Administrative</h2>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
+
+                <li class="item">
+                    <a class="submenu-header" href="dashboard.html">
+                        <span class="icon"><i class='bx bxs-dashboard'></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-link'></i></span>
+                        <span>Placement Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
+                        <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
+                        <li class="item"><a href="reporting.html">REPORTING</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-folder'></i></span>
+                        <span>Position Job Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
+                        <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
+                        <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
+                        <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
+                    </ul>
+                </li>
+
+                <li class="item show-submenu">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-file'></i></span>
+                        <span>Client Management</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
+                        <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
+                        <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-user'></i></span>
+                        <span>Payroll Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
+                        <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
+                        <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
+                        <li class="item"><a href="taxation.html">TAXATION</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-calendar'></i></span>
+                        <span>Contract Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
+                        <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
+                        <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
+                        <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-group'></i></span>
+                        <span>User Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item">
+                            <a href="#">Contract Management</a>
+                            <div class="dropdown-content">
+                                <a href="dash.html"><small>1</small></a>
+                                <a href="user2.html"><small>2</small></a>
+                                <a href="logging.html"><small>3</<a href="logging.html"><small>3</small></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="aboutus.html">
+                        <span class="icon"><i class='bx bx-info-circle'></i></span>
+                        <span>About Us</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="logout.html">
+                        <span class="icon"><i class='bx bx-log-out'></i></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+    </nav>
+
+    <div class="main">
+        <a href="admin.html"
+           style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+           onmouseover="this.style.backgroundColor='darkred'"
+           onmouseout="this.style.backgroundColor='red'">
+            Back
+        </a>
+        <div class="communication-container">
+            <h2>Client Communication and Engagement</h2>
+            <p>Establishing a strong communication cadence is vital for maintaining healthy client relationships and ensuring their needs are met effectively.</p>
+
+            <h3>Regular Communication Cadence</h3>
+            <div class="communication-cadence">
+                <ul>
+                    <li><strong>Weekly Updates:</strong> Provide clients with brief weekly updates on the progress of their projects or the status of their placements. This keeps them informed and engaged.</li>
+                    <li><strong>Monthly Reports:</strong> Deliver comprehensive monthly reports detailing key metrics, achievements, challenges, and upcoming plans. This offers a deeper insight into the value being provided.</li>
+                </ul>
+            </div>
+
+            <h3>Proactively Addressing Client Concerns and Questions</h3>
+            <p>Being proactive in addressing potential concerns and answering questions before they escalate demonstrates a commitment to client satisfaction.</p>
+        </div>
+
+        <div class="q-and-a-box">
+            <h3>Client Questions & Answers</h3>
+            <div class="q-and-a-item">
+                <strong>Q: What is the typical turnaround time for filling a position?</strong>
+                <p>A: Our typical turnaround time varies depending on the complexity and seniority of the role. However, we strive to present qualified candidates within [Specific Timeframe, e.g., 1-2 weeks]. We will keep you updated on the progress throughout the search.</p>
+            </div>
+            <div class="q-and-a-item">
+                <strong>Q: How do you ensure the quality of the candidates you present?</strong>
+                <p>A: We have a rigorous screening process that includes thorough resume reviews, in-depth interviews, and reference checks. We focus on understanding not only the required skills but also the cultural fit for your organization.</p>
+            </div>
+            <div class="q-and-a-item">
+                <strong>Q: What if a placed candidate doesn't work out?</strong>
+                <p>A: We stand behind our placements. Our placement guarantee ensures that if a candidate leaves within [Specific Timeframe, e.g., 90 days], we will conduct a new search for a replacement at no additional cost.</p>
+            </div>
+            <div class="q-and-a-item">
+                <strong>Q: Can we customize the reporting metrics to align with our internal KPIs?</strong>
+                <p>A: Absolutely! We understand the importance of aligning with your internal KPIs. We are happy to customize our reporting to include the specific metrics that are most relevant to your organization.</p>
+            </div>
+            <div class="q-and-a-item">
+                <strong>Q: What communication channels do you typically use?</strong>
+                <p>A: We primarily communicate via email and phone. However, we are flexible and can adapt to your preferred communication methods, including video conferencing or project management tools.</p>
+            </div>
+        </div>
+
+        <div class="client-list-section">
+            <h3>Client List</h3>
+            <ul class="client-list" id="clientList">
+                <li>
+                    <span>Acme Corp</span>
+                    <div class="client-actions">
+                        <button class="edit" onclick="openEditModal('Acme Corp')">Edit</button>
+                        <button class="delete" onclick="openDeleteModal('Acme Corp')">Delete</button>
+                    </div>
+                </li>
+                <li>
+                    <span>Beta Industries</span>
+                    <div class="client-actions">
+                        <button class="edit" onclick="openEditModal('Beta Industries')">Edit</button>
+                        <button class="delete" onclick="openDeleteModal('Beta Industries')">Delete</button>
+                    </div>
+                </li>
+                <li>
+                    <span>Gamma Solutions</span>
+                    <div class="client-actions">
+                        <button class="edit" onclick="openEditModal('Gamma Solutions')">Edit</button>
+                        <button class="delete" onclick="openDeleteModal('Gamma Solutions')">Delete</button>
+                    </div>
+                </li>
+                <li>
+                    <span>Delta Systems</span>
+                    <div class="client-actions">
+                        <button class="edit" onclick="openEditModal('Delta Systems')">Edit</button>
+                        <button class="delete" onclick="openDeleteModal('Delta Systems')">Delete</button>
+                    </div>
+                </li>
+                <li>
+                    <span>Epsilon Group</span>
+                    <div class="client-actions">
+                        <button class="edit" onclick="openEditModal('Epsilon Group')">Edit</button>
+                        <button class="delete" onclick="openDeleteModal('Epsilon Group')">Delete</button>
+                    </div>
+                </li>
+            </ul>
+            <button style="margin-top: 15px; background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" onclick="openAddModal()">Add Client</button>
+        </div>
+
+        <div id="addModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeAddModal()">&times;</span>
+                <h2>Add New Client</h2>
+                <form class="modal-form" id="addClientForm">
+                    <label for="addClientName">Client Name:</label>
+                    <input type="text" id="addClientName" required>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeEditModal()">&times;</span>
+                <h2>Edit Client</h2>
+                <form class="modal-form" id="editClientForm">
+                    <label for="editClientName">Client Name:</label>
+                    <input type="text" id="editClientName" required>
+                    <input type="hidden" id="originalClientName">
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeDeleteModal()">&times;</span>
+                <h2>Delete Client</h2>
+                <p>Are you sure you want to delete <span id="deleteClientName"></span>?</p>
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button style="background-color: #6c757d; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-right: 10px;" onclick="closeDeleteModal()">Cancel</button>
+                    <button style="background-color: #dc3545; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" onclick="deleteClient()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSubmenu(el) {
+            document.querySelectorAll('.item').forEach(item => {
+                if (item !== el.closest('.item')) {
+                    item.classList.remove('show-submenu');
+                    const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                }
+            });
+
+            const parent = el.closest('.item');
+            const icon = el.querySelector('i');
+            const isOpen = parent.classList.toggle('show-submenu');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-right', !isOpen);
+                icon.classList.toggle('fa-chevron-down', isOpen);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
+                    sidebar.classList.toggle('close');
+                });
+            }
+
+            const clientListElement = document.getElementById('clientList');
+            const addModal = document.getElementById('addModal');
+            const editModal = document.getElementById('editModal');
+            const deleteModal = document.getElementById('deleteModal');
+            const addClientForm = document.getElementById('addClientForm');
+            const editClientForm = document.getElementById('editClientForm');
+            const deleteClientNameDisplay = document.getElementById('deleteClientName');
+            let currentClientToDelete = null;
+
+            function updateClientList(clients) {
+                clientListElement.innerHTML = '';
+                clients.forEach(client => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <span>${client}</span>
+                        <div class="client-actions">
+                            <button class="edit" onclick="openEditModal('${client}')">Edit</button>
+                            <button class="delete" onclick="openDeleteModal('${client}')">Delete</button>
+                        </div>
+                    `;
+                    clientListElement.appendChild(listItem);
+                });
+            }
+
+            let clients = ["Acme Corp", "Beta Industries", "Gamma Solutions", "Delta Systems", "Epsilon Group"];
+            updateClientList(clients);
+
+            window.openAddModal = function() {
+                addModal.style.display = "block";
+            }
+
+            window.closeAddModal = function() {
+                addModal.style.display = "none";
+                document.getElementById('addClientName').value = '';
+            }
+
+            addClientForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const newClientName = document.getElementById('addClientName').value.trim();
+                if (newClientName) {
+                    clients.push(newClientName);
+                    updateClientList(clients);
+                    closeAddModal();
+                } else {
+                    alert('Please enter a client name.');
+                }
+            });
+
+            window.openEditModal = function(clientName) {
+                document.getElementById('editClientName').value = clientName;
+                document.getElementById('originalClientName').value = clientName;
+                editModal.style.display = "block";
+            }
+
+            window.closeEditModal = function() {
+                editModal.style.display = "none";
+            }
+
+            editClientForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const originalName = document.getElementById('originalClientName').value;
+                const newName = document.getElementById('editClientName').value.trim();
+                if (newName && newName !== originalName) {
+                    const index = clients.indexOf(originalName);
+                    if (index > -1) {
+                        clients[index] = newName;
+                        updateClientList(clients);
+                        closeEditModal();
+                    }
+                } else if (newName === originalName) {
+                    closeEditModal();
+                } else {
+                    alert('Please enter a client name.');
+                }
+            });
+
+            window.openDeleteModal = function(clientName) {
+                deleteClientNameDisplay.textContent = clientName;
+                currentClientToDelete = clientName;
+                deleteModal.style.display = "block";
+            }
+
+            window.closeDeleteModal = function() {
+                deleteModal.style.display = "none";
+                currentClientToDelete = null;
+            }
+
+            window.deleteClient = function() {
+                if (currentClientToDelete) {
+                    const index = clients.indexOf(currentClientToDelete);
+                    if (index > -1) {
+                        clients.splice(index, 1);
+                        updateClientList(clients);
+                        closeDeleteModal();
+                    }
+                }
+            }
+
+            window.onclick = function(event) {
+                if (event.target == addModal) {
+                    closeAddModal();
+                } else if (event.target == editModal) {
+                    closeEditModal();
+                } else if (event.target == deleteModal) {
+                    closeDeleteModal();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
