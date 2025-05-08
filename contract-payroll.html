@@ -430,76 +430,85 @@
         </a>
         <div class="status-container">
             <h2>Payroll Processing Status Monitoring</h2>
-            <p>Monitor the status of payroll processing, notifications, and alerts.</p>
+            <p>This page allows you to monitor and manage the status of various payroll processing runs. You can add new payroll cycles, edit existing ones, view detailed information, and handle actions such as deletion, sending notifications,triggering alerts, approving payroll, and processing payments.</p>
+             <div class="status-actions">
+            <button onclick="openAddModal()">Add New Payroll Run</button>
+            <button onclick="openEditModal()">Edit Payroll Run</button>
+            <button onclick="openViewModal()">View Details</button>
+            <button onclick="openDeleteModal()">Delete Payroll Run</button>
+            <button onclick="openSendNotificationModal()">Send Notification</button>
+            <button onclick="openViewNotificationsModal()">View Notifications</button>
+            <button onclick="openTriggerAlertModal()">Trigger Alert</button>
+            <button onclick="openViewAlertsModal()">View Alerts</button>
+            <button onclick="openApprovePayrollModal()">Approve Payroll</button>
+            <button onclick="openProcessPaymentModal()">Process Payment</button>
+        </div>
 
-            <div class="status-actions">
-                <button onclick="openAddModal()">Add New Payroll Run</button>
-                <button onclick="openEditModal()">Edit Payroll Run</button>
-                <button onclick="openViewModal()">View Details</button>
-                <button onclick="openDeleteModal()">Delete Payroll Run</button>
-                <button onclick="openSendNotificationModal()">Send Notification</button>
-                <button onclick="openViewNotificationsModal()">View Notifications</button>
-                <button onclick="openTriggerAlertModal()">Trigger Alert</button>
-                <button onclick="openViewAlertsModal()">View Alerts</button>
-                <button onclick="openApprovePayrollModal()">Approve Payroll</button>
-                <button onclick="openProcessPaymentModal()">Process Payment</button>
-            </div>
+        <table class="status-list">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Payroll Period</th>
+                    <th>Status</th>
+                    <th>Generated Date</th>
+                    <th>Approved By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2025-05-01 to 2025-05-15</td>
+                    <td>Pending Approval</td>
+                    <td>2025-05-16 10:00</td>
+                    <td>-</td>
+                    <td>
+                        <div class="actions-group">
+                            <button onclick="viewDetails('1')">View</button>
+                            <button class="edit" onclick="openEditModal('1')">Edit</button>
+                            <button class="delete" onclick="openDeleteModal('1', '2025-05-01 to 2025-05-15')">Delete</button>
+                            <button class="approve" onclick="openApprovePayrollModal('1')">Approve</button>
+                            <button class="process" onclick="openProcessPaymentModal('1')">Process</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>2025-04-16 to 2025-04-30</td>
+                    <td>Approved</td>
+                    <td>2025-05-01 09:30</td>
+                    <td>Admin</td>
+                    <td>
+                        <div class="actions-group">
+                            <button onclick="viewDetails('2')">View</button>
+                            <button class="edit" onclick="openEditModal('2')">Edit</button>
+                            <button class="delete" onclick="openDeleteModal('2', '2025-04-16 to 2025-04-30')">Delete</button>
+                            <button class="approve" onclick="openApprovePayrollModal('2')">Approve</button>
+                            <button class="process" onclick="openProcessPaymentModal('2')">Process</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>2025-04-01 to 2025-04-15</td>
+                    <td>Payment Processed</td>
+                    <td>2025-04-16 11:15</td>
+                    <td>Finance</td>
+                    <td>
+                        <div class="actions-group">
+                            <button onclick="viewDetails('3')">View</button>
+                            <button class="edit" onclick="openEditModal('3')">Edit</button>
+                            <button class="delete" onclick="openDeleteModal('3', '2025-04-01 to 2025-04-15')">Delete</button>
+                            <button class="approve" onclick="openApprovePayrollModal('3')">Approve</button>
+                            <button class="process" onclick="openProcessPaymentModal('3')">Process</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-            <table class="status-list">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Payroll Period</th>
-                        <th>Status</th>
-                        <th>Generated Date</th>
-                        <th>Approved By</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2025-05-01 to 2025-05-15</td>
-                        <td>Pending Approval</td>
-                        <td>2025-05-16 10:00</td>
-                        <td>-</td>
-                        <td><button onclick="viewDetails('1')" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View<button>
-<button onclick="openEditModal('1')" style="background-color: #ff9800; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;"></button>
-<button onclick="openDeleteModal('1', '2025-05-01 to 2025-05-15')" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Delete</button>
-<button onclick="openApprovePayrollModal('1')" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Approve</button>
-<button onclick="openProcessPaymentModal('1')" style="background-color: #008CBA; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Process Payment</button>
-<td>
-<tr>
-<tr>
-<td>2</td>
-<td>2025-04-16 to 2025-04-30</td>
-<td>Approved</td>
-<td>2025-05-01 09:30</td>
-<td>Admin<td>
-<td><button onclick="viewDetails('2')" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View<button>
-<button onclick="openEditModal('2')" style="background-color: #ff9800; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Edit</button>
-<button onclick="openDeleteModal('2', '2025-04-16 to 2025-04-30')" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Delete</button>
-<button onclick="openApprovePayrollModal('2')" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Approve</button>
-<button onclick="openProcessPaymentModal('2')" style="background-color: #008CBA; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Process Payment</button>
-<td>
-<tr>
-<tr>
-<td>3<td>
-<td>2025-04-01 to 2025-04-15</td>
-<td>Payment Processed</td>
-<td>2025-04-16 11:15</td>
-<td>Finance</td>
-<td><button onclick="viewDetails('3')" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button>
-<button onclick="openEditModal('3')" style="background-color: #ff9800; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Edit</button>
-<button onclick="openDeleteModal('3', '2025-04-01 to 2025-04-15')" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Delete</button>
-<button onclick="openApprovePayrollModal('3')" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Approve</button>
-<button onclick="openProcessPaymentModal('3')" style="background-color: #008CBA; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Process Payment</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-   <div id="addModal" class="modal">
+    <div id="addModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeAddModal()">&times;</span>
             <h4>Add New Payroll Run</h4>
@@ -666,10 +675,10 @@
         </div>
     </div>
 
-</div>
-
-<script>
-    function toggleSubmenu(el) {
+    </div>
+    
+    <script>
+  function toggleSubmenu(el) {
         document.querySelectorAll('.item').forEach(item => {
             if (item !== el.closest('.item')) {
                 item.classList.remove('show-submenu');
@@ -690,325 +699,333 @@
             icon.classList.toggle('fa-chevron-down', isOpen);
         }
     }
+        const parent = el.closest(&#39;.item&#39;);
+    const icon = el.querySelector(&#39;i&#39;);
+    const isOpen = parent.classList.toggle(&#39;show-submenu&#39;);
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const sidebarClose = document.getElementById('sidebar-close');
-        const sidebar = document.querySelector('.sidebar');
+    if (icon) {
+        icon.classList.toggle(&#39;fa-chevron-right&#39;, !isOpen);
+        icon.classList.toggle(&#39;fa-chevron-down&#39;, isOpen);
+    }
+}
 
-        if (sidebarClose) {
-            sidebarClose.addEventListener('click', function() {
-                sidebar.classList.toggle('close');
-            });
-        }
+document.addEventListener(&#39;DOMContentLoaded&#39;, function() {
+    const sidebarClose = document.getElementById(&#39;sidebar-close&#39;);
+    const sidebar = document.querySelector(&#39;.sidebar&#39;);
 
-        const statusTable = document.querySelector('.status-list tbody');
-        if (statusTable) {
-            statusTable.addEventListener('click', function(event) {
-                const viewButton = event.target.closest('button');
-                if (viewButton && viewButton.textContent === 'View') {
-                    const row = viewButton.closest('tr');
-                    const id = row.cells[0].textContent;
-                    viewDetails(id);
-                }
-                const editButton = event.target.closest('button');
-                if (editButton && editButton.textContent === 'Edit') {
-                    const row = editButton.closest('tr');
-                    const id = row.cells[0].textContent;
-                    openEditModal(id);
-                }
-                const deleteButton = event.target.closest('button');
-                if (deleteButton && deleteButton.textContent === 'Delete') {
-                    const row = deleteButton.closest('tr');
-                    const id = row.cells[0].textContent;
-                    const payrollPeriod = row.cells[1].textContent;
-                    openDeleteModal(id, payrollPeriod);
-                }
-                const approveButton = event.target.closest('button');
-                if (approveButton && approveButton.textContent === 'Approve') {
-                    const row = approveButton.closest('tr');
-                    const id = row.cells[0].textContent;
-                    openApprovePayrollModal(id);
-                }
-                const processButton = event.target.closest('button');
-                if (processButton && processButton.textContent === 'Process Payment') {
-                    const row = processButton.closest('tr');
-                    const id = row.cells[0].textContent;
-                    openProcessPaymentModal(id);
-                }
-            });
-        }
-    });
-
-    let nextPayrollId = 4; 
-    const notifications = [];
-    const alerts = [];
-
-   
-    function openAddModal() {
-        document.getElementById('addModal').style.display = 'block';
+    if (sidebarClose) {
+        sidebarClose.addEventListener(&#39;click&#39;, function() {
+            sidebar.classList.toggle(&#39;close&#39;);
+        });
     }
 
-    function closeAddModal() {
-        document.getElementById('addModal').style.display = 'none';
-        document.getElementById('addForm').reset();
-    }
-
-    document.getElementById('addForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const payrollPeriod = document.getElementById('addPayrollPeriod').value;
-        const status = document.getElementById('addStatus').value;
-        const generatedDate = document.getElementById('addGeneratedDate').value;
-        const approvedBy = document.getElementById('addApprovedBy').value;
-
-        const newRow = document.querySelector('.status-list tbody').insertRow();
-        const idCell = newRow.insertCell();
-        const periodCell = newRow.insertCell();
-        const statusCell = newRow.insertCell();
-        const generatedDateCell = newRow.insertCell();
-        const approvedByCell = newRow.insertCell();
-        const actionsCell = newRow.insertCell();
-
-        idCell.textContent = nextPayrollId++;
-        periodCell.textContent = payrollPeriod;
-        statusCell.textContent = status;
-        generatedDateCell.textContent = generatedDate || '-';
-        approvedByCell.textContent = approvedBy || '-';
-        actionsCell.innerHTML = `<button onclick="viewDetails('${nextPayrollId - 1}')" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button>
-                               <button onclick="openEditModal('${nextPayrollId - 1}')" style="background-color: #ff9800; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Edit</button>
-                               <button onclick="openDeleteModal('${nextPayrollId - 1}', '${payrollPeriod}')" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Delete</button>
-                               <button onclick="openApprovePayrollModal('${nextPayrollId - 1}')" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Approve</button>
-                               <button onclick="openProcessPaymentModal('${nextPayrollId - 1}')" style="background-color: #008CBA; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-left: 5px;">Process Payment</button>`;
-
-        closeAddModal();
-    });
-
-    
-    let currentEditId = null;
-
-    function openEditModal(id) {
-        currentEditId = id;
-        const row = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === id);
-        if (row) {
-            document.getElementById('editId').value = row.cells[0].textContent;
-            document.getElementById('editPayrollPeriod').value = row.cells[1].textContent;
-            document.getElementById('editStatus').value = row.cells[2].textContent;
-            const generatedDateValue = row.cells[3].textContent === '-' ? '' : row.cells[3].textContent.replace(' ', 'T');
-            document.getElementById('editGeneratedDate').value = generatedDateValue;
-            document.getElementById('editApprovedBy').value = row.cells[4].textContent === '-' ? '' : row.cells[4].textContent;
-            document.getElementById('editModal').style.display = 'block';
-        }
-    }
-
-    function closeEditModal() {
-        document.getElementById('editModal').style.display = 'none';
-        document.getElementById('editForm').reset();
-        currentEditId = null;
-    }
-
-    document.getElementById('editForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        if (currentEditId) {
-            const rowToUpdate = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === currentEditId);
-            if (rowToUpdate) {
-                rowToUpdate.cells[1].textContent = document.getElementById('editPayrollPeriod').value;
-                rowToUpdate.cells[2].textContent = document.getElementById('editStatus').value;
-                rowToUpdate.cells[3].textContent = document.getElementById('editGeneratedDate').value || '-';
-                rowToUpdate.cells[4].textContent = document.getElementById('editApprovedBy').value || '-';
+    const statusTable = document.querySelector(&#39;.status-list tbody&#39;);
+    if (statusTable) {
+        statusTable.addEventListener(&#39;click&#39;, function(event) {
+            const viewButton = event.target.closest(&#39;button&#39;);
+            if (viewButton &amp;&amp; viewButton.textContent === &#39;View&#39;) {
+                const row = viewButton.closest(&#39;tr&#39;);
+                const id = row.cells[0].textContent;
+                viewDetails(id);
             }
-            closeEditModal();
-        }
-    });
-
-   
-    function openViewModal(id) {
-        const row = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === id);
-        if (row) {
-            document.getElementById('viewId').textContent = row.cells[0].textContent;
-            document.getElementById('viewPayrollPeriod').textContent = row.cells[1].textContent;
-            document.getElementById('viewStatus').textContent = row.cells[2].textContent;
-            document.getElementById('viewGeneratedDate').textContent = row.cells[3].textContent;
-            document.getElementById('viewApprovedBy').textContent = row.cells[4].textContent;
-            document.getElementById('viewModal').style.display = 'block';
-        }
-    }
-
-    function viewDetails(id) {
-        openViewModal(id);
-    }
-
-    function closeViewModal() {
-        document.getElementById('viewModal').style.display = 'none';
-    }
-
-    s
-    let currentDeleteId = null;
-    let currentDeletePeriod = null;
-
-    function openDeleteModal(id, payrollPeriod) {
-        currentDeleteId = id;
-        currentDeletePeriod = payrollPeriod;
-        document.getElementById('deleteId').textContent = id;
-        document.getElementById('deletePayrollPeriod').textContent = payrollPeriod;
-        document.getElementById('deleteModal').style.display = 'block';
-    }
-
-    function closeDeleteModal() {
-        document.getElementById('deleteModal').style.display = 'none';
-        currentDeleteId = null;
-        currentDeletePeriod = null;
-    }
-
-    function confirmDelete() {
-        if (currentDeleteId) {
-            const tbody = document.querySelector('.status-list tbody');
-            const rows = Array.from(tbody.rows);
-            const rowToDelete = rows.find(row => row.cells[0].textContent === currentDeleteId);
-            if (rowToDelete) {
-                tbody.removeChild(rowToDelete);
+            const editButton = event.target.closest(&#39;button.edit&#39;);
+            if (editButton) {
+                const row = editButton.closest(&#39;tr&#39;);
+                const id = row.cells[0].textContent;
+                openEditModal(id);
             }
-            closeDeleteModal();
+            const deleteButton = event.target.closest(&#39;button.delete&#39;);
+            if (deleteButton) {
+                const row = deleteButton.closest(&#39;tr&#39;);
+                const id = row.cells[0].textContent;
+                const payrollPeriod = row.cells[1].textContent;
+                openDeleteModal(id, payrollPeriod);
+            }
+            const approveButton = event.target.closest(&#39;button.approve&#39;);
+            if (approveButton) {
+                const row = approveButton.closest(&#39;tr&#39;);
+                const id = row.cells[0].textContent;
+                openApprovePayrollModal(id);
+            }
+            const processButton = event.target.closest(&#39;button.process&#39;);
+            if (processButton) {
+                const row = processButton.closest(&#39;tr&#39;);
+                const id = row.cells[0].textContent;
+                openProcessPaymentModal(id);
+            }
+        });
+    }
+});
+
+let nextPayrollId = 4;
+const notifications = [];
+const alerts = [];
+
+// Add Modal Functions
+function openAddModal() {
+    document.getElementById(&#39;addModal&#39;).style.display = &#39;block&#39;;
+}
+
+function closeAddModal() {
+    document.getElementById(&#39;addModal&#39;).style.display = &#39;none&#39;;
+    document.getElementById(&#39;addForm&#39;).reset();
+}
+
+document.getElementById(&#39;addForm&#39;).addEventListener(&#39;submit&#39;, function(event) {
+    event.preventDefault();
+    const payrollPeriod = document.getElementById(&#39;addPayrollPeriod&#39;).value;
+    const status = document.getElementById(&#39;addStatus&#39;).value;
+    const generatedDate = document.getElementById(&#39;addGeneratedDate&#39;).value;
+    const approvedBy = document.getElementById(&#39;addApprovedBy&#39;).value;
+
+    const newRow = document.querySelector(&#39;.status-list tbody&#39;).insertRow();
+    const idCell = newRow.insertCell();
+    const periodCell = newRow.insertCell();
+    const statusCell = newRow.insertCell();
+    const generatedDateCell = newRow.insertCell();
+    const approvedByCell = newRow.insertCell();
+    const actionsCell = newRow.insertCell();
+
+    idCell.textContent = nextPayrollId++;
+    periodCell.textContent = payrollPeriod;
+    statusCell.textContent = status;
+    generatedDateCell.textContent = generatedDate || &#39;-&#39;;
+    approvedByCell.textContent = approvedBy || &#39;-&#39;;
+    actionsCell.innerHTML = `&lt;div class=&quot;actions-group&quot;&gt;
+                                &lt;button onclick=&quot;viewDetails(&#39;${nextPayrollId - 1}&#39;)&quot;&gt;View&lt;/button&gt;
+                                &lt;button class=&quot;edit&quot; onclick=&quot;openEditModal(&#39;${nextPayrollId - 1}&#39;)&quot;&gt;Edit&lt;/button&gt;
+                                &lt;button class=&quot;delete&quot; onclick=&quot;openDeleteModal(&#39;${nextPayrollId - 1}&#39;, &#39;${payrollPeriod}&#39;)&quot;&gt;Delete&lt;/button&gt;
+                                &lt;button class=&quot;approve&quot; onclick=&quot;openApprovePayrollModal(&#39;${nextPayrollId - 1}&#39;)&quot;&gt;Approve&lt;/button&gt;
+                                &lt;button class=&quot;process&quot; onclick=&quot;openProcessPaymentModal(&#39;${nextPayrollId - 1}&#39;)&quot;&gt;Process&lt;/button&gt;
+                            &lt;/div&gt;`;
+
+    closeAddModal();
+});
+
+
+let currentEditId = null;
+
+function openEditModal(id) {
+    currentEditId = id;
+    const row = Array.from(document.querySelector(&#39;.status-list tbody&#39;).rows).find(row =&gt; row.cells[0].textContent === id);
+    if (row) {
+        document.getElementById(&#39;editId&#39;).value = row.cells[0].textContent;
+        document.getElementById(&#39;editPayrollPeriod&#39;).value = row.cells[1].textContent;
+        document.getElementById(&#39;editStatus&#39;).value = row.cells[2].textContent;
+        const generatedDateValue = row.cells[3].textContent === &#39;-&#39; ? &#39;&#39; : row.cells[3].textContent.replace(&#39; &#39;, &#39;T&#39;);
+        document.getElementById(&#39;editGeneratedDate&#39;).value = generatedDateValue;
+        document.getElementById(&#39;editApprovedBy&#39;).value = row.cells[4].textContent === &#39;-&#39; ? &#39;&#39; : row.cells[4].textContent;
+        document.getElementById(&#39;editModal&#39;).style.display = 'block';
+    }
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+    document.getElementById('editForm').reset();
+    currentEditId = null;
+}
+
+document.getElementById('editForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    if (currentEditId) {
+        const rowToUpdate = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === currentEditId);
+        if (rowToUpdate) {
+            rowToUpdate.cells[1].textContent = document.getElementById('editPayrollPeriod').value;
+            rowToUpdate.cells[2].textContent = document.getElementById('editStatus').value;
+            rowToUpdate.cells[3].textContent = document.getElementById('editGeneratedDate').value || '-';
+            rowToUpdate.cells[4].textContent = document.getElementById('editApprovedBy').value || '-';
         }
+        closeEditModal();
     }
+});
 
-    
-    function openSendNotificationModal() {
-        document.getElementById('sendNotificationModal').style.display = 'block';
+// View Modal Functions
+function openViewModal(id) {
+    const row = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === id);
+    if (row) {
+        document.getElementById('viewId').textContent = row.cells[0].textContent;
+        document.getElementById('viewPayrollPeriod').textContent = row.cells[1].textContent;
+        document.getElementById('viewStatus').textContent = row.cells[2].textContent;
+        document.getElementById('viewGeneratedDate').textContent = row.cells[3].textContent;
+        document.getElementById('viewApprovedBy').textContent = row.cells[4].textContent;
+        document.getElementById('viewModal').style.display = 'block';
     }
+}
 
-    function closeSendNotificationModal() {
-        document.getElementById('sendNotificationModal').style.display = 'none';
-        document.getElementById('sendNotificationForm').reset();
+function viewDetails(id) {
+    openViewModal(id);
+}
+
+function closeViewModal() {
+    document.getElementById('viewModal').style.display = 'none';
+}
+
+// Delete Modal Functions
+let currentDeleteId = null;
+let currentDeletePeriod = null;
+
+function openDeleteModal(id, payrollPeriod) {
+    currentDeleteId = id;
+    currentDeletePeriod = payrollPeriod;
+    document.getElementById('deleteId').textContent = id;
+    document.getElementById('deletePayrollPeriod').textContent = payrollPeriod;
+    document.getElementById('deleteModal').style.display = 'block';
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+    currentDeleteId = null;
+    currentDeletePeriod = null;
+}
+
+function confirmDelete() {
+    if (currentDeleteId) {
+        const tbody = document.querySelector('.status-list tbody');
+        const rows = Array.from(tbody.rows);
+        const rowToDelete = rows.find(row => row.cells[0].textContent === currentDeleteId);
+        if (rowToDelete) {
+            tbody.removeChild(rowToDelete);
+        }
+        closeDeleteModal();
     }
+}
 
-    document.getElementById('sendNotificationForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const recipient = document.getElementById('notificationRecipient').value;
-        const subject = document.getElementById('notificationSubject').value;
-        const message = document.getElementById('notificationMessage').value;
-        notifications.push({ recipient, subject, message, sentAt: new Date() });
-        alert(`Notification sent to: ${recipient} with subject: ${subject}`);
-        closeSendNotificationModal();
-    });
+// Send Notification Modal Functions
+function openSendNotificationModal() {
+    document.getElementById('sendNotificationModal').style.display = 'block';
+}
 
-   
-    function openViewNotificationsModal() {
-        const list = document.getElementById('notificationsList');
-        list.innerHTML = '';
-        if (notifications.length === 0) {
+function closeSendNotificationModal() {
+    document.getElementById('sendNotificationModal').style.display = 'none';
+    document.getElementById('sendNotificationForm').reset();
+}
+
+document.getElementById('sendNotificationForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const recipient = document.getElementById('notificationRecipient').value;
+    const subject = document.getElementById('notificationSubject').value;
+    const message = document.getElementById('notificationMessage').value;
+    notifications.push({ recipient, subject, message, sentAt: new Date() });
+    alert(`Notification sent to: ${recipient} with subject: ${subject}`);
+    closeSendNotificationModal();
+});
+
+// View Notifications Modal Functions
+function openViewNotificationsModal() {
+    const list = document.getElementById('notificationsList');
+    list.innerHTML = '';
+    if (notifications.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No notifications yet.';
+        list.appendChild(li);
+    } else {
+        notifications.forEach(note => {
             const li = document.createElement('li');
-            li.textContent = 'No notifications yet.';
+            li.innerHTML = `<strong>To:</strong> ${note.recipient}<br><strong>Subject:</strong> ${note.subject}<br><strong>Message:</strong> ${note.message}<br><small>Sent at: ${note.sentAt.toLocaleString()}</small><hr>`;
             list.appendChild(li);
-        } else {
-            notifications.forEach(note => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>To:</strong> ${note.recipient}<br><strong>Subject:</strong> ${note.subject}<br><strong>Message:</strong> ${note.message}<br><small>Sent at: ${note.sentAt.toLocaleString()}</small><hr>`;
-                list.appendChild(li);
-            });
-        }
-        document.getElementById('viewNotificationsModal').style.display = 'block';
+        });
     }
+    document.getElementById('viewNotificationsModal').style.display = 'block';
+}
 
-    function closeViewNotificationsModal() {
-        document.getElementById('viewNotificationsModal').style.display = 'none';
-    }
+function closeViewNotificationsModal() {
+    document.getElementById('viewNotificationsModal').style.display = 'none';
+}
 
-    
-    function openTriggerAlertModal() {
-        document.getElementById('triggerAlertModal').style.display = 'block';
-    }
+// Trigger Alert Modal Functions
+function openTriggerAlertModal() {
+    document.getElementById('triggerAlertModal').style.display = 'block';
+}
 
-    function closeTriggerAlertModal() {
-        document.getElementById('triggerAlertModal').style.display = 'none';
-        document.getElementById('triggerAlertForm').reset();
-    }
+function closeTriggerAlertModal() {
+    document.getElementById('triggerAlertModal').style.display = 'none';
+    document.getElementById('triggerAlertForm').reset();
+}
 
-    document.getElementById('triggerAlertForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const subject = document.getElementById('alertSubject').value;
-        const message = document.getElementById('alertMessage').value;
-        const severity = document.getElementById('alertSeverity').value;
-        alerts.push({ subject, message, severity, triggeredAt: new Date() });
-        alert(`Alert triggered: ${subject} - ${severity}`);
-        closeTriggerAlertModal();
-    });
+document.getElementById('triggerAlertForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const subject = document.getElementById('alertSubject').value;
+    const message = document.getElementById('alertMessage').value;
+    const severity = document.getElementById('alertSeverity').value;
+    alerts.push({ subject, message, severity, triggeredAt: new Date() });
+    alert(`Alert triggered: ${subject} - ${severity}`);
+    closeTriggerAlertModal();
+});
 
-   
-    function openViewAlertsModal() {
-        const list = document.getElementById('alertsList');
-        list.innerHTML = '';
-        if (alerts.length === 0) {
+// View Alerts Modal Functions
+function openViewAlertsModal() {
+    const list = document.getElementById('alertsList');
+    list.innerHTML = '';
+    if (alerts.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No alerts yet.';
+        list.appendChild(li);
+    } else {
+        alerts.forEach(alert => {
             const li = document.createElement('li');
-            li.textContent = 'No alerts yet.';
+            li.innerHTML = `<strong>Subject:</strong> ${alert.subject}<br><strong>Message:</strong> ${alert.message}<br><strong>Severity:</strong> ${alert.severity}<br><small>Triggered at: ${alert.triggeredAt.toLocaleString()}</small><hr>`;
             list.appendChild(li);
-        } else {
-            alerts.forEach(alert => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>Subject:</strong> ${alert.subject}<br><strong>Message:</strong> ${alert.message}<br><strong>Severity:</strong> ${alert.severity}<br><small>Triggered at: ${alert.triggeredAt.toLocaleString()}</small><hr>`;
-                list.appendChild(li);
-            });
+        });
+    }
+    document.getElementById('viewAlertsModal').style.display = 'block';
+}
+
+function closeViewAlertsModal() {
+    document.getElementById('viewAlertsModal').style.display = 'none';
+}
+
+// Approve Payroll Modal Functions
+let currentApproveId = null;
+
+function openApprovePayrollModal(id) {
+    currentApproveId = id;
+    document.getElementById('approvePayrollId').textContent = id;
+    document.getElementById('approvePayrollModal').style.display = 'block';
+}
+
+function closeApprovePayrollModal() {
+    document.getElementById('approvePayrollModal').style.display = 'none';
+    currentApproveId = null;
+}
+
+function confirmApprovePayroll() {
+    if (currentApproveId) {
+        const rowToUpdate = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === currentApproveId);
+        if (rowToUpdate && rowToUpdate.cells[2].textContent !== 'Payment Processed') {
+            rowToUpdate.cells[2].textContent = 'Approved';
+            rowToUpdate.cells[4].textContent = 'Admin'; // Assuming 'Admin' approves
+        } else if (rowToUpdate && rowToUpdate.cells[2].textContent === 'Payment Processed') {
+            alert('Payroll has already been processed and cannot be unapproved.');
         }
-        document.getElementById('viewAlertsModal').style.display = 'block';
+        closeApprovePayrollModal();
     }
+}
 
-    function closeViewAlertsModal() {
-        document.getElementById('viewAlertsModal').style.display = 'none';
-    }
+// Process Payment Modal Functions
+let currentProcessPaymentId = null;
 
-   
-    let currentApproveId = null;
+function openProcessPaymentModal(id) {
+    currentProcessPaymentId = id;
+    document.getElementById('processPaymentId').textContent = id;
+    document.getElementById('processPaymentModal').style.display = 'block';
+}
 
-    function openApprovePayrollModal(id) {
-        currentApproveId = id;
-        document.getElementById('approvePayrollId').textContent = id;
-        document.getElementById('approvePayrollModal').style.display = 'block';
-    }
+function closeProcessPaymentModal() {
+    document.getElementById('processPaymentModal').style.display = 'none';
+    currentProcessPaymentId = null;
+}
 
-    function closeApprovePayrollModal() {
-        document.getElementById('approvePayrollModal').style.display = 'none';
-        currentApproveId = null;
-    }
-
-    function confirmApprovePayroll() {
-        if (currentApproveId) {
-            const rowToUpdate = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === currentApproveId);
-            if (rowToUpdate && rowToUpdate.cells[2].textContent !== 'Payment Processed') {
-                rowToUpdate.cells[2].textContent = 'Approved';
-                rowToUpdate.cells[4].textContent = 'Admin'; // Assuming 'Admin' approves
-            } else if (rowToUpdate && rowToUpdate.cells[2].textContent === 'Payment Processed') {
-                alert('Payroll has already been processed and cannot be unapproved.');
-            }
-            closeApprovePayrollModal();
+function confirmProcessPayment() {
+    if (currentProcessPaymentId) {
+        const rowToUpdate = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === currentProcessPaymentId);
+        if (rowToUpdate && rowToUpdate.cells[2].textContent === 'Approved') {
+            rowToUpdate.cells[2].textContent = 'Payment Processed';
+            rowToUpdate.cells[4].textContent = 'Finance';
+        } else if (rowToUpdate && rowToUpdate.cells[2].textContent !== 'Approved') {
+            alert('Payroll must be approved before processing payment.');
         }
+        closeProcessPaymentModal();
     }
-
-   
-    let currentProcessPaymentId = null;
-
-    function openProcessPaymentModal(id) {
-        currentProcessPaymentId = id;
-        document.getElementById('processPaymentId').textContent = id;
-        document.getElementById('processPaymentModal').style.display = 'block';
-    }
-
-    function closeProcessPaymentModal() {
-        document.getElementById('processPaymentModal').style.display = 'none';
-        currentProcessPaymentId = null;
-    }
-
-    function confirmProcessPayment() {
-        if (currentProcessPaymentId) {
-            const rowToUpdate = Array.from(document.querySelector('.status-list tbody').rows).find(row => row.cells[0].textContent === currentProcessPaymentId);
-            if (rowToUpdate && rowToUpdate.cells[2].textContent === 'Approved') {
-                rowToUpdate.cells[2].textContent = 'Payment Processed';
-                rowToUpdate.cells[4].textContent = 'Finance'; 
-            } else if (rowToUpdate && rowToUpdate.cells[2].textContent !== 'Approved') {
-                alert('Payroll must be approved before processing payment.');
-            }
-            closeProcessPaymentModal();
-        }
-    }
-</script>
-
-</body>
+}
+        </body>
 </html>
-```
