@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contract Status Tracking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+        }
+
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-content {
+            position: relative;
+            height: 80%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: scroll;
+        }
+
+        .menu-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+        .menu-title {
+            color: whitesmoke;
+            font-size: 18px;
+            padding: 15px 20px;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+        }
+
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
+
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
+        .item.show-submenu .submenu {
+            display: flex;
+        }
+
+        .submenu .item a {
+            padding: 10px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 0;
+            width: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main {
+            position: absolute;
+            top: 0;
+            left: 260px;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #e7f2fd;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 50px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .main h1 {
+            color: #11101d;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tracking-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .tracking-container h2, .tracking-container h3 {
+            font-size: 20px;
+            color: #002966;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .contract-actions {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .contract-actions button {
+            background-color: #002966;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .contract-actions button:hover {
+            background-color: #001a4d;
+        }
+
+        .contract-list {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .contract-list th, .contract-list td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .contract-list th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h3 {
+            color: #002966;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .modal-content input[type="text"],
+        .modal-content textarea,
+        .modal-content select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .modal-content button {
+            background-color: #002966;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #001a4d;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2 id="h2">Administrative</h2>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
+
+                <li class="item">
+                    <a class="submenu-header" href="dashboard.html">
+                        <span class="icon"><i class='bx bxs-dashboard'></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-link'></i></span>
+                        <span>Placement Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
+                        <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
+                        <li class="item"><a href="reporting.html">REPORTING</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-folder'></i></span>
+                        <span>Position Job Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
+                        <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
+                        <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
+                        <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-file'></i></span>
+                        <span>Client Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
+                        <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
+                        <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-user'></i></span>
+                        <span>Payroll Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
+                        <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
+                        <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
+                        <li class="item"><a href="taxation.html">TAXATION</a></li>
+                    </ul>
+                </li>
+
+                <li class="item show-submenu">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-calendar'></i></span>
+                        <span>Contract Management</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <ul class="submenu" style="display: flex;">
+                        <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
+                        <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
+                        <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
+                        <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-group'></i></span>
+                        <span>User Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item">
+                            <a href="#">Contract Management</a>
+                            <div class="dropdown-content">
+                                <a href="dash.html"><small>1</small></a>
+                                <a href="user2.html"><small>2</small></a>
+                                <a href="logging.html"><small>3</small></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="aboutus.html">
+                        <span class="icon"><i class='bx bx-info-circle'></i></span>
+                        <span>About Us</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="logout.html">
+                        <span class="icon"><i class='bx bx-log-out'></i></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+    </nav>
+
+    <div class="main">
+        <a href="admin.html"
+           style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+           onmouseover="this.style.backgroundColor='darkred'"
+           onmouseout="this.style.backgroundColor='red'">
+            Back
+        </a>
+        <div class="tracking-container">
+            <h2>Contract Status Tracking</h2>
+            <p>Manage and track the different versions and changes made to contracts.</p>
+
+            <div class="contract-actions">
+                <button onclick="openAddVersionModal()">Add Version</button>
+                <button onclick="openEditVersionModal()">Edit Version</button>
+                <button onclick="openDeleteVersionModal()">Delete Version</button>
+                <button onclick="openCompareVersionsModal()">Compare Versions</button>
+                <button onclick="openMergeChangesModal()">Merge Changes</button>
+            </div>
+
+            <h3>Contract Versions</h3>
+            <table class="contract-list">
+                <thead>
+                    <tr>
+                        <th>Version ID</th>
+                        <th>Contract Name</th>
+                        <th>Version Number</th>
+                        <th>Uploaded Date</th>
+                        <th>Uploaded By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>VER001</td>
+                        <td>Service Agreement - Alpha Corp</td>
+                        <td>1.0</td>
+                        <td>2025-05-01</td>
+                        <td>Admin</td>
+                        <td><button onclick="viewVersion('VER001')" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>VER002</td>
+                        <td>Service Agreement - Alpha Corp</td>
+                        <td>1.1</td>
+                        <td>2025-05-05</td>
+                        <td>Editor</td>
+                        <td><button onclick="viewVersion('VER002')" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>VER003</td>
+                        <td>Consulting Agreement - Beta Inc</td>
+                        <td>2.0</td>
+                        <td>2025-04-15</td>
+                        <td>Reviewer</td>
+                        <td><button onclick="viewVersion('VER003')" style="background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="addVersionModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeAddVersionModal()">&times;</span>
+                <h3>Add New Contract Version</h3>
+                <label for="addContractName">Contract Name:</label>
+                <input type="text" id="addContractName" name="addContractName">
+                <label for="addVersionNumber">Version Number:</label>
+                <input type="text" id="addVersionNumber" name="addVersionNumber">
+                <label for="addFileUpload">Upload File:</label>
+                <input type="file" id="addFileUpload" name="addFileUpload">
+                <div class="modal-actions">
+                    <button onclick="closeAddVersionModal()">Cancel</button>
+                    <button onclick="saveNewVersion()">Add Version</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="editVersionModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeEditVersionModal()">&times;</span>
+                <h3>Edit Contract Version</h3>
+                <label for="editVersionId">Version ID:</label>
+                <input type="text" id="editVersionId" name="editVersionId" readonly>
+                <label for="editContractName">Contract Name:</label>
+                <input type="text" id="editContractName" name="editContractName">
+                <label for="editVersionNumber">Version Number:</label>
+                <input type="text" id="editVersionNumber" name="editVersionNumber">
+                <label for="editFileUpload">Replace File (Optional):</label>
+                <input type="file" id="editFileUpload" name="editFileUpload">
+                <div class="modal-actions">
+                    <button onclick="closeEditVersionModal()">Cancel</button>
+                    <button onclick="saveEditedVersion()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="deleteVersionModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeDeleteVersionModal()">&times;</span>
+                <h3>Delete Contract Version</h3>
+                <p>Are you sure you want to delete version <strong id="deleteVersionId"></strong> of contract <strong id="deleteContractToDelete"></strong>?</p>
+                <div class="modal-actions">
+                    <button onclick="closeDeleteVersionModal()">Cancel</button>
+                    <button onclick="confirmDeleteVersion()">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="compareVersionsModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeCompareVersionsModal()">&times;</span>
+                <h3>Compare Contract Versions</h3>
+                <label for="compareVersion1">Select Version 1:</label>
+                <select id="compareVersion1" name="compareVersion1">
+                    <option value="VER001">Service Agreement - Alpha Corp (1.0)</option>
+                    <option value="VER002">Service Agreement - Alpha Corp (1.1)</option>
+                    <option value="VER003">Consulting Agreement - Beta Inc (2.0)</option>
+                </select>
+                <label for="compareVersion2">Select Version 2:</label>
+                <select id="compareVersion2" name="compareVersion2">
+                    <option value="VER001">Service Agreement - Alpha Corp (1.0)</option>
+                    <option value="VER002">Service Agreement - Alpha Corp (1.1)</option>
+                    <option value="VER003">Consulting Agreement - Beta Inc (2.0)</option>
+                </select>
+                <div class="modal-actions">
+                    <button onclick="closeCompareVersionsModal()">Cancel</button>
+                    <button onclick="compareSelectedVersions()">Compare</button>
+                </div>
+                <div id="comparisonResults" style="margin-top: 20px;">
+                    </div>
+            </div>
+        </div>
+
+        <div id="mergeChangesModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeMergeChangesModal()">&times;</span>
+                <h3>Merge Changes</h3>
+                <p>Select the versions to merge and specify how to handle conflicting changes.</p>
+                <label for="mergeVersion1">Select Version 1:</label>
+                <select id="mergeVersion1" name="mergeVersion1">
+                    <option value="VER001">Service Agreement - Alpha Corp (1.0)</option>
+                    <option value="VER002">Service Agreement - Alpha Corp (1.1)</option>
+                    <option value="VER003">Consulting Agreement - Beta Inc (2.0)</option>
+                </select>
+                <label for="mergeVersion2">Select Version 2:</label>
+                <select id="mergeVersion2" name="mergeVersion2">
+                    <option value="VER001">Service Agreement - Alpha Corp (1.0)</option>
+                    <option value="VER002">Service Agreement - Alpha Corp (1.1)</option>
+                    <option value="VER003">Consulting Agreement - Beta Inc (2.0)</option>
+                </select>
+                <label for="mergeStrategy">Merge Strategy:</label>
+                <select id="mergeStrategy" name="mergeStrategy">
+                    <option value="manual">Manual Selection</option>
+                    <option value="auto_v1">Keep Version 1 Changes</option>
+                    <option value="auto_v2">Keep Version 2 Changes</option>
+                </select>
+                <div class="modal-actions">
+                    <button onclick="closeMergeChangesModal()">Cancel</button>
+                    <button onclick="performMerge()">Merge</button>
+                </div>
+                <div id="mergeResults" style="margin-top: 20px;">
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleSubmenu(el) {
+            document.querySelectorAll('.item').forEach(item => {
+                if (item !== el.closest('.item')) {
+                    item.classList.remove('show-submenu');
+                    const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                }
+            });
+
+            const parent = el.closest('.item');
+            const icon = el.querySelector('i');
+            const isOpen = parent.classList.toggle('show-submenu');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-right', !isOpen);
+                icon.classList.toggle('fa-chevron-down', isOpen);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
+                    sidebar.classList.toggle('close');
+                });
+            }
+        });
+
+    
+        function openAddVersionModal() {
+            document.getElementById("addVersionModal").style.display = "block";
+        }
+
+        function closeAddVersionModal() {
+            document.getElementById("addVersionModal").style.display = "none";
+        }
+
+        function saveNewVersion() {
+            const contractName = document.getElementById("addContractName").value;
+            const versionNumber = document.getElementById("addVersionNumber").value;
+            const file = document.getElementById("addFileUpload").files[0];
+            alert(`Adding version ${versionNumber} for ${contractName}. File: ${file ? file.name : 'No file selected'}`);
+            closeAddVersionModal();
+            /
+        }
+
+        
+        function openEditVersionModal(versionId, contractName, versionNumber) {
+            document.getElementById("editVersionModal").style.display = "block";
+            document.getElementById("editVersionId").value = versionId || '';
+            document.getElementById("editContractName").value = contractName || '';
+            document.getElementById("editVersionNumber").value = versionNumber || '';
+          
+        }
+
+        function closeEditVersionModal() {
+            document.getElementById("editVersionModal").style.display = "none";
+        }
+
+        function saveEditedVersion() {
+            const versionId = document.getElementById("editVersionId").value;
+            const contractName = document.getElementById("editContractName").value;
+            const versionNumber = document.getElementById("editVersionNumber").value;
+            const file = document.getElementById("editFileUpload").files[0];
+            alert(`Saving changes for version ${versionNumber} of ${contractName} (ID: ${versionId}). File: ${file ? file.name : 'No new file selected'}`);
+            closeEditVersionModal();
+          
+        }
+
+       
+        function openDeleteVersionModal(versionId, contractName) {
+            document.getElementById("deleteVersionModal").style.display = "block";
+            document.getElementById("deleteVersionId").textContent = versionId;
+            document.getElementById("deleteContractToDelete").textContent = contractName;
+        }
+
+        function closeDeleteVersionModal() {
+            document.getElementById("deleteVersionModal").style.display = "none";
+        }
+
+        function confirmDeleteVersion() {
+            const versionId = document.getElementById("deleteVersionId").textContent;
+            alert(`Deleting version ${versionId}`);
+            closeDeleteVersionModal();
+           
+        }
+
+        
+        function openCompareVersionsModal() {
+            document.getElementById("compareVersionsModal").style.display = "block";
+            
+        }
+
+        function closeCompareVersionsModal() {
+            document.getElementById("compareVersionsModal").style.display = "none";
+            document.getElementById("comparisonResults").innerHTML = ''; // Clear previous results
+        }
+
+        function compareSelectedVersions() {
+            const version1 = document.getElementById("compareVersion1").value;
+            const version2 = document.getElementById("compareVersion2").value;
+            alert(`Comparing version ${version1} with ${version2}`);
+            document.getElementById("comparisonResults").innerHTML = `<p>Comparison results between ${version1} and ${version2} will be displayed here.</p>`;
+            
+        }
+
+       
+        function openMergeChangesModal() {
+            document.getElementById("mergeChangesModal").style.display = "block";
+            
+        }
+
+        function closeMergeChangesModal() {
+            document.getElementById("mergeChangesModal").style.display = "none";
+            document.getElementById("mergeResults").innerHTML = ''; // Clear previous results
+        }
+
+        function performMerge() {
+            const version1 = document.getElementById("mergeVersion1").value;
+            const version2 = document.getElementById("mergeVersion2").value;
+            const strategy = document.getElementById("mergeStrategy").value;
+            alert(`Merging version ${version1} and ${version2} with strategy: ${strategy}`);
+            document.getElementById("mergeResults").innerHTML = `<p>Merge process initiated for ${version1} and ${version2} with strategy: ${strategy}. Results or manual merge options will appear here.</p>`;
+            
+        }
+
+        function viewVersion(versionId) {
+            alert(`Viewing details for version ${versionId}`);
+            
+        }
+
+       
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.querySelector('.contract-list tbody');
+            if (table) {
+                table.addEventListener('click', function(event) {
+                    if (event.target.textContent === 'View') {
+                       
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
