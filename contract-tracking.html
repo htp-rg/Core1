@@ -416,7 +416,7 @@
         <i class="fa-solid fa-bars" id="sidebar-close"></i>
     </nav>
 
-    <div class="main">
+   <div class="main">
         <a href="admin.html"
            style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
            onmouseover="this.style.backgroundColor='darkred'"
@@ -516,7 +516,7 @@
             <div class="modal-content">
                 <span class="close-button" onclick="closeDeleteVersionModal()">&times;</span>
                 <h3>Delete Contract Version</h3>
-                <p>Are you sure you want to delete version <strong id="deleteVersionId"></strong> of contract <strong id="deleteContractToDelete"></strong>?</p>
+                <p>Are you sure you want to delete version <strong id="deleteVersionIdToDelete"></strong> of contract <strong id="deleteContractNameToDelete"></strong>?</p>
                 <div class="modal-actions">
                     <button onclick="closeDeleteVersionModal()">Cancel</button>
                     <button onclick="confirmDeleteVersion()">Delete</button>
@@ -615,9 +615,26 @@
                     sidebar.classList.toggle('close');
                 });
             }
+
+            const table = document.querySelector('.contract-list tbody');
+            if (table) {
+                table.addEventListener('click', function(event) {
+                    const viewButton = event.target.closest('button');
+                    if (viewButton && viewButton.textContent === 'View') {
+                        const row = viewButton.closest('tr');
+                        const versionId = row.cells[0].textContent;
+                        const contractName = row.cells[1].textContent;
+                        const versionNumber = row.cells[2].textContent;
+
+                        if (viewButton.onclick.toString().includes("viewVersion")) {
+                           
+                        }
+                    }
+                });
+            }
         });
 
-    
+        
         function openAddVersionModal() {
             document.getElementById("addVersionModal").style.display = "block";
         }
@@ -632,16 +649,23 @@
             const file = document.getElementById("addFileUpload").files[0];
             alert(`Adding version ${versionNumber} for ${contractName}. File: ${file ? file.name : 'No file selected'}`);
             closeAddVersionModal();
-            /
+            
         }
 
-        
-        function openEditVersionModal(versionId, contractName, versionNumber) {
-            document.getElementById("editVersionModal").style.display = "block";
-            document.getElementById("editVersionId").value = versionId || '';
-            document.getElementById("editContractName").value = contractName || '';
-            document.getElementById("editVersionNumber").value = versionNumber || '';
-          
+      
+        function openEditVersionModal() {
+            const selectedRow = document.querySelector('.contract-list tbody tr.selected');
+            if (selectedRow) {
+                const versionId = selectedRow.cells[0].textContent;
+                const contractName = selectedRow.cells[1].textContent;
+                const versionNumber = selectedRow.cells[2].textContent;
+                document.getElementById("editVersionModal").style.display = "block";
+                document.getElementById("editVersionId").value = versionId;
+                document.getElementById("editContractName").value = contractName;
+                document.getElementById("editVersionNumber").value = versionNumber;
+            } else {
+                alert("Please select a contract version to edit.");
+            }
         }
 
         function closeEditVersionModal() {
@@ -655,14 +679,21 @@
             const file = document.getElementById("editFileUpload").files[0];
             alert(`Saving changes for version ${versionNumber} of ${contractName} (ID: ${versionId}). File: ${file ? file.name : 'No new file selected'}`);
             closeEditVersionModal();
-          
+            
         }
 
-       
-        function openDeleteVersionModal(versionId, contractName) {
-            document.getElementById("deleteVersionModal").style.display = "block";
-            document.getElementById("deleteVersionId").textContent = versionId;
-            document.getElementById("deleteContractToDelete").textContent = contractName;
+        
+        function openDeleteVersionModal() {
+            const selectedRow = document.querySelector('.contract-list tbody tr.selected');
+            if (selectedRow) {
+                const versionId = selectedRow.cells[0].textContent;
+                const contractName = selectedRow.cells[1].textContent;
+                document.getElementById("deleteVersionModal").style.display = "block";
+                document.getElementById("deleteVersionIdToDelete").textContent = versionId;
+                document.getElementById("deleteContractNameToDelete").textContent = contractName;
+            } else {
+                alert("Please select a contract version to delete.");
+            }
         }
 
         function closeDeleteVersionModal() {
@@ -670,16 +701,16 @@
         }
 
         function confirmDeleteVersion() {
-            const versionId = document.getElementById("deleteVersionId").textContent;
+            const versionId = document.getElementById("deleteVersionIdToDelete").textContent;
             alert(`Deleting version ${versionId}`);
             closeDeleteVersionModal();
-           
+            
         }
 
         
         function openCompareVersionsModal() {
             document.getElementById("compareVersionsModal").style.display = "block";
-            
+          
         }
 
         function closeCompareVersionsModal() {
@@ -703,7 +734,7 @@
 
         function closeMergeChangesModal() {
             document.getElementById("mergeChangesModal").style.display = "none";
-            document.getElementById("mergeResults").innerHTML = ''; // Clear previous results
+            document.getElementById("mergeResults").innerHTML = ''; 
         }
 
         function performMerge() {
@@ -712,21 +743,27 @@
             const strategy = document.getElementById("mergeStrategy").value;
             alert(`Merging version ${version1} and ${version2} with strategy: ${strategy}`);
             document.getElementById("mergeResults").innerHTML = `<p>Merge process initiated for ${version1} and ${version2} with strategy: ${strategy}. Results or manual merge options will appear here.</p>`;
-            
+           
         }
 
         function viewVersion(versionId) {
             alert(`Viewing details for version ${versionId}`);
-            
+          
         }
 
        
         document.addEventListener('DOMContentLoaded', function() {
-            const table = document.querySelector('.contract-list tbody');
-            if (table) {
-                table.addEventListener('click', function(event) {
-                    if (event.target.textContent === 'View') {
+            const tableBody = document.querySelector('.contract-list tbody');
+            if (tableBody) {
+                tableBody.addEventListener('click', function(event) {
+                    const clickedRow = event.target.closest('tr');
+                    if (clickedRow) {
+                      
+                        tableBody.querySelectorAll('tr.selected').forEach(row => {
+                            row.classList.remove('selected');
+                        });
                        
+                        clickedRow.classList.add('selected');
                     }
                 });
             }
