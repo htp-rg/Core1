@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+     @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
         * {
             margin: 0;
             padding: 0;
@@ -160,10 +160,6 @@
             margin-bottom: 20px;
             border: 1px solid #ddd;
         }
-        .employee-table th, ,employee-table td {
-            border: 1px solid #ddd;
-            padding: 8px'
-        }
 
         .payroll-container h2 {
             font-size: 20px;
@@ -171,6 +167,12 @@
             margin-bottom: 15px;
             border-bottom: 2px solid #eee;
             padding-bottom: 8px;
+        }
+
+        .employee-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
         }
 
         .employee-actions button {
@@ -184,7 +186,7 @@
             transition: background-color 0.3s ease;
         }
 
-        .payroll-actions button:hover {
+        .employee-actions button:hover {
             background-color: #3355aa;
         }
 
@@ -209,6 +211,7 @@
             display: flex;
             gap: 5px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .payroll-list td .actions-group button {
@@ -219,8 +222,8 @@
             cursor: pointer;
             font-size: 12px;
             transition: background-color 0.3s ease;
-            min-width: 50px; 
-            justify-content: center; 
+            min-width: 50px;
+            justify-content: center;
         }
 
         .payroll-list td .actions-group button.edit {
@@ -431,31 +434,6 @@
                 </li>
 
                 <li class="item">
-                    <div class="submenu-header" onclick="toggleSubmenu(this)">
-                        <span class="icon"><i class='bx bx-group'></i></span>
-                        <span>User Management</span>
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li class="item">
-                            <a href="#">Contract Management</a>
-                            <div class="dropdown-content">
-                                <a href="dash.html"><small>1</small></a>
-                                <a href="user2.html"><small>2</small></a>
-                                <a href="logging.html"><small>3</small></a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="item">
-                    <a class="submenu-header" href="aboutus.html">
-                        <span class="icon"><i class='bx bx-info-circle'></i></span>
-                        <span>About Us</span>
-                    </a>
-                </li>
-
-                <li class="item">
                     <a class="submenu-header" href="logout.html">
                         <span class="icon"><i class='bx bx-log-out'></i></span>
                         <span>Logout</span>
@@ -469,7 +447,7 @@
         <i class="fa-solid fa-bars" id="sidebar-close"></i>
     </nav>
 
-    <div class="main">
+     <div class="main">
         <a href="admin.html"
             style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
             onmouseover="this.style.backgroundColor='darkred'"
@@ -477,8 +455,11 @@
             Back
         </a>
         <div class="employee-container">
+            <div class="employee-actions">
+                <button onclick="openAddPayrollModal()">Add Payroll</button>
+            </div>
             <h2>Payroll Processing and Approval</h2>
-            <table class="employee-table">
+            <table class="payroll-list">
                 <thead>
                     <tr>
                         <th>Payroll ID</th>
@@ -499,9 +480,11 @@
                         <td>-</td>
                         <td>Automated Calculation</td>
                         <td class="action-buttons">
-                            <button onclick="openViewPayrollModal('PY2025-001')">View</button>
-                            <button onclick="openEditPayrollModal('PY2025-001')">Edit</button>
-                            <button onclick="openDeletePayrollModal('PY2025-001', 'John Doe')">Delete</button>
+                            <div class="actions-group">
+                                <button onclick="openViewPayrollModal('PY2025-001')">View</button>
+                                <button class="edit" onclick="openEditPayrollModal('PY2025-001')">Edit</button>
+                                <button class="delete" onclick="openDeletePayrollModal('PY2025-001', 'John Doe')">Delete</button>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -512,9 +495,11 @@
                         <td>Payment Sent</td>
                         <td>Automated Payment Processing</td>
                         <td class="action-buttons">
-                            <button onclick="openViewPayrollModal('PY2025-002')">View</button>
-                            <button onclick="openEditPayrollModal('PY2025-002')">Edit</button>
-                            <button onclick="openDeletePayrollModal('PY2025-002', 'Jane Smith')">Delete</button>
+                            <div class="actions-group">
+                                <button onclick="openViewPayrollModal('PY2025-002')">View</button>
+                                <button class="edit" onclick="openEditPayrollModal('PY2025-002')">Edit</button>
+                                <button class="delete" onclick="openDeletePayrollModal('PY2025-002', 'Jane Smith')">Delete</button>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -525,9 +510,11 @@
                         <td>-</td>
                         <td>-</td>
                         <td class="action-buttons">
-                            <button onclick="openViewPayrollModal('PY2025-003')">View</button>
-                            <button onclick="openEditPayrollModal('PY2025-003')">Edit</button>
-                            <button onclick="openDeletePayrollModal('PY2025-003', 'Peter Jones')">Delete</button>
+                            <div class="actions-group">
+                                <button onclick="openViewPayrollModal('PY2025-003')">View</button>
+                                <button class="edit" onclick="openEditPayrollModal('PY2025-003')">Edit</button>
+                                <button class="delete" onclick="openDeletePayrollModal('PY2025-003', 'Peter Jones')">Delete</button>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -538,9 +525,11 @@
                         <td>Review Required</td>
                         <td>-</td>
                         <td class="action-buttons">
-                            <button onclick="openViewPayrollModal('PY2025-004')">View</button>
-                            <button onclick="openEditPayrollModal('PY2025-004')">Edit</button>
-                            <button onclick="openDeletePayrollModal('PY2025-004', 'Alice Brown')">Delete</button>
+                            <div class="actions-group">
+                                <button onclick="openViewPayrollModal('PY2025-004')">View</button>
+                                <button class="edit" onclick="openEditPayrollModal('PY2025-004')">Edit</button>
+                                <button class="delete" onclick="openDeletePayrollModal('PY2025-004', 'Alice Brown')">Delete</button>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -551,80 +540,83 @@
                         <td>-</td>
                         <td>Automated Reporting</td>
                         <td class="action-buttons">
-                            <button onclick="openViewPayrollModal('PY2025-005')">View</button>
-                            <button onclick="openEditPayrollModal('PY2025-005')">Edit</button>
-                            <button onclick="openDeletePayrollModal('PY2025-005', 'Bob Green')">Delete</button>
+                            <div class="actions-group">
+                                <button onclick="openViewPayrollModal('PY2025-005')">View</button>
+                                <button class="edit" onclick="openEditPayrollModal('PY2025-005')">Edit</button>
+                                <button class="delete" onclick="openDeletePayrollModal('PY2025-005', 'Bob Green')">Delete</button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-         <div id="addPayrollModal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeAddPayrollModal()">&times;</span>
-                <h2>Add New Payroll</h2>
-                <form class="modal-form" id="addPayrollForm">
-                    <label for="addPayrollId">Payroll ID:</label>
-                    <input type="text" id="addPayrollId" required>
-                    <label for="addEmployeeName">Employee Name:</label>
-                    <input type="text" id="addEmployeeName" required>
-                    <label for="addPayPeriod">Pay Period:</label>
-                    <input type="text" id="addPayPeriod">
-                    <label for="addStatus">Status:</label>
-                    <input type="text" id="addStatus">
-                    <label for="addNotifications">Notifications & Alerts:</label>
-                    <input type="text" id="addNotifications">
-                    <label for="addAutomation">Workflow Automation:</label>
-                    <input type="text" id="addAutomation">
-                    <button type="submit">Add Payroll</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="viewPayrollModal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeViewPayrollModal()">&times;</span>
-                <h2>Payroll Details</h2>
-                <div id="viewPayrollDetails">
-                    <p><strong>Payroll ID:</strong> <span id="viewPayrollIdDetails"></span></p>
-                    <p><strong>Employee Name:</strong> <span id="viewEmployeeNameDetails"></span></p>
-                    <p><strong>Pay Period:</strong> <span id="viewPayperiodDetails"></span></p>
-                    <p><strong>Status:</strong> <span id="viewStatusDetails"></span></p>
-                    <p><strong>Notifications & Alerts:</strong> <span id="viewNotificationsDetails"></span></p>
-                    <p><strong>Workflow Automation:</strong> <span id="viewAutomationDetails"></span></p>
+            <div id="addPayrollModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeAddPayrollModal()">&times;</span>
+                    <h2>Add New Payroll</h2>
+                    <form class="modal-form" id="addPayrollForm">
+                        <label for="addPayrollId">Payroll ID:</label>
+                        <input type="text" id="addPayrollId" required>
+                        <label for="addEmployeeName">Employee Name:</label>
+                        <input type="text" id="addEmployeeName" required>
+                        <label for="addPayPeriod">Pay Period:</label>
+                        <input type="text" id="addPayPeriod">
+                        <label for="addStatus">Status:</label>
+                        <input type="text" id="addStatus">
+                        <label for="addNotifications">Notifications & Alerts:</label>
+                        <input type="text" id="addNotifications">
+                        <label for="addAutomation">Workflow Automation:</label>
+                        <input type="text" id="addAutomation">
+                        <button type="submit">Add Payroll</button>
+                    </form>
                 </div>
             </div>
-        </div>
 
-        <div id="editPayrollModal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeEditPayrollModal()">&times;</span>
-                <h2>Edit Payroll Details</h2>
-                <form class="modal-form" id="editPayrollForm">
-                    <label for="editPayrollId">Payroll ID:</label>
-                    <input type="text" id="editPayrollId" readonly>
-                    <label for="editEmployeeName">Employee Name:</label>
-                    <input type="text" id="editEmployeeName" required>
-                    <label for="editPayPeriod">Pay Period:</label>
-                    <input type="text" id="editPayPeriod">
-                    <label for="editStatus">Status:</label>
-                    <input type="text" id="editStatus">
-                    <label for="editNotifications">Notifications & Alerts:</label>
-                    <input type="text" id="editNotifications">
-                    <label for="editAutomation">Workflow Automation:</label>
-                    <input type="text" id="editAutomation">
-                    <button type="submit">Save Changes</button>
-                </form>
+            <div id="viewPayrollModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeViewPayrollModal()">&times;</span>
+                    <h2>Payroll Details</h2>
+                    <div id="viewPayrollDetails">
+                        <p><strong>Payroll ID:</strong> <span id="viewPayrollIdDetails"></span></p>
+                        <p><strong>Employee Name:</strong> <span id="viewEmployeeNameDetails"></span></p>
+                        <p><strong>Pay Period:</strong> <span id="viewPayperiodDetails"></span></p>
+                        <p><strong>Status:</strong> <span id="viewStatusDetails"></span></p>
+                        <p><strong>Notifications & Alerts:</strong> <span id="viewNotificationsDetails"></span></p>
+                        <p><strong>Workflow Automation:</strong> <span id="viewAutomationDetails"></span></p>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div id="deletePayrollModal" class="modal">
-            <div class="delete-modal-content">
-                <span class="close-button" onclick="closeDeletePayrollModal()">&times;</span>
-                <h2>Delete Payroll</h2>
-                <p>Are you sure you want to delete payroll for <span id="deletePayrollEmployee"></span> with ID <span id="deletePayrollId"></span>?</p>
-                <button class="cancel-delete" onclick="closeDeletePayrollModal()">Cancel</button>
-                <button class="confirm-delete" onclick="deletePayroll()">Delete</button>
+            <div id="editPayrollModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeEditPayrollModal()">&times;</span>
+                    <h2>Edit Payroll Details</h2>
+                    <form class="modal-form" id="editPayrollForm">
+                        <label for="editPayrollId">Payroll ID:</label>
+                        <input type="text" id="editPayrollId" readonly>
+                        <label for="editEmployeeName">Employee Name:</label>
+                        <input type="text" id="editEmployeeName" required>
+                        <label for="editPayPeriod">Pay Period:</label>
+                        <input type="text" id="editPayPeriod">
+                        <label for="editStatus">Status:</label>
+                        <input type="text" id="editStatus">
+                        <label for="editNotifications">Notifications & Alerts:</label>
+                        <input type="text" id="editNotifications">
+                        <label for="editAutomation">Workflow Automation:</label>
+                        <input type="text" id="editAutomation">
+                        <button type="submit">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="deletePayrollModal" class="modal">
+                <div class="delete-modal-content">
+                    <span class="close-button" onclick="closeDeletePayrollModal()">&times;</span>
+                    <h2>Delete Payroll</h2>
+                    <p>Are you sure you want to delete payroll for <span id="deletePayrollEmployee"></span> with ID <span id="deletePayrollId"></span>?</p>
+                    <button class="cancel-delete" onclick="closeDeletePayrollModal()">Cancel</button>
+                    <button class="confirm-delete" onclick="deletePayroll()">Delete</button>
+                </div>
             </div>
         </div>
     </div>
@@ -731,6 +723,8 @@
             newRow.insertCell().textContent = employeeName;
             newRow.insertCell().textContent = payPeriod;
             newRow.insertCell().textContent = status;
+            newRow.insertCell().textContent = notifications;
+            newRow.insertCell().textContent = automation;
             const actionsCell = newRow.insertCell();
             actionsCell.innerHTML = `<div class="actions-group">
                                         <button onclick="openViewPayrollModal('${payrollId}')">View</button>
@@ -776,29 +770,6 @@
             if (sidebarClose) {
                 sidebarClose.addEventListener('click', function() {
                     sidebar.classList.toggle('close');
-                });
-            }
-
-            const payrollTable = document.querySelector('.payroll-list tbody');
-            if (payrollTable) {
-                payrollTable.addEventListener('click', function(event) {
-                    const viewButton = event.target.closest('button');
-                    if (viewButton && viewButton.textContent === 'View') {
-                        const payrollId = viewButton.closest('tr').cells[0].textContent;
-                        openViewPayrollModal(payrollId);
-                    }
-                    const editButton = event.target.closest('button.edit');
-                    if (editButton) {
-                        const payrollId = editButton.closest('tr').cells[0].textContent;
-                        openEditPayrollModal(payrollId);
-                    }
-                    const deleteButton = event.target.closest('button.delete');
-                    if (deleteButton) {
-                        const row = deleteButton.closest('tr');
-                        const payrollId = row.cells[0].textContent;
-                        const employeeName = row.cells[1].textContent;
-                        openDeletePayrollModal(payrollId, employeeName);
-                    }
                 });
             }
         });
