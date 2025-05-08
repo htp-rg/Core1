@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payroll System Setup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+            overflow-y: auto;
+        }
+
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-content {
+            position: relative;
+            height: 80%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: scroll;
+        }
+
+        .menu-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+        .menu-title {
+            color: whitesmoke;
+            font-size: 18px;
+            padding: 15px 20px;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+        }
+
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
+
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
+        .item.show-submenu .submenu {
+            display: flex;
+        }
+
+        .submenu .item a {
+            padding: 10px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 0;
+            width: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main {
+            position: absolute;
+            top: 0;
+            left: 260px;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #e7f2fd;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 50px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .payroll-setup-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .payroll-setup-container h2 {
+            font-size: 24px;
+            color: #002966;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .payroll-setup-container h3 {
+            font-size: 20px;
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .payroll-setup-container p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .payroll-policies ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .payroll-policies li {
+            margin-bottom: 8px;
+        }
+
+        .configure-software {
+            margin-top: 30px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .configure-software h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .software-steps ol {
+            list-style-type: decimal;
+            padding-left: 20px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .software-steps li {
+            margin-bottom: 8px;
+        }
+
+        .add-button-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .add-button-section button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-button-section button:hover {
+            background-color: #218838;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-form input[type="text"],
+        .modal-form input[type="number"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .modal-form button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .modal-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2 id="h2">Administrative</h2>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
+
+                <li class="item">
+                    <a class="submenu-header" href="dashboard.html">
+                        <span class="icon"><i class='bx bxs-dashboard'></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-link'></i></span>
+                        <span>Placement Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
+                        <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
+                        <li class="item"><a href="reporting.html">REPORTING</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-folder'></i></span>
+                        <span>Position Job Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
+                        <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
+                        <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
+                        <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-file'></i></span>
+                        <span>Client Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
+                        <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
+                        <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-user'></i></span>
+                        <span>Payroll Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
+                        <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
+                        <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
+                        <li class="item"><a href="taxation.html">TAXATION</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-calendar'></i></span>
+                        <span>Contract Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
+                        <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
+                        <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
+                        <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-group'></i></span>
+                        <span>User Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item">
+                            <a href="#">Contract Management</a>
+                            <div class="dropdown-content">
+                                <a href="dash.html"><small>1</small></a>
+                                <a href="user2.html"><small>2</small></a>
+                                <a href="logging.html"><small>3</small></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="aboutus.html">
+                        <span class="icon"><i class='bx bx-info-circle'></i></span>
+                        <span>About Us</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="logout.html">
+                        <span class="icon"><i class='bx bx-log-out'></i></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </di
+
+    <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+    </nav>
+
+    <div class="main">
+        <a href="admin.html"
+            style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+            onmouseover="this.style.backgroundColor='darkred'"
+            onmouseout="this.style.backgroundColor='red'">
+            Back
+        </a>
+        <div class="payroll-setup-container">
+            <h2>Payroll System Setup</h2>
+            <p>Setting up your payroll system involves defining your company's payroll policies and configuring the chosen payroll software.</p>
+
+            <h3>Define Payroll Policies</h3>
+            <p>Clearly defined payroll policies ensure compliance and consistency in your payroll processes. Consider the following:</p>
+            <div class="payroll-policies">
+                <ul>
+                    <li><strong>Pay Frequency:</strong> Determine how often employees will be paid (e.g., weekly, bi-weekly, monthly).</li>
+                    <li><strong>Deductions:</strong> Specify mandatory deductions (e.g., taxes, social security) and any voluntary deductions (e.g., insurance, retirement contributions).</li>
+                    <li><strong>Overtime Policy:</strong> Outline rules for overtime pay, including when it applies and the applicable rate.</li>
+                    <li><strong>Leave Policies:</strong> Define policies for vacation, sick leave, and other types of paid or unpaid time off.</li>
+                    <li><strong>Payment Methods:</strong> Decide on acceptable payment methods (e.g., direct deposit, checks).</li>
+                    <li><strong>Tax Withholding):</strong> Understand and adhere to federal, state, and local tax regulations regarding employee withholding.</li>
+                    <li><strong>Garnishments:</strong> Establish procedures for handling wage garnishments as legally required.</li>
+                </ul>
+                <div class="add-button-section">
+                    <button onclick="openAddPolicyModal()">Add Policy</button>
+                    <button onclick="openEditPolicyModal()">Edit Policy</button>
+                    <button onclick="openDeletePolicyModal()">Delete Policy</button>
+                </div>
+            </div>
+
+            <div class="configure-software">
+                <h3>Configure Payroll Software</h3>
+                <p>Once your policies are defined, the next step is to configure your chosen payroll software. This typically involves:</p>
+                <div class="software-steps">
+                    <ol>
+                        <li><strong>Company Setup:</strong> Enter your company's legal name, address, EIN, and other relevant information.</li>
+                        <li><strong>Employee Data:</strong> Add employee profiles, including names, addresses, contact information, hire dates, and pay rates.</li>
+                        <li><strong>Pay Schedules:</strong> Configure the pay frequencies established in your policies.</li>
+                        <li><strong>Deduction Setup:</strong> Set up the system to handle both mandatory and voluntary deductions.</li>
+                        <li><strong>Tax Configuration:</strong> Enter the necessary tax information and settings to ensure accurate withholding.</li>
+                        <li><strong>Bank Account Integration:</strong> Link your company's bank account for direct deposit payments.</li>
+                        <li><strong>Report Generation:</strong> Familiarize yourself with the software's reporting capabilities.</li>
+                        <li><strong>User Access Control:</strong> Set up user accounts and permissions for those who will manage payroll.</li>
+                    </ol>
+                    <div class="add-button-section">
+                        <button onclick="openAddSoftwareStepModal()">Add Step</button>
+                        <button onclick="openEditSoftwareStepModal()">Edit Step</button>
+                        <button onclick="openDeleteSoftwareStepModal()">Delete Step</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="addPolicyModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeAddPolicyModal()">&times;</span>
+                <h2>Add Payroll Policy</h2>
+                <form class="modal-form" id="addPolicyForm">
+                    <label for="addPolicyName">Policy Name:</label>
+                    <input type="text" id="addPolicyName" required>
+                    <label for="addPolicyDescription">Description:</label>
+                    <input type="text" id="addPolicyDescription" required>
+                    <button type="submit">Add Policy</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="editPolicyModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeEditPolicyModal()">&times;</span>
+                <h2>Edit Payroll Policy</h2>
+                <form class="modal-form" id="editPolicyForm">
+                    <label for="editPolicyName">Policy Name:</label>
+                    <input type="text" id="editPolicyName" required>
+                    <label for="editPolicyDescription">Description:</label>
+                    <input type="text" id="editPolicyDescription" required>
+                    <input type="hidden" id="originalPolicyName">
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="deletePolicyModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeDeletePolicyModal()">&times;</span>
+                <h2>Delete Payroll Policy</h2>
+                <p>Are you sure you want to delete the policy <span id="deletePolicyName"></span>?</p>
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button style="background-color: #6c757d; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-right: 10px;" onclick="closeDeletePolicyModal()">Cancel</button>
+                    <button style="background-color: #dc3545; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" onclick="deletePolicy()">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="addSoftwareStepModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeAddSoftwareStepModal()">&times;</span>
+                <h2>Add Software Setup Step</h2>
+                <form class="modal-form" id="addSoftwareStepForm">
+                    <label for="addStepNumber">Step Number:</label>
+                    <input type="number" id="addStepNumber" required>
+                    <label for="addStepDescription">Description:</label>
+                    <input type="text" id="addStepDescription" required>
+                    <button type="submit">Add Step</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="editSoftwareStepModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeEditSoftwareStepModal()">&times;</span>
+                <h2>Edit Software Setup Step</h2>
+                <form class="modal-form" id="editSoftwareStepForm">
+                    <label for="editStepNumber">Step Number:</label>
+                    <input type="number" id="editStepNumber" required>
+                    <label for="editStepDescription">Description:</label>
+                    <input type="text" id="editStepDescription" required>
+                    <input type="hidden" id="originalStepNumber">
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="deleteSoftwareStepModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeDeleteSoftwareStepModal()">&times;</span>
+                <h2>Delete Software Setup Step</h2>
+                <p>Are you sure you want to delete step <span id="deleteStepNumber"></span>?</p>
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button style="background-color: #6c757d; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-right: 10px;" onclick="closeDeleteSoftwareStepModal()">Cancel</button>
+                    <button style="background-color: #dc3545; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" onclick="deleteSoftwareStep()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSubmenu(el) {
+            document.querySelectorAll('.item').forEach(item => {
+                if (item !== el.closest('.item')) {
+                    item.classList.remove('show-submenu');
+                    const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                }
+            });
+
+            const parent = el.closest('.item');
+            const icon = el.querySelector('i');
+            const isOpen = parent.classList.toggle('show-submenu');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-right', !isOpen);
+                icon.classList.toggle('fa-chevron-down', isOpen);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
+                    sidebar.classList.toggle('close');
+                });
+            }
+
+            const addPolicyModal = document.getElementById('addPolicyModal');
+            const editPolicyModal = document.getElementById('editPolicyModal');
+            const deletePolicyModal = document.getElementById('deletePolicyModal');
+            const addPolicyForm = document.getElementById('addPolicyForm');
+            const editPolicyForm = document.getElementById('editPolicyForm');
+            const deletePolicyNameDisplay = document.getElementById('deletePolicyName');
+            let currentPolicyToDelete = null;
+            let payrollPolicies = [
+                { name: "Pay Frequency", description: "Bi-weekly" },
+                { name: "Overtime Policy", description: "1.5x hourly rate for hours over 40 per week" }
+            ];
+           
+            function updatePolicyList() {
+                const policyList = document.querySelector('.payroll-policies ul');
+                if (policyList) {
+                    policyList.innerHTML = '';
+                    payrollPolicies.forEach(policy => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${policy.name}: ${policy.description}`;
+                        policyList.appendChild(listItem);
+                    });
+                }
+            }
+            updatePolicyList();
+
+            window.openAddPolicyModal = function() {
+                addPolicyModal.style.display = "block";
+            }
+
+            window.closeAddPolicyModal = function() {
+                addPolicyModal.style.display = "none";
+                document.getElementById('addPolicyName').value = '';
+                document.getElementById('addPolicyDescription').value = '';
+            }
+
+            addPolicyForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const newPolicyName = document.getElementById('addPolicyName').value.trim();
+                const newPolicyDescription = document.getElementById('addPolicyDescription').value.trim();
+                if (newPolicyName && newPolicyDescription) {
+                    payrollPolicies.push({ name: newPolicyName, description: newPolicyDescription });
+                    updatePolicyList();
+                    closeAddPolicyModal();
+                } else {
+                    alert('Please enter both policy name and description.');
+                }
+            });
+
+            window.openEditPolicyModal = function() {
+                
+                editPolicyModal.style.display = "block";
+            }
+
+            window.closeEditPolicyModal = function() {
+                editPolicyModal.style.display = "none";
+                document.getElementById('editPolicyName').value = '';
+                document.getElementById('editPolicyDescription').value = '';
+                document.getElementById('originalPolicyName').value = '';
+            }
+
+            editPolicyForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const originalName = document.getElementById('originalPolicyName').value;
+                const newName = document.getElementById('editPolicyName').value.trim();
+                const newDescription = document.getElementById('editPolicyDescription').value.trim();
+                // Implement logic to find and update the policy
+                closeEditPolicyModal();
+            });
+
+            window.openDeletePolicyModal = function() {
+                // Similarly, you'd need to identify which policy is being deleted
+                // and display its name.
+                deletePolicyNameDisplay.textContent = "Selected Policy"; // Placeholder
+                deletePolicyModal.style.display = "block";
+            }
+
+            window.closeDeletePolicyModal = function() {
+                deletePolicyModal.style.display = "none";
+                currentPolicyToDelete = null;
+            }
+
+            window.deletePolicy = function() {
+                // Implement logic to remove the selected policy
+                closeDeletePolicyModal();
+            }
+
+            const addSoftwareStepModal = document.getElementById('addSoftwareStepModal');
+            const editSoftwareStepModal = document.getElementById('editSoftwareStepModal');
+            const deleteSoftwareStepModal = document.getElementById('deleteSoftwareStepModal');
+            const addSoftwareStepForm = document.getElementById('addSoftwareStepForm');
+            const editSoftwareStepForm = document.getElementById('editSoftwareStepForm');
+            const deleteStepNumberDisplay = document.getElementById('deleteStepNumber');
+            let currentStepToDelete = null;
+            let softwareSteps = [
+                { number: 1, description: "Company Setup" },
+                { number: 2, description: "Employee Data" }
+            ];
+            function updateSoftwareStepList() {
+                const stepList = document.querySelector('.software-steps ol');
+                if (stepList) {
+                    stepList.innerHTML = '';
+                    softwareSteps.sort((a, b) => a.number - b.number).forEach(step => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${step.description}`;
+                        stepList.appendChild(listItem);
+                    });
+                }
+            }
+            updateSoftwareStepList();
+
+            window.openAddSoftwareStepModal = function() {
+                addSoftwareStepModal.style.display = "block";
+            }
+
+            window.closeAddSoftwareStepModal = function() {
+                addSoftwareStepModal.style.display = "none";
+                document.getElementById('addStepNumber').value = '';
+                document.getElementById('addStepDescription').value = '';
+            }
+
+            addSoftwareStepForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const newStepNumber = parseInt(document.getElementById('addStepNumber').value);
+                const newStepDescription = document.getElementById('addStepDescription').value.trim();
+                if (!isNaN(newStepNumber) && newStepDescription) {
+                    softwareSteps.push({ number: newStepNumber, description: newStepDescription });
+                    updateSoftwareStepList();
+                    closeAddSoftwareStepModal();
+                } else {
+                    alert('Please enter a valid step number and description.');
+                }
+            });
+
+            window.openEditSoftwareStepModal = function() {
+               
+                editSoftwareStepModal.style.display = "block";
+            }
+
+            window.closeEditSoftwareStepModal = function() {
+                editSoftwareStepModal.style.display = "none";
+                document.getElementById('editStepNumber').value = '';
+                document.getElementById('editStepDescription').value = '';
+                document.getElementById('originalStepNumber').value = '';
+            }
+
+            editSoftwareStepForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const originalNumber = parseInt(document.getElementById('originalStepNumber').value);
+                const newNumber = parseInt(document.getElementById('editStepNumber').value);
+                const newDescription = document.getElementById('editStepDescription').value.trim();
+                // Implement logic to find and update the step
+                closeEditSoftwareStepModal();
+            });
+
+            window.openDeleteSoftwareStepModal = function() {
+                // Implement logic to identify and display the step number to delete
+                deleteStepNumberDisplay.textContent = "Selected Step Number"; // Placeholder
+                deleteSoftwareStepModal.style.display = "block";
+            }
+
+            window.closeDeleteSoftwareStepModal = function() {
+                deleteSoftwareStepModal.style.display = "none";
+                currentStepToDelete = null;
+            }
+
+            window.deleteSoftwareStep = function() {
+                // Implement logic to remove the selected step
+                closeDeleteSoftwareStepModal();
+            }
+
+            window.onclick = function(event) {
+                if (event.target == addPolicyModal) {
+                    closeAddPolicyModal();
+                } else if (event.target == editPolicyModal) {
+                    closeEditPolicyModal();
+                } else if (event.target == deletePolicyModal) {
+                    closeDeletePolicyModal();
+                } else if (event.target == addSoftwareStepModal) {
+                    closeAddSoftwareStepModal();
+                } else if (event.target == editSoftwareStepModal) {
+                    closeEditSoftwareStepModal();
+                } else if (event.target == deleteSoftwareStepModal) {
+                    closeDeleteSoftwareStepModal();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
