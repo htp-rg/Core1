@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Processing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+            overflow-y: auto;
+        }
+
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-content {
+            position: relative;
+            height: 80%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: scroll;
+        }
+
+        .menu-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+        .menu-title {
+            color: whitesmoke;
+            font-size: 18px;
+            padding: 15px 20px;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+        }
+
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
+
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
+        .item.show-submenu .submenu {
+            display: flex;
+        }
+
+        .submenu .item a {
+            padding: 10px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 0;
+            width: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main {
+            position: absolute;
+            top: 0;
+            left: 260px;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #e7f2fd;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 50px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 95%;
+            max-width: 1200px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .payment-container h2 {
+            font-size: 24px;
+            color: #002966;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .payment-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .payment-section h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .payment-details ul {
+            list-style-type: disc;
+            color: #555;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+
+        .payment-details li {
+            margin-bottom: 5px;
+        }
+
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .payment-table th, .payment-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .payment-table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .action-buttons button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            color: #002966;
+            margin-bottom: 15px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .modal-content input[type=text],
+        .modal-content input[type=number],
+        .modal-content input[type=date] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .modal-content button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .modal-content button:hover {
+            background-color: #45a049;
+        }
+
+        .modal-content .cancel-button {
+            background-color: #f44336;
+        }
+
+        .modal-content .cancel-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .add-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2 id="h2">Administrative</h2>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
+
+                <li class="item">
+                    <a class="submenu-header" href="dashboard.html">
+                        <span class="icon"><i class='bx bxs-dashboard'></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-link'></i></span>
+                        <span>Placement Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
+                        <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
+                        <li class="item"><a href="reporting.html">REPORTING</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-folder'></i></span>
+                        <span>Position Job Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
+                        <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
+                        <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
+                        <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-file'></i></span>
+                        <span>Client Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
+                        <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
+                        <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-user'></i></span>
+                        <span>Payroll Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
+                        <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
+                        <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
+                        <li class="item"><a href="taxation.html">TAXATION</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-calendar'></i></span>
+                        <span>Contract Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
+                        <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
+                        <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
+                        <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-group'></i></span>
+                        <span>User Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item">
+                            <a href="#">Contract Management</a>
+                            <div class="dropdown-content">
+                                <a href="dash.html"><small>1</small></a>
+                                <a href="user2.html"><small>2</small></a>
+                                <a href="logging.html"><small>3</small></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="aboutus.html">
+                        <span class="icon"><i class='bx bx-info-circle'></i></span>
+                        <span>About Us</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="logout.html">
+                        <span class="icon"><i class='bx bx-log-out'></i></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+    </nav>
+
+    <div class="main">
+        <a href="admin.html"
+            style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+            onmouseover="this.style.backgroundColor='darkred'"
+            onmouseout="this.style.backgroundColor='red'">
+            Back
+        </a>
+        <div class="payment-container">
+            <h2>Payment Processing</h2>
+
+            <div class="payment-section">
+                <h3>Salary Disbursement</h3>
+                <div class="payment-details">
+                    <p>This section outlines the process of disbursing salaries to employees after the payroll has been processed and approved.</p>
+                    <ul>
+                        <li><strong>Payment Method Selection:</strong> Supporting various payment methods such as direct bank transfers, checks, and other digital payment options.</li>
+                        <li><strong>Payment File Generation:</strong> Creating payment files in the required format for banks or payment processors.</li>
+                        <li><strong>Payment Execution:</strong> Initiating the payment process through the chosen methods.</li>
+                        <li><strong>Payment Confirmation:</strong> Receiving and recording confirmation of successful payments.</li>
+                        <li><strong>Employee Notification:</strong> Notifying employees that their salary has been disbursed, often along with their payslip.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="payment-section">
+                <h3>Payment Reconciliation</h3>
+                <div class="payment-details">
+                    <p>Payment reconciliation involves comparing the disbursed amounts with the payroll records and bank statements to ensure accuracy and identify any discrepancies.</p>
+                    <ul>
+                        <li><strong>Data Comparison:</strong> Comparing the total amount disbursed with the total net pay from the payroll reports.</li>
+                        <li><strong>Transaction Verification:</strong> Verifying individual employee payments against payroll records and bank transaction details.</li>
+                        <li><strong>Identifying Discrepancies:</strong> Investigating and resolving any differences found between the records. This could involve incorrect amounts, failed transactions, or unrecorded payments.</li>
+                        <li><strong>Record Adjustment:</strong> Making necessary adjustments in the payroll system and accounting records to reflect the reconciled amounts.</li>
+                        <li><strong>Reporting:</strong> Generating reconciliation reports for audit and financial control purposes.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="payment-management">
+                <h3>Payment Records</h3>
+                <button class="add-button" onclick="openAddModal()">Add Payment Record</button>
+                <table class="payment-table">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Employee Name</th>
+                            <th>Payment Date</th>
+                            <th>Net Amount</th>
+                            <th>Payment Method</th>
+                            <th>Reference Number</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentRecordsTableBody">
+                        <tr>
+                            <td>EMP001</td>
+                            <td>John Doe</td>
+                            <td>2025-05-15</td>
+                            <td>5000.00</td>
+                            <td>Bank Transfer</td>
+                            <td>TRN12345</td>
+                            <td>Completed</td>
+                            <td class="action-buttons">
+                                <button onclick="openEditModal('EMP001')">Edit</button>
+                                <button onclick="openDeleteModal('EMP001')">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EMP002</td>
+                            <td>Jane Smith</td>
+                            <td>2025-05-15</td>
+                            <td>6200.50</td>
+                            <td>Check</td>
+                            <td>CHK67890</td>
+                            <td>Completed</td>
+                            <td class="action-buttons">
+                                <button onclick="openEditModal('EMP002')">Edit</button>
+                                <button onclick="openDeleteModal('EMP002')">Delete</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                </table>
+            </div>
+
+            <div id="addModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeAddModal()">&times;</span>
+                    <h2>Add Payment Record</h2>
+                    <label for="addEmployeeId">Employee ID:</label>
+                    <input type="text" id="addEmployeeId" name="addEmployeeId">
+                    <label for="addEmployeeName">Employee Name:</label>
+                    <input type="text" id="addEmployeeName" name="addEmployeeName">
+                    <label for="addPaymentDate">Payment Date:</label>
+                    <input type="date" id="addPaymentDate" name="addPaymentDate">
+                    <label for="addNetAmount">Net Amount:</label>
+                    <input type="number" id="addNetAmount" name="addNetAmount" step="0.01">
+                    <label for="addPaymentMethod">Payment Method:</label>
+                    <input type="text" id="addPaymentMethod" name="addPaymentMethod">
+                    <label for="addReferenceNumber">Reference Number:</label>
+                    <input type="text" id="addReferenceNumber" name="addReferenceNumber">
+                    <label for="addStatus">Status:</label>
+                    <input type="text" id="addStatus" name="addStatus">
+                    <button onclick="addPaymentRecord()">Add</button>
+                    <button class="cancel-button" onclick="closeAddModal()">Cancel</button>
+                </div>
+            </div>
+
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeEditModal()">&times;</span>
+                    <h2>Edit Payment Record</h2>
+                    <label for="editEmployeeId">Employee ID:</label>
+                    <input type="text" id="editEmployeeId" name="editEmployeeId" readonly>
+                    <label for="editEmployeeName">Employee Name:</label>
+                    <input type="text" id="editEmployeeName" name="editEmployeeName">
+                    <label for="editPaymentDate">Payment Date:</label>
+                    <input type="date" id="editPaymentDate" name="editPaymentDate">
+                    <label for="editNetAmount">Net Amount:</label>
+                    <input type="number" id="editNetAmount" name="editNetAmount" step="0.01">
+                    <label for="editPaymentMethod">Payment Method:</label>
+                    <input type="text" id="editPaymentMethod" name="editPaymentMethod">
+                    <label for="editReferenceNumber">Reference Number:</label>
+                    <input type="text" id="editReferenceNumber" name="editReferenceNumber">
+                    <label for="editStatus">Status:</label>
+                    <input type="text" id="editStatus" name="editStatus">
+                    <button onclick="savePaymentRecord()">Save</button>
+                    <button class="cancel-button" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </div>
+
+            <div id="deleteModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeDeleteModal()">&times;</span>
+                    <h2>Delete Payment Record</h2>
+                    <p>Are you sure you want to delete the payment record for Employee ID: <span id="deleteEmployeeId"></span>?</p>
+                    <button onclick="deletePaymentRecord()">Delete</button>
+                    <button class="cancel-button" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSubmenu(el) {
+            document.querySelectorAll('.item').forEach(item => {
+                if (item !== el.closest('.item')) {
+                    item.classList.remove('show-submenu');
+                    const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                }
+            });
+
+            const parent = el.closest('.item');
+            const icon = el.querySelector('i');
+            const isOpen = parent.classList.toggle('show-submenu');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-right', !isOpen);
+                icon.classList.toggle('fa-chevron-down', isOpen);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
+                    sidebar.classList.toggle('close');
+                });
+            }
+
+           
+            const paymentRecords = [
+                { employeeId: 'EMP003', employeeName: 'Peter Jones', paymentDate: '2025-05-15', netAmount: 4850.75, paymentMethod: 'Bank Transfer', referenceNumber: 'TRN67890', status: 'Completed' },
+                { employeeId: 'EMP004', employeeName: 'Alice Brown', paymentDate: '2025-05-22', netAmount: 5500.00, paymentMethod: 'Check', referenceNumber: 'CHK12345', status: 'Pending' }
+            ];
+
+            loadPaymentRecords(paymentRecords);
+        });
+
+        let currentPaymentRecords = []; // To store and manage payment records
+
+        function loadPaymentRecords(records) {
+            currentPaymentRecords = records;
+            const tableBody = document.getElementById('paymentRecordsTableBody');
+            tableBody.innerHTML = '';
+            records.forEach(record => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = record.employeeId;
+                row.insertCell().textContent = record.employeeName;
+                row.insertCell().textContent = record.paymentDate;
+                row.insertCell().textContent = record.netAmount;
+                row.insertCell().textContent = record.paymentMethod;
+                row.insertCell().textContent = record.referenceNumber;
+                row.insertCell().textContent = record.status;
+                const actionsCell = row.insertCell();
+                actionsCell.classList.add('action-buttons');
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => openEditModal(record.employeeId);
+                actionsCell.appendChild(editButton);
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => openDeleteModal(record.employeeId);
+                actionsCell.appendChild(deleteButton);
+            });
+        }
+
+      
+        const addModal = document.getElementById('addModal');
+        function openAddModal() {
+            addModal.style.display = "block";
+        }
+        function closeAddModal() {
+            addModal.style.display = "none";
+        }
+        function addPaymentRecord() {
+            const newRecord = {
+                employeeId: document.getElementById('addEmployeeId').value,
+                employeeName: document.getElementById('addEmployeeName').value,
+                paymentDate: document.getElementById('addPaymentDate').value,
+                netAmount: parseFloat(document.getElementById('addNetAmount').value),
+                paymentMethod: document.getElementById('addPaymentMethod').value,
+                referenceNumber: document.getElementById('addReferenceNumber').value,
+                status: document.getElementById('addStatus').value
+            };
+            currentPaymentRecords.push(newRecord);
+            loadPaymentRecords(currentPaymentRecords);
+            closeAddModal();
+         
+            console.log('Added Record:', newRecord);
+        }
+
+        
+        const editModal = document.getElementById('editModal');
+        let currentEditEmployeeId = null;
+        function openEditModal(employeeId) {
+            currentEditEmployeeId = employeeId;
+            const recordToEdit = currentPaymentRecords.find(record => record.employeeId === employeeId);
+            if (recordToEdit) {
+                document.getElementById('editEmployeeId').value = recordToEdit.employeeId;
+                document.getElementById('editEmployeeName').value = recordToEdit.employeeName;
+                document.getElementById('editPaymentDate').value = recordToEdit.paymentDate;
+                document.getElementById('editNetAmount').value = recordToEdit.netAmount;
+                document.getElementById('editPaymentMethod').value = recordToEdit.paymentMethod;
+                document.getElementById('editReferenceNumber').value = recordToEdit.referenceNumber;
+                document.getElementById('editStatus').value = recordToEdit.status;
+                editModal.style.display = "block";
+            }
+        }
+        function closeEditModal() {
+            editModal.style.display = "none";
+            currentEditEmployeeId = null;
+        }
+        function savePaymentRecord() {
+            const updatedRecord = {
+                employeeId: document.getElementById('editEmployeeId').value,
+                employeeName: document.getElementById('editEmployeeName').value,
+                paymentDate: document.getElementById('editPaymentDate').value,
+                netAmount: parseFloat(document.getElementById('editNetAmount').value),
+                paymentMethod: document.getElementById('editPaymentMethod').value,
+                referenceNumber: document.getElementById('editReferenceNumber').value,
+                status: document.getElementById('editStatus').value
+            };
+            const index = currentPaymentRecords.findIndex(record => record.employeeId === currentEditEmployeeId);
+            if (index !== -1) {
+                currentPaymentRecords[index] = updatedRecord;
+                loadPaymentRecords(currentPaymentRecords);
+                closeEditModal();
+                
+                console.log('Saved Record:', updatedRecord);
+            }
+        }
+
+        
+        const deleteModal = document.getElementById('deleteModal');
+        let currentDeleteEmployeeId = null;
+        function openDeleteModal(employeeId) {
+            currentDeleteEmployeeId = employeeId;
+            document.getElementById('deleteEmployeeId').textContent = employeeId;
+            deleteModal.style.display = "block";
+        }
+        function closeDeleteModal() {
+            deleteModal.style.display = "none";
+            currentDeleteEmployeeId = null;
+        }
+        function deletePaymentRecord() {
+            currentPaymentRecords = currentPaymentRecords.filter(record => record.employeeId !== currentDeleteEmployeeId);
+            loadPaymentRecords(currentPaymentRecords);
+            closeDeleteModal();
+            
+            console.log('Deleted Record for Employee ID:', currentDeleteEmployeeId);
+        }
+
+       
+        window.onclick = function(event) {
+            if (event.target == addModal) {
+                closeAddModal();
+            } else if (event.target == editModal) {
+                closeEditModal();
+            } else if (event.target == deleteModal) {
+                closeDeleteModal();
+            }
+        }
+    </script>
+</body>
+</html>
