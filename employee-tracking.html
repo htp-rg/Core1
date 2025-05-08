@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Data and Time Tracking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+            overflow-y: auto;
+        }
+
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-content {
+            position: relative;
+            height: 80%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: scroll;
+        }
+
+        .menu-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+        .menu-title {
+            color: whitesmoke;
+            font-size: 18px;
+            padding: 15px 20px;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+        }
+
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
+
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
+        .item.show-submenu .submenu {
+            display: flex;
+        }
+
+        .submenu .item a {
+            padding: 10px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 0;
+            width: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main {
+            position: absolute;
+            top: 0;
+            left: 260px;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #e7f2fd;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 50px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .employee-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 95%;
+            max-width: 1200px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .employee-container h2 {
+            font-size: 24px;
+            color: #002966;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .employee-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .employee-table th, .employee-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .employee-table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .attendance-table th, .attendance-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .attendance-table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .action-buttons button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .add-employee-section {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .add-employee-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-employee-button:hover {
+            background-color: #218838;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-form input[type="text"],
+        .modal-form input[type="number"],
+        .modal-form input[type="date"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .modal-form button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .modal-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-modal-content {
+            background-color: #fefefe;
+            margin: 20% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 8px;
+            position: relative;
+            text-align: center;
+        }
+
+        .delete-modal-content button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        .delete-modal-content .confirm-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .delete-modal-content .cancel-delete {
+            background-color: #6c757d;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2 id="h2">Administrative</h2>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
+
+                <li class="item">
+                    <a class="submenu-header" href="dashboard.html">
+                        <span class="icon"><i class='bx bxs-dashboard'></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-link'></i></span>
+                        <span>Placement Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
+                        <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
+                        <li class="item"><a href="reporting.html">REPORTING</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-folder'></i></span>
+                        <span>Position Job Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
+                        <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
+                        <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
+                        <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-file'></i></span>
+                        <span>Client Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
+                        <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
+                        <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-user'></i></span>
+                        <span>Payroll Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
+                        <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
+                        <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
+                        <li class="item"><a href="taxation.html">TAXATION</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-calendar'></i></span>
+                        <span>Contract Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
+                        <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
+                        <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
+                        <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-group'></i></span>
+                        <span>User Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item">
+                            <a href="#">Contract Management</a>
+                            <div class="dropdown-content">
+                                <a href="dash.html"><small>1</small></a>
+                                <a href="user2.html"><small>2</small></a>
+                                <a href="logging.html"><small>3</small></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="aboutus.html">
+                        <span class="icon"><i class='bx bx-info-circle'></i></span>
+                        <span>About Us</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="logout.html">
+                        <span class="icon"><i class='bx bx-log-out'></i></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+    </nav>
+
+    <div class="main">
+        <a href="admin.html"
+            style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+            onmouseover="this.style.backgroundColor='darkred'"
+            onmouseout="this.style.backgroundColor='red'">
+            Back
+        </a>
+        <div class="employee-container">
+            <h2>Employee Data and Time Tracking</h2>
+
+            <h3>Employee Record Management&lt;/h3>
+<div class="add-employee-section">
+<button class="add-employee-button" onclick="openAddEmployeeModal()">Add Employee&lt;/button>
+</div>
+<table class="employee-table">
+<thead>
+<tr>
+<th>ID&lt;/th>
+<th>Name&lt;/th>
+<th>Email&lt;/th>
+<th>Phone&lt;/th>
+<th>Hire Date&lt;/th>
+<th>Department&lt;/th>
+<th>Actions&lt;/th>
+</tr>
+</thead>
+<tbody id="employeeTableBody">
+</tbody>
+</table>
+<h3>Attendance and Time Tracking</h3>
+        <table class="attendance-table">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Total Hours</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="addEmployeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAddEmployeeModal()">&times;</span>
+            <h2>Add New Employee</h2>
+            <form class="modal-form" id="addEmployeeForm">
+                <label for="addEmployeeId">Employee ID:</label>
+                <input type="text" id="addEmployeeId" required>
+                <label for="addEmployeeName">Name:</label>
+                <input type="text" id="addEmployeeName" required>
+                <label for="addEmployeeEmail">Email:</label>
+                <input type="text" id="addEmployeeEmail" required>
+                <label for="addEmployeePhone">Phone:</label>
+                <input type="text" id="addEmployeePhone">
+                <label for="addEmployeeHireDate">Hire Date:</label>
+                <input type="date" id="addEmployeeHireDate">
+                <label for="addEmployeeDepartment">Department:</label>
+                <input type="text" id="addEmployeeDepartment">
+                <button type="submit">Add Employee</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="editEmployeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditEmployeeModal()">&times;</span>
+            <h2>Edit Employee Details</h2>
+            <form class="modal-form" id="editEmployeeForm">
+                <label for="editEmployeeId">Employee ID:</label>
+                <input type="text" id="editEmployeeId" readonly>
+                <label for="editEmployeeName">Name:</label>
+                <input type="text" id="editEmployeeName" required>
+                <label for="editEmployeeEmail">Email:</label>
+                <input type="text" id="editEmployeeEmail" required>
+                <label for="editEmployeePhone">Phone:</label>
+                <input type="text" id="editEmployeePhone">
+                <label for="editEmployeeHireDate">Hire Date:</label>
+                <input type="date" id="editEmployeeHireDate">
+                <label for="editEmployeeDepartment">Department:</label>
+                <input type="text" id="editEmployeeDepartment">
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="deleteEmployeeModal" class="modal">
+        <div class="delete-modal-content">
+            <span class="close-button" onclick="closeDeleteEmployeeModal()">&times;</span>
+            <h2>Delete Employee</h2>
+            <p>Are you sure you want to delete employee <span id="deleteEmployeeName"></span> with ID <span id="deleteEmployeeId"></span>?</p>
+            <button class="cancel-delete" onclick="closeDeleteEmployeeModal()">Cancel</button>
+            <button class="confirm-delete" onclick="deleteEmployee()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSubmenu(el) {
+        document.querySelectorAll('.item').forEach(item => {
+            if (item !== el.closest('.item')) {
+                item.classList.remove('show-submenu');
+                const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                if (icon) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-right');
+                }
+            }
+        });
+
+        const parent = el.closest('.item');
+        const icon = el.querySelector('i');
+        const isOpen = parent.classList.toggle('show-submenu');
+
+        if (icon) {
+            icon.classList.toggle('fa-chevron-right', !isOpen);
+            icon.classList.toggle('fa-chevron-down', isOpen);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarClose = document.getElementById('sidebar-close');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', function() {
+                sidebar.classList.toggle('close');
+            });
+        }
+
+        const employeeTableBody = document.getElementById('employeeTableBody');
+        const attendanceTableBody = document.getElementById('attendanceTableBody');
+        const addEmployeeModal = document.getElementById('addEmployeeModal');
+        const editEmployeeModal = document.getElementById('editEmployeeModal');
+        const deleteEmployeeModal = document.getElementById('deleteEmployeeModal');
+        const addEmployeeForm = document.getElementById('addEmployeeForm');
+        const editEmployeeForm = document.getElementById('editEmployeeForm');
+        const deleteEmployeeNameDisplay = document.getElementById('deleteEmployeeName');
+        const deleteEmployeeIdDisplay = document.getElementById('deleteEmployeeId');
+
+        let employees = [
+            { id: 'EMP001', name: 'John Doe', email: 'john.doe@example.com', phone: '123-456-7890', hireDate: '2024-01-15', department: 'Sales' },
+            { id: 'EMP002', name: 'Jane Smith', email: 'jane.smith@example.com', phone: '987-654-3210', hireDate: '2023-05-20', department: 'Marketing' },
+            { id: 'EMP003', name: 'Peter Jones', email: 'peter.jones@example.com', phone: '555-123-4567', hireDate: '2024-03-10', department: 'Finance' },
+            { id: 'EMP004', name: 'Alice Brown', email: 'alice.brown@example.com', phone: '111-222-3333', hireDate: '2022-11-01', department: 'HR' },
+            { id: 'EMP005', name: 'Bob Green', email: 'bob.green@example.com', phone: '444-555-6666', hireDate: '2023-07-25', department: 'IT' },
+            { id: 'EMP006', name: 'Carol White', email: 'carol.white@example.com', phone: '777-888-9999', hireDate: '2025-02-01', department: 'Operations' },
+            { id: 'EMP007', name: 'David Black', email: 'david.black@example.com', phone: '333-444-5555', hireDate: '2024-09-18', department: 'Sales' },
+            { id: 'EMP008', name: 'Eve Grey', email: 'eve.grey@example.com', phone: '222-333-4444', hireDate: '2023-12-05', department: 'Marketing' },
+            { id: 'EMP009', name: 'Frank Blue', email: 'frank.blue@example.com', phone: '666-777-8888', hireDate: '2024-06-30', department: 'Finance' },
+            { id: 'EMP010', name: 'Grace Red', email: 'grace.red@example.com', phone: '888-999-0000', hireDate: '2022-08-12', department: 'HR' }
+        ];
+
+        let attendanceRecords = [
+            { employeeId: 'EMP001', date: '2025-05-07', timeIn: '08:00', timeOut: '17:00', totalHours: '9' },
+            { employeeId: 'EMP002', date: '2025-05-07', timeIn: '08:30', timeOut: '17:30', totalHours: '9' },
+            { employeeId: 'EMP001', date: '2025-05-08', timeIn: '07:55', timeOut: '17:05', totalHours: '9.17' },
+            { employeeId: 'EMP003', date: '2025-05-08', timeIn: '09:00', timeOut: '18:00', totalHours: '9' }
+        ];
+
+        let currentEmployeeToEdit = null;
+        let currentEmployeeToDelete = null;
+
+        function renderEmployeeTable() {
+            employeeTableBody.innerHTML = '';
+            employees.forEach(employee => {
+                const row = employeeTableBody.insertRow();
+                row.insertCell().textContent = employee.id;
+                row.insertCell().textContent = employee.name;
+                row.insertCell().textContent = employee.email;
+                row.insertCell().textContent = employee.phone || '-';
+                row.insertCell().textContent = employee.hireDate || '-';
+                row.insertCell().textContent = employee.department || '-';
+                const actionsCell = row.insertCell();
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => openEditEmployeeModal(employee.id);
+                actionsCell.appendChild(editButton);
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.style.backgroundColor = '#dc3545';
+                deleteButton.style.marginLeft = '5px';
+                deleteButton.onclick = () => openDeleteEmployeeModal(employee.id, employee.name);
+                actionsCell.appendChild(deleteButton);
+            });
+        }
+
+        function renderAttendanceTable() {
+            attendanceTableBody.innerHTML = '';
+            attendanceRecords.forEach(record => {
+                const row = attendanceTableBody.insertRow();
+                row.insertCell().textContent = record.employeeId;
+                row.insertCell().textContent = record.date;
+                row.insertCell().textContent = record.timeIn;
+                row.insertCell().textContent = record.timeOut;
+                row.insertCell().textContent = record.totalHours;
+            });
+        }
+
+        renderEmployeeTable();
+        renderAttendanceTable();
+
+        window.openAddEmployeeModal = function() {
+            addEmployeeModal.style.display = "block";
+            document.getElementById('addEmployeeForm').reset();
+        }
+
+        window.closeAddEmployeeModal = function() {
+            addEmployeeModal.style.display = "none";
+        }
+
+        addEmployeeForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newEmployee = {
+                id: document.getElementById('addEmployeeId').value,
+                name: document.getElementById('addEmployeeName').value,
+                email: document.getElementById('addEmployeeEmail').value,
+                phone: document.getElementById('addEmployeePhone').value,
+                hireDate: document.getElementById('addEmployeeHireDate').value,
+                department: document.getElementById('addEmployeeDepartment').value
+            };
+            employees.push(newEmployee);
+            renderEmployeeTable();
+            closeAddEmployeeModal();
+        });
+
+        window.openEditEmployeeModal = function(employeeId) {
+            currentEmployeeToEdit = employees.find(emp => emp.id === employeeId);
+            if (currentEmployeeToEdit) {
+                document.getElementById('editEmployeeId').value = currentEmployeeToEdit.id;
+                document.getElementById('editEmployeeName').value = currentEmployeeToEdit.name;
+                document.getElementById('editEmployeeEmail').value = currentEmployeeToEdit.email;
+                document.getElementById('editEmployeePhone').value = currentEmployeeToEdit.phone || '';
+                document.getElementById('editEmployeeHireDate').value = currentEmployeeToEdit.hireDate || '';
+                document.getElementById('editEmployeeDepartment').value = currentEmployeeToEdit.department || '';
+                editEmployeeModal.style.display = "block";
+            }
+        }
+
+        window.closeEditEmployeeModal = function() {
+            editEmployeeModal.style.display = "none";
+            currentEmployeeToEdit = null;
+        }
+
+        editEmployeeForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (currentEmployeeToEdit) {
+                currentEmployeeToEdit.name = document.getElementById('editEmployeeName').value;
+                currentEmployeeToEdit.email = document.getElementById('editEmployeeEmail').value;
+                currentEmployeeToEdit.phone = document.getElementById('editEmployeePhone').value;
+                currentEmployeeToEdit.hireDate = document.getElementById('editEmployeeHireDate').value;
+                currentEmployeeToEdit.department = document.getElementById('editEmployeeDepartment').value;
+                renderEmployeeTable();
+                closeEditEmployeeModal();
+            }
+        });
+
+        window.openDeleteEmployeeModal = function(employeeId, employeeName) {
+            currentEmployeeToDelete = employeeId;
+            deleteEmployeeNameDisplay.textContent = employeeName;
+            deleteEmployeeIdDisplay.textContent = employeeId;
+            deleteEmployeeModal.style.display = "block";
+        }
+
+        window.closeDeleteEmployeeModal = function() {
+            deleteEmployeeModal.style.display = "none";
+            currentEmployeeToDelete = null;
+        }
+
+        window.deleteEmployee = function() {
+            if (currentEmployeeToDelete) {
+                employees = employees.filter(emp => emp.id !== currentEmployeeToDelete);
+                renderEmployeeTable();
+                closeDeleteEmployeeModal();
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == addEmployeeModal) {
+                closeAddEmployeeModal();
+            } else if (event.target == editEmployeeModal) {
+                closeEditEmployeeModal();
+            } else if (event.target == deleteEmployeeModal) {
+                closeDeleteEmployeeModal();
+            }
+        }
+    });
+</script>
+</body>
+</html>
