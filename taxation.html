@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taxation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100%;
+            width: 260px;
+            background: #002966;
+            padding: 15px;
+            z-index: 99;
+            overflow-y: auto;
+        }
+
+        #h2 {
+            color: white;
+            margin-top: 20px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-content {
+            position: relative;
+            height: 80%;
+            width: 100%;
+            margin-top: 40px;
+            overflow-y: scroll;
+        }
+
+        .menu-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu-items {
+            height: 100%;
+            width: 100%;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+
+        .menu-title {
+            color: whitesmoke;
+            font-size: 18px;
+            padding: 15px 20px;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+        }
+
+        .submenu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        a.submenu-header {
+            text-decoration: none;
+            justify-content: flex-start;
+        }
+
+        .submenu-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submenu-header .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .submenu {
+            display: none;
+            flex-direction: column;
+            background: #002966;
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
+        .item.show-submenu .submenu {
+            display: flex;
+        }
+
+        .submenu .item a {
+            padding: 10px;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .submenu .item a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.close ~ .navbar,
+        .sidebar.close ~ .main {
+            left: 0;
+            width: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main {
+            position: absolute;
+            top: 0;
+            left: 260px;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #e7f2fd;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 50px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .taxation-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 95%;
+            max-width: 1200px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .taxation-container h2 {
+            font-size: 24px;
+            color: #002966;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .taxation-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .taxation-section h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .tax-details ul {
+            list-style-type: disc;
+            color: #555;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+
+        .tax-details li {
+            margin-bottom: 5px;
+        }
+
+        .tax-filing-example {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .tax-filing-example h4 {
+            font-size: 18px;
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+
+        .tax-filing-example p {
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .audit-example {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .audit-example h4 {
+            font-size: 18px;
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+
+        .audit-example p {
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .tax-records {
+            margin-top: 20px;
+        }
+
+        .add-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-button:hover {
+            background-color: #0056b3;
+        }
+
+        .tax-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .tax-table th, .tax-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .tax-table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .action-buttons button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            color: #002966;
+            margin-bottom: 15px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .modal-content input[type=text],
+        .modal-content input[type=number],
+        .modal-content input[type=date] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .modal-content button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .modal-content button:hover {
+            background-color: #45a049;
+        }
+
+        .modal-content .cancel-button {
+            background-color: #f44336;
+        }
+
+        .modal-content .cancel-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2 id="h2">Administrative</h2>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <div class="menu-title"><small>ADMIN DASHBOARD</small></div>
+
+                <li class="item">
+                    <a class="submenu-header" href="dashboard.html">
+                        <span class="icon"><i class='bx bxs-dashboard'></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-link'></i></span>
+                        <span>Placement Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="tracking.html">TRACKING AND EVALUATING</a></li>
+                        <li class="item"><a href="matching.html">MATCHING CANDIDATES TO JOB</a></li>
+                        <li class="item"><a href="reporting.html">REPORTING</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-folder'></i></span>
+                        <span>Position Job Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="job-position.html">JOB POSITION MANAGEMENT</a></li>
+                        <li class="item"><a href="job-list.html">JOB LIST MANAGEMENT</a></li>
+                        <li class="item"><a href="analytics.html">REPORT AND ANALYTICS</a></li>
+                        <li class="item"><a href="access-control.html">USER ACCESS CONTROL</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-file'></i></span>
+                        <span>Client Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="client-satisfaction.html">CLIENT SATISFACTION</a></li>
+                        <li class="item"><a href="quality-assurance.html">SERVICE QUALITY ASSURANCE</a></li>
+                        <li class="item"><a href="client-engagement.html">CLIENT COMMUNICATION AND ENGAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-user'></i></span>
+                        <span>Payroll Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="payroll-setup.html">PAYROLL SYSTEM SETUP</a></li>
+                        <li class="item"><a href="employee-tracking.html">EMPLOYEE DATA AND TIME TRACKING</a></li>
+                        <li class="item"><a href="payroll-approval.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="payment-processing.html">PAYMENT PROCESSING</a></li>
+                        <li class="item"><a href="taxation.html">TAXATION</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-calendar'></i></span>
+                        <span>Contract Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item"><a href="contract-creation.html">CONTRACT CREATION MANAGEMENT</a></li>
+                        <li class="item"><a href="contract-tracking.html">CONTRACT STATUS TRACKING</a></li>
+                        <li class="item"><a href="contract-payroll.html">PAYROLL PROCESSING AND APPROVAL</a></li>
+                        <li class="item"><a href="document-management.html">DOCUMENT MANAGEMENT</a></li>
+                        <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <div class="submenu-header" onclick="toggleSubmenu(this)">
+                        <span class="icon"><i class='bx bx-group'></i></span>
+                        <span>User Management</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li class="item">
+                            <a href="#">Contract Management</a>
+                            <div class="dropdown-content">
+                                <a href="dash.html"><small>1</small></a>
+                                <a href="user2.html"><small>2</small></a>
+                                <a href="logging.html"><small>3</small></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="aboutus.html">
+                        <span class="icon"><i class='bx bx-info-circle'></i></span>
+                        <span>About Us</span>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="submenu-header" href="logout.html">
+                        <span class="icon"><i class='bx bx-log-out'></i></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+  
+      <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+    </nav>
+
+    <div class="main">
+        <a href="admin.html"
+            style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+            onmouseover="this.style.backgroundColor='darkred'"
+            onmouseout="this.style.backgroundColor='red'">
+            Back
+        </a>
+        <div class="taxation-container">
+            <h2>Taxation Management</h2>
+
+            <div class="taxation-section">
+                <h3>Tax Withholding</h3>
+                <div class="tax-details">
+                    <p>This section outlines the management of tax deductions from employee salaries.</p>
+                    <ul>
+                        <li><strong>Tax Rate Configuration:</strong> Setting up and maintaining federal, state, and local tax rates.</li>
+                        <li><strong>Employee Tax Information:</strong> Managing employee tax forms (e.g., W-4) and ensuring accurate withholding.</li>
+                        <li><strong>Deduction Calculation:</strong> Automatically calculating the correct amount of taxes to withhold based on employee information and tax regulations.</li>
+                        <li><strong>Remittance to Authorities:</strong> Processing and submitting withheld taxes to the appropriate government agencies on schedule.</li>
+                        <li><strong>Reporting:</strong> Generating reports on tax withholdings for payroll and compliance purposes.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="taxation-section">
+                <h3>Tax Filing</h3>
+                <div class="tax-details">
+                    <p>This involves the preparation and submission of tax returns.</p>
+                    <ul>
+                        <li><strong>Annual Tax Forms:</strong> Generating annual tax forms for employees (e.g., W-2) and contractors (e.g., 1099).</li>
+                        <li><strong>Electronic Filing:</strong> Facilitating the electronic filing of tax returns with relevant tax authorities.</li>
+                        <li><strong>Compliance with Regulations:</strong> Ensuring all tax filings comply with current tax laws and deadlines.</li>
+                        <li><strong>Record Keeping:</strong> Maintaining accurate records of all tax filings and related documentation.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="taxation-section">
+                <h3>Tax Audit Support</h3>
+                <div class="tax-details">
+                    <p>Providing support and documentation in the event of a tax audit.</p>
+                    <ul>
+                        <li><strong>Documentation Preparation:</strong> Organizing and preparing all necessary payroll and tax-related documents for audit review.</li>
+                        <li><strong>Liaison with Auditors:</strong> Serving as a point of contact between the company and tax auditors.</li>
+                        <li><strong>Compliance Review:</strong> Reviewing payroll practices and tax filings to ensure compliance and address any potential issues identified during the audit.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tax-filing-example">
+                <h4>Tax Filing Example</h4>
+                <p>For an employee with a gross annual income of $60,000, claiming single status with standard deductions, the system would:</p>
+                <ul>
+                    <li>Calculate federal income tax based on current IRS tax brackets.</li>
+                    <li>Withhold Social Security tax at the current rate (e.g., 6.2% up to the annual limit).</li>
+                    <li>Withhold Medicare tax at the current rate (e.g., 1.45%).</li>
+                    <li>If applicable, calculate and withhold state and local income taxes based on the employee's location and relevant tax laws.</li>
+                    <li>Generate Form W-2 at the end of the year summarizing the employee's earnings and withholdings.</li>
+                </ul>
+            </div>
+
+            <div class="audit-example">
+                <h4>Audit Example</h4>
+                <p>During a tax audit, the payroll system should provide auditors with:</p>
+                <ul>
+                    <li>Detailed payroll records for the audit period, including gross pay, deductions, and net pay for each employee.</li>
+                    <li>Copies of employee tax forms (W-4).</li>
+                    <li>Records of tax payments made to federal, state, and local authorities, including dates and amounts.</li>
+                    <li>Documentation of the company's payroll policies and procedures related to tax withholding and reporting.</li>
+                    <li>Reconciliation reports comparing payroll records with tax filings and bank statements.</li>
+                </ul>
+            </div>
+
+            <div class="tax-records">
+                <h3>Tax Records Management</h3>
+                <button class="add-button" onclick="openAddModal()">Add Tax Record</button>
+                <table class="tax-table">
+                    <thead>
+                        <tr>
+                            <th>Record ID</th>
+                            <th>Employee ID</th>
+                            <th>Tax Year</th>
+                            <th>Tax Type</th>
+                            <th>Amount Withheld</th>
+                            <th>Filing Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taxRecordsTableBody">
+                        <tr>
+                            <td>TAX001</td>
+                            <td>EMP001</td>
+                            <td>2024</td>
+                            <td>Federal Income Tax</td>
+                            <td>12000.00</td>
+                            <td>2025-04-15</td>
+                            <td>Filed</td>
+                            <td class="action-buttons">
+                                <button onclick="openEditModal('TAX001')">Edit</button>
+                                <button onclick="openDeleteModal('TAX001')">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>TAX002</td>
+                            <td>EMP002</td>
+                            <td>2024</td>
+                            <td>State Income Tax (CA)</td>
+                            <td>3000.50</td>
+                            <td>2025-04-15</td>
+                            <td>Filed</td>
+                            <td class="action-buttons">
+                                <button onclick="openEditModal('TAX002')">Edit</button>
+                                <button onclick="openDeleteModal('TAX002')">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="addModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeAddModal()">&times;</span>
+                    <h2>Add Tax Record</h2>
+                    <label for="addRecordId">Record ID:</label>
+                    <input type="text" id="addRecordId" name="addRecordId">
+                    <label for="addEmployeeId">Employee ID:</label>
+                    <input type="text" id="addEmployeeId" name="addEmployeeId">
+                    <label for="addTaxYear">Tax Year:</label>
+                    <input type="text" id="addTaxYear" name="addTaxYear">
+                    <label for="addTaxType">Tax Type:</label>
+                    <input type="text" id="addTaxType" name="addTaxType">
+                    <label for="addAmountWithheld">Amount Withheld:</label>
+                    <input type="number" id="addAmountWithheld" name="addAmountWithheld" step="0.01">
+                    <label for="addFilingDate">Filing Date:</label>
+                    <input type="date" id="addFilingDate" name="addFilingDate">
+                    <label for="addStatus">Status:</label>
+                    <input type="text" id="addStatus" name="addStatus">
+                    <button onclick="addTaxRecord()">Add</button>
+                    <button class="cancel-button" onclick="closeAddModal()">Cancel</button>
+                </div>
+            </div>
+
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeEditModal()">&times;</span>
+                    <h2>Edit Tax Record</h2>
+                    <label for="editRecordId">Record ID:</label>
+                    <input type="text" id="editRecordId" name="editRecordId" readonly>
+                    <label for="editEmployeeId">Employee ID:</label>
+                    <input type="text" id="editEmployeeId" name="editEmployeeId">
+                    <label for="editTaxYear">Tax Year:</label>
+                    <input type="text" id="editTaxYear" name="editTaxYear">
+                    <label for="editTaxType">Tax Type:</label>
+                    <input type="text" id="editTaxType" name="editTaxType">
+                    <label for="editAmountWithheld">Amount Withheld:</label>
+                    <input type="number" id="editAmountWithheld" name="editAmountWithheld" step="0.01">
+                    <label for="editFilingDate">Filing Date:</label>
+                    <input type="date" id="editFilingDate" name="editFilingDate">
+                    <label for="editStatus">Status:</label>
+                    <input type="text" id="editStatus" name="editStatus">
+                    <button onclick="saveTaxRecord()">Save</button>
+                    <button class="cancel-button" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </div>
+
+            <div id="deleteModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeDeleteModal()">&times;</span>
+                    <h2>Delete Tax Record</h2>
+                    <p>Are you sure you want to delete the tax record with ID: <span id="deleteRecordId"></span>?</p>
+                    <button onclick="deleteTaxRecord()">Delete</button>
+                    <button class="cancel-button" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSubmenu(el) {
+            document.querySelectorAll('.item').forEach(item => {
+                if (item !== el.closest('.item')) {
+                    item.classList.remove('show-submenu');
+                    const icon = item.querySelector('.submenu-header i.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                }
+            });
+
+            const parent = el.closest('.item');
+            const icon = el.querySelector('i');
+            const isOpen = parent.classList.toggle('show-submenu');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-right', !isOpen);
+                icon.classList.toggle('fa-chevron-down', isOpen);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarClose = document.getElementById('sidebar-close');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
+                    sidebar.classList.toggle('close');
+                });
+            }
+
+            
+            const taxRecords = [
+                { recordId: 'TAX003', employeeId: 'EMP003', taxYear: '2024', taxType: 'Medicare Tax', amountWithheld: 550.25, filingDate: '2025-04-15', status: 'Filed' },
+                { recordId: 'TAX004', employeeId: 'EMP004', taxYear: '2024', taxType: 'Social Security Tax', amountWithheld: 3720.80, filingDate: '2025-04-15', status: 'Filed' }
+            ];
+
+            loadTaxRecords(taxRecords);
+        });
+
+        let currentTaxRecords = []; 
+
+        function loadTaxRecords(records) {
+            currentTaxRecords = records;
+            const tableBody = document.getElementById('taxRecordsTableBody');
+            tableBody.innerHTML = '';
+            records.forEach(record => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = record.recordId;
+                row.insertCell().textContent = record.employeeId;
+                row.insertCell().textContent = record.taxYear;
+                row.insertCell().textContent = record.taxType;
+                row.insertCell().textContent = record.amountWithheld;
+                row.insertCell().textContent = record.filingDate;
+                row.insertCell().textContent = record.status;
+                const actionsCell = row.insertCell();
+                actionsCell.classList.add('action-buttons');
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => openEditModal(record.recordId);
+                actionsCell.appendChild(editButton);
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => openDeleteModal(record.recordId);
+                actionsCell.appendChild(deleteButton);
+            });
+        }
+
+       
+        const addModal = document.getElementById('addModal');
+        function openAddModal() {
+            addModal.style.display = "block";
+        }
+        function closeAddModal() {
+            addModal.style.display = "none";
+        }
+        function addTaxRecord() {
+            const newRecord = {
+                recordId: document.getElementById('addRecordId').value,
+                employeeId: document.getElementById('addEmployeeId').value,
+                taxYear: document.getElementById('addTaxYear').value,
+                taxType: document.getElementById('addTaxType').value,
+                amountWithheld: parseFloat(document.getElementById('addAmountWithheld').value),
+                filingDate: document.getElementById('addFilingDate').value,
+                status: document.getElementById('addStatus').value
+            };
+            currentTaxRecords.push(newRecord);
+            loadTaxRecords(currentTaxRecords);
+            closeAddModal();
+            console.log('Added Tax Record:', newRecord);
+        }
+
+        
+        const editModal = document.getElementById('editModal');
+        let currentEditRecordId = null;
+        function openEditModal(recordId) {
+            currentEditRecordId = recordId;
+            const recordToEdit = currentTaxRecords.find(record => record.recordId === recordId);
+            if (recordToEdit) {
+                document.getElementById('editRecordId').value = recordToEdit.recordId;
+                document.getElementById('editEmployeeId').value = recordToEdit.employeeId;
+                document.getElementById('editTaxYear').value = recordToEdit.taxYear;
+                document.getElementById('editTaxType').value = recordToEdit.taxType;
+                document.getElementById('editAmountWithheld').value = recordToEdit.amountWithheld;
+                document.getElementById('editFilingDate').value = recordToEdit.filingDate;
+                document.getElementById('editStatus').value = recordToEdit.status;
+                editModal.style.display = "block";
+            }
+        }
+        function closeEditModal() {
+            editModal.style.display = "none";
+            currentEditRecordId = null;
+        }
+        function saveTaxRecord() {
+            const updatedRecord = {
+                recordId: document.getElementById('editRecordId').value,
+                employeeId: document.getElementById('editEmployeeId').value,
+                taxYear: document.getElementById('editTaxYear').value,
+                taxType: document.getElementById('editTaxType').value,
+                amountWithheld: parseFloat(document.getElementById('editAmountWithheld').value),
+                filingDate: document.getElementById('editFilingDate').value,
+                status: document.getElementById('editStatus').value
+            };
+            const index = currentTaxRecords.findIndex(record => record.recordId === currentEditRecordId);
+            if (index !== -1) {
+                currentTaxRecords[index] = updatedRecord;
+                loadTaxRecords(currentTaxRecords);
+                closeEditModal();
+                console.log('Saved Tax Record:', updatedRecord);
+            }
+        }
+
+       
+        const deleteModal = document.getElementById('deleteModal');
+        let currentDeleteRecordId = null;
+        function openDeleteModal(recordId) {
+            currentDeleteRecordId = recordId;
+            document.getElementById('deleteRecordId').textContent = recordId;
+            deleteModal.style.display = "block";
+        }
+        function closeDeleteModal() {
+            deleteModal.style.display = "none";
+            currentDeleteRecordId = null;
+        }
+        function deleteTaxRecord() {
+            currentTaxRecords = currentTaxRecords.filter(record => record.recordId !== currentDeleteRecordId);
+            loadTaxRecords(currentTaxRecords);
+            closeDeleteModal();
+            console.log('Deleted Tax Record with ID:', currentDeleteRecordId);
+        }
+
+       
+        window.onclick = function(event) {
+            if (event.target == addModal) {
+                closeAddModal();
+            } else if (event.target == editModal) {
+                closeEditModal();
+            } else if (event.target == deleteModal) {
+                closeDeleteModal();
+            }
+        }
+    </script>
+</body>
+</html>
