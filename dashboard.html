@@ -286,31 +286,6 @@
                 </li>
 
                 <li class="item">
-                    <div class="submenu-header" onclick="toggleSubmenu(this)">
-                        <span class="icon"><i class='bx bx-group'></i></span>
-                        <span>User Management</span>
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li class="item">
-                            <a href="#">Contract Management</a>
-                            <div class="dropdown-content">
-                                <a href="dash.html"><small>1</small></a>
-                                <a href="user2.html"><small>2</small></a>
-                                <a href="logging.html"><small>3</small></a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="item">
-                    <a class="submenu-header" href="aboutus.html">
-                        <span class="icon"><i class='bx bx-info-circle'></i></span>
-                        <span>About Us</span>
-                    </a>
-                </li>
-
-                <li class="item">
                     <a class="submenu-header" href="logout.html">
                         <span class="icon"><i class='bx bx-log-out'></i></span>
                         <span>Logout</span>
@@ -326,6 +301,12 @@
 
     <div class="main">
         <div class="dashboard-card">
+             <a href="admin.html"
+            style="position: absolute; top: 20px; right: 20px; background-color: red; color: white; padding: 10px 16px; text-decoration: none; font-weight: bold; border-radius: 5px; border: none; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease;"
+            onmouseover="this.style.backgroundColor='darkred'"
+            onmouseout="this.style.backgroundColor='red'">
+            Back
+        </a>
             <i class='bx bxs-dashboard'></i>
             <h3>Dashboard</h3>
             <p>Overview of the system</p>
@@ -385,23 +366,7 @@
                 <li><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
             </ul>
         </div>
-
-        <div class="dashboard-card">
-            <i class='bx bx-group'></i>
-            <h3>User Management</h3>
-            <ul>
-                <li>
-                    <a href="#">Contract Management</a>
-                    </li>
-            </ul>
-        </div>
-
-        <div class="dashboard-card">
-            <i class='bx bx-info-circle'></i>
-            <h3>About Us</h3>
-            <p><a href="aboutus.html">Learn more about the application</a></p>
-        </div>
-
+        
         <div class="dashboard-card">
             <i class='bx bx-log-out'></i>
             <h3>Logout</h3>
