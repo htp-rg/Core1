@@ -122,48 +122,44 @@
     .sidebar.close ~ .main {
       left: 0;
       width: 100%;
-    }
-
-  
-
+}
     .main-content {
-      flex: 1;
-      padding: 20px;
-      background-color:  #e7f2fd;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
+     padding: 20px;
+  background-color: #e7f2fd;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  margin-left: 260px; 
+  width: calc(100% - 260px);
+}
 
+.h1 {
+  color: #11101d;
+  font-size: 40px;
+  text-align: center;
+}
 
-    .h1 {
-      color: #11101d;
-      font-size: 40px;
-      text-align: center;
-    }
+#loaded-content {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  flex: 1; 
+}
 
-    #loaded-content {
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      left: 260px;
-      background-color: #f9f9f9;
-      flex: 1;
-    }
+.dropdown-content {
+  background-color: #002255;
+}
 
-    .dropdown-content {
-      background-color: #002255;
-    }
+.dropdown-content a {
+  color: white;
+  padding: 5px 10px;
+  text-decoration: none;
+}
 
-    .dropdown-content a {
-      color: white;
-      padding: 5px 10px;
-      text-decoration: none;
-    }
-
-    .dropdown-content a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+.dropdown-content a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
   </style>
 </head>
 
