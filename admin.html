@@ -116,13 +116,7 @@
       background: rgba(255, 255, 255, 0.1);
     }
 
-    .navbar,
-    .main {
-      left: 260px;
-      width: calc(100% - 260px);
-      transition: all 0.5s ease;
-      z-index: 1000;
-    }
+    
 
     .sidebar.close ~ .navbar,
     .sidebar.close ~ .main {
@@ -130,28 +124,30 @@
       width: 100%;
     }
 
-    .navbar {
-      position: fixed;
-      color: #fff;
-      padding: 15px 20px;
-      font-size: 25px;
-      background: #4070f4;
-      cursor: pointer;
-    }
+  
 
-    .main {
-      position: relative;
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      background-color: #fff;
+      overflow-y: auto;
       display: flex;
-      justify-content: center;
-      height: 100vh;
-      background: #e7f2fd;
-      padding-top: 50px;
+      flex-direction: column;
     }
 
-    .main h1 {
+
+    .h1 {
       color: #11101d;
       font-size: 40px;
       text-align: center;
+    }
+
+    #loaded-content {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      flex: 1;
     }
 
     .dropdown-content {
@@ -253,32 +249,7 @@
             <li class="item"><a href="payment-schedule.html">PAYMENT SCHEDULE MANAGEMENT</a></li>
           </ul>
         </li>
-
-        <li class="item">
-                     <div class="submenu-header" onclick="toggleSubmenu(this)">
-                         <span class="icon"><i class='bx bx-group'></i></span>
-                         <span>User Management</span>
-                         <i class="fa-solid fa-chevron-right"></i>
-                     </div>
-                     <ul class="submenu">
-                         <li class="item">
-                             <a href="#">Contract Management</a>
-                             <div class="dropdown-content">
-                                 <a href="dash.html"><small>1</small></a>
-                                 <a href="user2.html"><small>2</small></a>
-                                 <a href="logging.html"><small>3</small></a>
-                             </div>
-                         </li>
-                     </ul>
-                 </li>
-
-        <li class="item">
-          <a class="submenu-header" href="aboutus.html">
-            <span class="icon"><i class='bx bx-info-circle'></i></span>
-            <span>About Us</span>
-          </a>
-        </li>
-
+        
         <li class="item">
           <a class="submenu-header" href="logout.html">
             <span class="icon"><i class='bx bx-log-out'></i></span>
@@ -295,8 +266,13 @@
 
   </nav>
 
-  <div class="main">
-    <h1>Welcome to the Admin Dashboard</h1>
+  <div class="main-content">
+    <h1></h1>
+    <div id="loaded-content">
+      <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <img src="image.png" style="margin: 0 10px; border-radius: 8px; max-width: 150px; height: auto;" alt="Welcome Image">
+        <p style="font-family: 'Georgia', Georgia; color: #000000; text-align: center; font-size: 3.2em; margin-bottom: 20px;">
+          WELCOME CORE1
      </p>
     <p style="font-family: 'Arial', Arial; color: rgb(0, 0, 0); text-align: center; font-size: 1.5em; margin-bottom: 20px;">
       Core 1 is a comprehensive system integrating five key business functions: Talent Management, which handles the entire recruitment lifecycle; Job Management, overseeing job roles and access; Client Agreement and Management, dealing with contracts and payments; Payroll Management, covering all aspects of employee compensation; and Client Management, focused on satisfaction and engagement. Essentially, Core 1 serves as a central hub for managing human resources, client relationships, and financial administration related to employees.
